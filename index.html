@@ -21,6 +21,14 @@
             --accent-cyan: #00d4ff;
             --accent-pink: #ff006e;
             --accent-green: #00ff88;
+            
+            /* (装扮) 部位标签色 */
+            --slot-hair: #ff69b4;
+            --slot-top: #4fc3f7;
+            --slot-bottom: #81c784;
+            --slot-shoes: #ffb74d;
+            --slot-accessory: #ba68c8;
+            --slot-expression: #ff8a65;
         }
         
         * {
@@ -216,7 +224,7 @@
             border: none;
         }
         
-        /* 搜索栏 (优化) */
+        /* 搜索栏 */
         .search-bar {
             display: flex;
             align-items: center;
@@ -255,7 +263,7 @@
         }
         .search-clear:hover { background: rgba(255,255,255,0.2); }
         
-        /* 稀有度筛选 (优化) */
+        /* 稀有度筛选 */
         .rarity-filter {
             display: flex;
             justify-content: center;
@@ -331,7 +339,7 @@
             margin-top: 2rem;
         }
         
-        /* 骨架屏 (优化) */
+        /* 骨架屏 */
         .skeleton-card {
             background: var(--bg-card);
             border-radius: 20px;
@@ -359,7 +367,7 @@
             100% { background-position: 200% 0; }
         }
         
-        /* 搜索高亮 (优化) */
+        /* 搜索高亮 */
         .search-highlight {
             background: rgba(0, 212, 255, 0.2);
             color: var(--accent-cyan);
@@ -367,7 +375,7 @@
             padding: 0 2px;
         }
         
-        /* 产品卡片入场动画 (优化) */
+        /* 产品卡片入场动画 */
         @keyframes cardIn {
             from { opacity: 0; transform: translateY(20px) scale(0.97); }
             to { opacity: 1; transform: translateY(0) scale(1); }
@@ -521,7 +529,7 @@
             color: var(--text-secondary);
         }
         
-        /* 领取脉冲动画 (优化) */
+        /* 领取脉冲动画 */
         @keyframes claimPulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.15); box-shadow: 0 0 25px rgba(0, 212, 255, 0.5); }
@@ -529,7 +537,7 @@
         }
         .claim-btn.pulsing { animation: claimPulse 0.4s ease; }
         
-        /* 空状态 (优化) */
+        /* 空状态 */
         .empty-state {
             grid-column: 1 / -1;
             text-align: center;
@@ -720,6 +728,372 @@
             font-size: 1.5rem;
         }
         
+        /* (装扮) ==================== 装扮系统样式 ==================== */
+        
+        /* 装扮系统主容器 */
+        .outfit-system {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 2rem;
+            margin-top: 2rem;
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* 角色展示区 */
+        .character-preview {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        /* 角色形象容器 - 多层叠加 */
+        .character-container {
+            position: relative;
+            width: 220px;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* 基础 Agent 形象 */
+        .character-base {
+            position: absolute;
+            width: 180px;
+            height: 240px;
+            background: linear-gradient(180deg, #2a2a3e 0%, #1a1a2e 100%);
+            border-radius: 90px 90px 60px 60px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            border: 3px solid rgba(0, 212, 255, 0.3);
+        }
+        
+        /* 服装图层基础样式 */
+        .clothing-layer {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        
+        /* 发型层 */
+        .layer-hair {
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            font-size: 2.5rem;
+        }
+        
+        /* 上装层 */
+        .layer-top {
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 30;
+            font-size: 3rem;
+        }
+        
+        /* 下装层 */
+        .layer-bottom {
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            font-size: 2.5rem;
+        }
+        
+        /* 鞋子层 */
+        .layer-shoes {
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 25;
+            font-size: 2rem;
+        }
+        
+        /* 配饰层 */
+        .layer-accessory {
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 40;
+            font-size: 2rem;
+        }
+        
+        /* 表情层 */
+        .layer-expression {
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 35;
+            font-size: 2.5rem;
+        }
+        
+        /* 潮流度显示 */
+        .trend-display {
+            width: 100%;
+            text-align: center;
+        }
+        
+        .trend-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .trend-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* 潮流度进度条 */
+        .trend-bar-container {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 0.8rem 0;
+        }
+        
+        .trend-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-pink));
+            border-radius: 6px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+        
+        .trend-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        .trend-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        /* 操作按钮 */
+        .outfit-actions {
+            display: flex;
+            gap: 0.8rem;
+            width: 100%;
+        }
+        
+        .outfit-btn {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+        
+        .outfit-btn-save {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
+            color: white;
+        }
+        
+        .outfit-btn-reset {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+        }
+        
+        .outfit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 装扮面板 */
+        .outfit-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        /* 部位切换标签 */
+        .slot-tabs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .slot-tab {
+            padding: 0.6rem 1rem;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .slot-tab:hover {
+            border-color: var(--accent-cyan);
+            color: var(--text-primary);
+        }
+        
+        .slot-tab.active {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--accent-cyan);
+        }
+        
+        .slot-tab.active[data-slot="hair"] { border-color: var(--slot-hair); background: rgba(255, 105, 180, 0.1); color: var(--slot-hair); }
+        .slot-tab.active[data-slot="top"] { border-color: var(--slot-top); background: rgba(79, 195, 247, 0.1); color: var(--slot-top); }
+        .slot-tab.active[data-slot="bottom"] { border-color: var(--slot-bottom); background: rgba(129, 199, 132, 0.1); color: var(--slot-bottom); }
+        .slot-tab.active[data-slot="shoes"] { border-color: var(--slot-shoes); background: rgba(255, 183, 77, 0.1); color: var(--slot-shoes); }
+        .slot-tab.active[data-slot="accessory"] { border-color: var(--slot-accessory); background: rgba(186, 104, 200, 0.1); color: var(--slot-accessory); }
+        .slot-tab.active[data-slot="expression"] { border-color: var(--slot-expression); background: rgba(255, 138, 101, 0.1); color: var(--slot-expression); }
+        
+        /* 已穿戴指示器 */
+        .slot-equipped {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            display: none;
+        }
+        
+        .slot-tab.equipped .slot-equipped {
+            display: block;
+        }
+        
+        /* 服装网格 */
+        .clothing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+        
+        /* 服装卡片 */
+        .clothing-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 1rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+        }
+        
+        .clothing-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-4px);
+        }
+        
+        .clothing-card.equipped {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.1);
+        }
+        
+        .clothing-card.equipped::after {
+            content: '✓ 已穿戴';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--accent-cyan);
+            color: #000;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+        }
+        
+        .clothing-card.common { border-color: rgba(156, 163, 175, 0.3); }
+        .clothing-card.rare { border-color: rgba(59, 130, 246, 0.3); }
+        .clothing-card.epic { border-color: rgba(168, 85, 247, 0.3); }
+        .clothing-card.legendary { border-color: rgba(245, 158, 11, 0.3); }
+        
+        .clothing-icon {
+            font-size: 2.5rem;
+        }
+        
+        .clothing-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        .clothing-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+        }
+        
+        .clothing-rarity {
+            padding: 0.15rem 0.4rem;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        
+        .clothing-rarity.common { background: var(--common); color: #000; }
+        .clothing-rarity.rare { background: var(--rare); }
+        .clothing-rarity.epic { background: var(--epic); }
+        .clothing-rarity.legendary { background: var(--legendary); }
+        
+        .clothing-trend {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+        
+        /* 穿戴动画 */
+        @keyframes equipPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .clothing-card.equipping {
+            animation: equipPulse 0.3s ease;
+        }
+        
         /* 响应式 */
         @media (max-width: 768px) {
             .hero h1 {
@@ -736,6 +1110,15 @@
             
             .tabs {
                 flex-wrap: wrap;
+            }
+            
+            /* (装扮) 移动端布局 */
+            .outfit-system {
+                grid-template-columns: 1fr;
+            }
+            
+            .clothing-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             }
         }
         
@@ -794,14 +1177,14 @@
                 <button class="alliance-btn" data-alliance="chaos">🔥 混沌派</button>
             </div>
             
-            <!-- 搜索栏 (优化) -->
+            <!-- 搜索栏 -->
             <div class="search-bar">
                 <span class="search-icon">🔍</span>
                 <input type="text" id="searchInput" placeholder="搜索装备名称..." class="search-input">
                 <button class="search-clear" id="searchClear" style="display:none" onclick="clearSearch()">✕</button>
             </div>
             
-            <!-- 稀有度筛选 (优化) -->
+            <!-- 稀有度筛选 -->
             <div class="rarity-filter">
                 <button class="rarity-btn active" data-rarity="all">全部</button>
                 <button class="rarity-btn" data-rarity="legendary">传奇</button>
@@ -816,6 +1199,7 @@
             <button class="tab-btn active" data-tab="items">潮流装备</button>
             <button class="tab-btn" data-tab="agents">Agent 收藏</button>
             <button class="tab-btn" data-tab="outfit">穿搭效果</button>
+            <button class="tab-btn" data-tab="customize">🎨 装扮系统</button>
         </div>
         
         <!-- 产品列表 -->
@@ -830,6 +1214,53 @@
             <div class="outfit-agent">
                 <div class="agent-display" id="agentDisplay">🤖</div>
                 <div class="equipped-items" id="equippedItems"></div>
+            </div>
+        </section>
+        
+        <!-- (装扮) 装扮系统区块 -->
+        <section class="outfit-system" id="outfitSystem" style="display: none;">
+            <!-- 左侧：角色形象展示区 -->
+            <div class="character-preview">
+                <div class="character-container" id="characterContainer">
+                    <!-- 基础 Agent 形象 -->
+                    <div class="character-base">🤖</div>
+                    <!-- 服装图层会动态添加到这里 -->
+                </div>
+                
+                <!-- 潮流度显示 -->
+                <div class="trend-display">
+                    <div class="trend-title">🌟 总潮流度</div>
+                    <div class="trend-value" id="trendValue">0</div>
+                    <div class="trend-bar-container">
+                        <div class="trend-bar" id="trendBar" style="width: 0%"></div>
+                    </div>
+                    <div class="trend-info">
+                        <span>已穿戴 <span id="equippedCount">0</span>/6 件</span>
+                        <span id="trendPercent">0%</span>
+                    </div>
+                </div>
+                
+                <!-- 操作按钮 -->
+                <div class="outfit-actions">
+                    <button class="outfit-btn outfit-btn-save" onclick="saveOutfit()">💾 保存方案</button>
+                    <button class="outfit-btn outfit-btn-reset" onclick="resetOutfit()">🔄 重置穿戴</button>
+                </div>
+            </div>
+            
+            <!-- 右侧：装扮面板 -->
+            <div class="outfit-panel">
+                <!-- 部位切换标签 -->
+                <div class="slot-tabs" id="slotTabs">
+                    <button class="slot-tab active" data-slot="hair" onclick="switchSlot('hair')">💇 发型</button>
+                    <button class="slot-tab" data-slot="top" onclick="switchSlot('top')">👕 上装</button>
+                    <button class="slot-tab" data-slot="bottom" onclick="switchSlot('bottom')">👖 下装</button>
+                    <button class="slot-tab" data-slot="shoes" onclick="switchSlot('shoes')">👟 鞋子</button>
+                    <button class="slot-tab" data-slot="accessory" onclick="switchSlot('accessory')">✨ 配饰</button>
+                    <button class="slot-tab" data-slot="expression" onclick="switchSlot('expression')">😀 表情</button>
+                </div>
+                
+                <!-- 服装网格 -->
+                <div class="clothing-grid" id="clothingGrid"></div>
             </div>
         </section>
     </main>
@@ -853,7 +1284,452 @@
     <script>
         // ==================== 数据模型 ====================
         
-        // 产品数据
+        // 部位常量
+        const CLOTHING_SLOTS = {
+            HAIR: 'hair',
+            TOP: 'top',
+            BOTTOM: 'bottom',
+            SHOES: 'shoes',
+            ACCESSORY: 'accessory',
+            EXPRESSION: 'expression'
+        };
+        
+        // (装扮) 装扮服装数据
+        const outfitItems = [
+            // 发型 (5个)
+            {
+                id: 101,
+                name: "赛博朋克银发",
+                icon: "🧡",
+                slot: CLOTHING_SLOTS.HAIR,
+                layer: 20,
+                rarity: "legendary",
+                trendPoints: 85,
+                price: 2000,
+                alliance: "tech",
+                desc: "金属质感银白色发型，带有霓虹光效",
+                tags: ["发型", "科技", "潮流"],
+                equipped: false
+            },
+            {
+                id: 102,
+                name: "自然卷发",
+                icon: "🌿",
+                slot: CLOTHING_SLOTS.HAIR,
+                layer: 20,
+                rarity: "rare",
+                trendPoints: 35,
+                price: 600,
+                alliance: "nature",
+                desc: "充满生机的自然卷曲发型",
+                tags: ["发型", "自然"],
+                equipped: false
+            },
+            {
+                id: 103,
+                name: "经典短发",
+                icon: "💇",
+                slot: CLOTHING_SLOTS.HAIR,
+                layer: 20,
+                rarity: "common",
+                trendPoints: 10,
+                price: 150,
+                alliance: "tech",
+                desc: "干净利落的经典短发造型",
+                tags: ["发型", "简约"],
+                equipped: false
+            },
+            {
+                id: 104,
+                name: "火焰刘海",
+                icon: "🔥",
+                slot: CLOTHING_SLOTS.HAIR,
+                layer: 20,
+                rarity: "epic",
+                trendPoints: 55,
+                price: 1200,
+                alliance: "chaos",
+                desc: "燃烧的火焰刘海，热情张扬",
+                tags: ["发型", "火焰", "炫酷"],
+                equipped: false
+            },
+            {
+                id: 105,
+                name: "星空双马尾",
+                icon: "⭐",
+                slot: CLOTHING_SLOTS.HAIR,
+                layer: 20,
+                rarity: "legendary",
+                trendPoints: 90,
+                price: 2500,
+                alliance: "nature",
+                desc: "如同星空般璀璨的双马尾",
+                tags: ["发型", "梦幻", "可爱"],
+                equipped: false
+            },
+            
+            // 上装 (5个)
+            {
+                id: 201,
+                name: "量子战甲",
+                icon: "🦾",
+                slot: CLOTHING_SLOTS.TOP,
+                layer: 30,
+                rarity: "legendary",
+                trendPoints: 95,
+                price: 3000,
+                alliance: "tech",
+                desc: "内置量子芯片的未来战甲",
+                tags: ["上装", "科技", "战斗"],
+                equipped: false
+            },
+            {
+                id: 202,
+                name: "森林精灵披风",
+                icon: "🧚",
+                slot: CLOTHING_SLOTS.TOP,
+                layer: 30,
+                rarity: "epic",
+                trendPoints: 50,
+                price: 1400,
+                alliance: "nature",
+                desc: "来自精灵森林的神秘披风",
+                tags: ["上装", "自然", "飘逸"],
+                equipped: false
+            },
+            {
+                id: 203,
+                name: "休闲T恤",
+                icon: "👕",
+                slot: CLOTHING_SLOTS.TOP,
+                layer: 30,
+                rarity: "common",
+                trendPoints: 8,
+                price: 100,
+                alliance: "tech",
+                desc: "舒适的日常休闲T恤",
+                tags: ["上装", "休闲"],
+                equipped: false
+            },
+            {
+                id: 204,
+                name: "暗黑斗篷",
+                icon: "🖤",
+                slot: CLOTHING_SLOTS.TOP,
+                layer: 30,
+                rarity: "epic",
+                trendPoints: 45,
+                price: 1100,
+                alliance: "chaos",
+                desc: "神秘而帅气的暗黑风格斗篷",
+                tags: ["上装", "暗黑", "神秘"],
+                equipped: false
+            },
+            {
+                id: 205,
+                name: "极光毛衣",
+                icon: "🌌",
+                slot: CLOTHING_SLOTS.TOP,
+                layer: 30,
+                rarity: "rare",
+                trendPoints: 30,
+                price: 500,
+                alliance: "nature",
+                desc: "如同极光般绚丽的毛衣",
+                tags: ["上装", "温暖", "梦幻"],
+                equipped: false
+            },
+            
+            // 下装 (5个)
+            {
+                id: 301,
+                name: "全息投影裤",
+                icon: "📽️",
+                slot: CLOTHING_SLOTS.BOTTOM,
+                layer: 40,
+                rarity: "legendary",
+                trendPoints: 80,
+                price: 2200,
+                alliance: "tech",
+                desc: "带有全息投影效果的科幻长裤",
+                tags: ["下装", "科技", "炫酷"],
+                equipped: false
+            },
+            {
+                id: 302,
+                name: "落叶短裙",
+                icon: "🍂",
+                slot: CLOTHING_SLOTS.BOTTOM,
+                layer: 40,
+                rarity: "rare",
+                trendPoints: 28,
+                price: 450,
+                alliance: "nature",
+                desc: "印有秋日落叶图案的短裙",
+                tags: ["下装", "自然", "可爱"],
+                equipped: false
+            },
+            {
+                id: 303,
+                name: "基础牛仔裤",
+                icon: "👖",
+                slot: CLOTHING_SLOTS.BOTTOM,
+                layer: 40,
+                rarity: "common",
+                trendPoints: 6,
+                price: 120,
+                alliance: "tech",
+                desc: "百搭的基础款牛仔裤",
+                tags: ["下装", "日常"],
+                equipped: false
+            },
+            {
+                id: 304,
+                name: "烈焰长裤",
+                icon: "🔥",
+                slot: CLOTHING_SLOTS.BOTTOM,
+                layer: 40,
+                rarity: "epic",
+                trendPoints: 48,
+                price: 1300,
+                alliance: "chaos",
+                desc: "燃烧着火焰效果的个性长裤",
+                tags: ["下装", "火焰", "炫酷"],
+                equipped: false
+            },
+            {
+                id: 305,
+                name: "霓虹运动裤",
+                icon: "💫",
+                slot: CLOTHING_SLOTS.BOTTOM,
+                layer: 40,
+                rarity: "rare",
+                trendPoints: 32,
+                price: 550,
+                alliance: "tech",
+                desc: "带有霓虹条纹的运动长裤",
+                tags: ["下装", "运动", "潮流"],
+                equipped: false
+            },
+            
+            // 鞋子 (5个)
+            {
+                id: 401,
+                name: "悬浮滑板鞋",
+                icon: "🛹",
+                slot: CLOTHING_SLOTS.SHOES,
+                layer: 50,
+                rarity: "legendary",
+                trendPoints: 75,
+                price: 1800,
+                alliance: "tech",
+                desc: "采用反重力技术的悬浮滑板鞋",
+                tags: ["鞋子", "科技", "悬浮"],
+                equipped: false
+            },
+            {
+                id: 402,
+                name: "花瓣凉鞋",
+                icon: "🌸",
+                slot: CLOTHING_SLOTS.SHOES,
+                layer: 50,
+                rarity: "rare",
+                trendPoints: 25,
+                price: 400,
+                alliance: "nature",
+                desc: "用花瓣装饰的优雅凉鞋",
+                tags: ["鞋子", "自然", "优雅"],
+                equipped: false
+            },
+            {
+                id: 403,
+                name: "运动帆布鞋",
+                icon: "👟",
+                slot: CLOTHING_SLOTS.SHOES,
+                layer: 50,
+                rarity: "common",
+                trendPoints: 5,
+                price: 80,
+                alliance: "tech",
+                desc: "舒适的日常运动帆布鞋",
+                tags: ["鞋子", "休闲"],
+                equipped: false
+            },
+            {
+                id: 404,
+                name: "恶魔之靴",
+                icon: "👢",
+                slot: CLOTHING_SLOTS.SHOES,
+                layer: 50,
+                rarity: "epic",
+                trendPoints: 42,
+                price: 1000,
+                alliance: "chaos",
+                desc: "来自深渊的暗黑战靴",
+                tags: ["鞋子", "暗黑", "战斗"],
+                equipped: false
+            },
+            {
+                id: 405,
+                name: "星光跑鞋",
+                icon: "✨",
+                slot: CLOTHING_SLOTS.SHOES,
+                layer: 50,
+                rarity: "legendary",
+                trendPoints: 88,
+                price: 2400,
+                alliance: "nature",
+                desc: "踩出星光的梦幻跑鞋",
+                tags: ["鞋子", "梦幻", "闪耀"],
+                equipped: false
+            },
+            
+            // 配饰 (5个)
+            {
+                id: 501,
+                name: "智能眼镜",
+                icon: "🤖",
+                slot: CLOTHING_SLOTS.ACCESSORY,
+                layer: 60,
+                rarity: "rare",
+                trendPoints: 30,
+                price: 600,
+                alliance: "tech",
+                desc: "内置AI助手的智能眼镜",
+                tags: ["配饰", "科技", "实用"],
+                equipped: false
+            },
+            {
+                id: 502,
+                name: "花环头饰",
+                icon: "🌸",
+                slot: CLOTHING_SLOTS.ACCESSORY,
+                layer: 60,
+                rarity: "rare",
+                trendPoints: 26,
+                price: 380,
+                alliance: "nature",
+                desc: "用鲜花编织的清新花环",
+                tags: ["配饰", "自然", "甜美"],
+                equipped: false
+            },
+            {
+                id: 503,
+                name: "机械表",
+                icon: "⌚",
+                slot: CLOTHING_SLOTS.ACCESSORY,
+                layer: 60,
+                rarity: "common",
+                trendPoints: 8,
+                price: 150,
+                alliance: "tech",
+                desc: "精致的机械手表",
+                tags: ["配饰", "简约"],
+                equipped: false
+            },
+            {
+                id: 504,
+                name: "暗影披风扣",
+                icon: "🦇",
+                slot: CLOTHING_SLOTS.ACCESSORY,
+                layer: 60,
+                rarity: "epic",
+                trendPoints: 40,
+                price: 900,
+                alliance: "chaos",
+                desc: "暗影蝙蝠形状的神秘披风扣",
+                tags: ["配饰", "暗黑", "神秘"],
+                equipped: false
+            },
+            {
+                id: 505,
+                name: "星辰项链",
+                icon: "💎",
+                slot: CLOTHING_SLOTS.ACCESSORY,
+                layer: 60,
+                rarity: "legendary",
+                trendPoints: 70,
+                price: 1600,
+                alliance: "nature",
+                desc: "镶嵌星辰碎片的华丽项链",
+                tags: ["配饰", "梦幻", "闪耀"],
+                equipped: false
+            },
+            
+            // 表情 (5个)
+            {
+                id: 601,
+                name: "冷酷表情",
+                icon: "😎",
+                slot: CLOTHING_SLOTS.EXPRESSION,
+                layer: 70,
+                rarity: "common",
+                trendPoints: 10,
+                price: 100,
+                alliance: "tech",
+                desc: "冷酷帅气的经典表情",
+                tags: ["表情", "帅气"],
+                equipped: false
+            },
+            {
+                id: 602,
+                name: "开心大笑",
+                icon: "😂",
+                slot: CLOTHING_SLOTS.EXPRESSION,
+                layer: 70,
+                rarity: "common",
+                trendPoints: 12,
+                price: 120,
+                alliance: "nature",
+                desc: "充满感染力的开心大笑",
+                tags: ["表情", "开心"],
+                equipped: false
+            },
+            {
+                id: 603,
+                name: "神秘微笑",
+                icon: "😏",
+                slot: CLOTHING_SLOTS.EXPRESSION,
+                layer: 70,
+                rarity: "rare",
+                trendPoints: 28,
+                price: 350,
+                alliance: "chaos",
+                desc: "让人捉摸不透的神秘微笑",
+                tags: ["表情", "神秘", "诱惑"],
+                equipped: false
+            },
+            {
+                id: 604,
+                name: "惊讶表情",
+                icon: "😲",
+                slot: CLOTHING_SLOTS.EXPRESSION,
+                layer: 70,
+                rarity: "rare",
+                trendPoints: 22,
+                price: 280,
+                alliance: "tech",
+                desc: "充满好奇的惊讶表情",
+                tags: ["表情", "可爱", "好奇"],
+                equipped: false
+            },
+            {
+                id: 605,
+                name: "天使微笑",
+                icon: "😇",
+                slot: CLOTHING_SLOTS.EXPRESSION,
+                layer: 70,
+                rarity: "legendary",
+                trendPoints: 65,
+                price: 1500,
+                alliance: "nature",
+                desc: "如同天使般纯洁治愈的微笑",
+                tags: ["表情", "治愈", "神圣"],
+                equipped: false
+            }
+        ];
+        
+        // 产品数据 (保留原有)
         const products = [
             {
                 id: 1,
@@ -989,7 +1865,7 @@
             }
         ];
         
-        // Agent 数据
+        // Agent 数据 (保留原有)
         const agents = [
             {
                 id: 1,
@@ -1038,15 +1914,36 @@
             equippedItems: [],
             currentAlliance: 'all',
             currentTab: 'items',
-            currentSearch: '',   // 搜索关键词 (优化)
-            currentRarity: 'all', // 稀有度筛选 (优化)
+            currentSearch: '',
+            currentRarity: 'all',
+            
+            // (装扮) 装扮系统状态
+            currentSlot: 'hair',  // 当前选中的部位
+            equipped: {           // 按部位的穿戴状态
+                hair: null,
+                top: null,
+                bottom: null,
+                shoes: null,
+                accessory: null,
+                expression: null
+            },
+            ownedOutfits: []      // 已拥有的装扮物品ID
         };
         
         // 加载本地存储
         function loadState() {
             const saved = localStorage.getItem('agentFashionState');
             if (saved) {
-                state = { ...state, ...JSON.parse(saved) };
+                const parsedState = JSON.parse(saved);
+                state = { ...state, ...parsedState };
+                
+                // 恢复装扮系统状态
+                if (parsedState.equipped) {
+                    state.equipped = { ...state.equipped, ...parsedState.equipped };
+                }
+                if (parsedState.ownedOutfits) {
+                    state.ownedOutfits = parsedState.ownedOutfits;
+                }
             }
         }
         
@@ -1054,7 +1951,7 @@
             localStorage.setItem('agentFashionState', JSON.stringify(state));
         }
         
-        // ==================== 工具函数 (优化) ====================
+        // ==================== 工具函数 ====================
         
         /** 防抖函数 */
         function debounce(fn, delay) {
@@ -1092,7 +1989,7 @@
             const grid = document.getElementById('productsGrid');
             const items = state.currentTab === 'items' ? products : agents;
             
-            // 筛选: 联盟 + 稀有度 + 搜索关键词 (优化)
+            // 筛选: 联盟 + 稀有度 + 搜索关键词
             let filtered = items;
             if (state.currentAlliance !== 'all') {
                 filtered = filtered.filter(item => item.alliance === state.currentAlliance);
@@ -1109,7 +2006,7 @@
                 );
             }
             
-            // 空状态 (优化)
+            // 空状态
             if (filtered.length === 0) {
                 grid.innerHTML = `
                     <div class="empty-state">
@@ -1199,6 +2096,241 @@
             }
         }
         
+        // ==================== (装扮) 装扮系统功能 ====================
+        
+        /**
+         * 切换部位标签
+         * @param {string} slot - 部位标识
+         */
+        function switchSlot(slot) {
+            state.currentSlot = slot;
+            
+            // 更新标签高亮
+            document.querySelectorAll('.slot-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.slot === slot);
+            });
+            
+            // 渲染当前部位的服装
+            renderClothingGrid();
+        }
+        
+        /**
+         * 渲染服装网格
+         */
+        function renderClothingGrid() {
+            const grid = document.getElementById('clothingGrid');
+            const slotItems = outfitItems.filter(item => item.slot === state.currentSlot);
+            
+            if (slotItems.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">👗</div>
+                        <h3>该部位暂无服装</h3>
+                        <p>敬请期待更多装扮上线</p>
+                    </div>`;
+                return;
+            }
+            
+            grid.innerHTML = slotItems.map(item => {
+                const isEquipped = state.equipped[state.currentSlot] === item.id;
+                const isOwned = state.ownedOutfits.includes(item.id);
+                
+                return `
+                    <div class="clothing-card ${item.rarity} ${isEquipped ? 'equipped' : ''}" 
+                         onclick="toggleEquip(${item.id})">
+                        <span class="clothing-icon">${item.icon}</span>
+                        <span class="clothing-name">${item.name}</span>
+                        <div class="clothing-meta">
+                            <span class="clothing-rarity ${item.rarity}">${getRarityText(item.rarity)}</span>
+                            <span class="clothing-trend">+${item.trendPoints}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        /**
+         * 获取稀有度中文文本
+         * @param {string} rarity - 稀有度标识
+         * @returns {string} 中文文本
+         */
+        function getRarityText(rarity) {
+            const texts = {
+                common: '普通',
+                rare: '稀有',
+                epic: '史诗',
+                legendary: '传奇'
+            };
+            return texts[rarity] || rarity;
+        }
+        
+        /**
+         * 穿戴/卸下服装
+         * @param {number} itemId - 服装ID
+         */
+        function toggleEquip(itemId) {
+            const item = outfitItems.find(i => i.id === itemId);
+            if (!item) return;
+            
+            const card = event.currentTarget;
+            
+            // 如果已拥有则可以穿戴/卸下
+            if (!state.ownedOutfits.includes(itemId)) {
+                // 先购买
+                if (state.userPoints >= item.price) {
+                    state.userPoints -= item.price;
+                    state.ownedOutfits.push(itemId);
+                    animateNumber(document.getElementById('userPoints'), state.userPoints, 400);
+                    showNotification(`购买 ${item.name} 成功！`, 'success');
+                } else {
+                    showNotification('积分不足！', 'error');
+                    return;
+                }
+            }
+            
+            // 如果已穿戴则卸下，否则穿戴
+            if (state.equipped[item.slot] === itemId) {
+                // 卸下
+                state.equipped[item.slot] = null;
+                showNotification(`卸下 ${item.name}`, 'success');
+            } else {
+                // 穿戴
+                state.equipped[item.slot] = itemId;
+                card.classList.add('equipping');
+                setTimeout(() => card.classList.remove('equipping'), 300);
+                showNotification(`穿戴 ${item.name}！`, 'success');
+            }
+            
+            saveState();
+            updateCharacterDisplay();
+            updateTrendDisplay();
+            updateSlotTabs();
+            renderClothingGrid();
+        }
+        
+        /**
+         * 更新角色形象显示
+         */
+        function updateCharacterDisplay() {
+            const container = document.getElementById('characterContainer');
+            
+            // 清除旧的服装图层
+            container.querySelectorAll('.clothing-layer').forEach(el => el.remove());
+            
+            // 按层级顺序添加服装
+            const sortedItems = outfitItems
+                .filter(item => state.equipped[item.slot] === item.id)
+                .sort((a, b) => a.layer - b.layer);
+            
+            sortedItems.forEach(item => {
+                const layer = document.createElement('div');
+                layer.className = `clothing-layer layer-${item.slot}`;
+                layer.textContent = item.icon;
+                layer.style.zIndex = item.layer;
+                container.appendChild(layer);
+            });
+        }
+        
+        /**
+         * 更新潮流度显示
+         */
+        function updateTrendDisplay() {
+            let totalTrend = 0;
+            let equippedCount = 0;
+            
+            Object.keys(state.equipped).forEach(slot => {
+                if (state.equipped[slot]) {
+                    const item = outfitItems.find(i => i.id === state.equipped[slot]);
+                    if (item) {
+                        totalTrend += item.trendPoints;
+                        equippedCount++;
+                    }
+                }
+            });
+            
+            // 最大潮流度估算 (假设6个部位都穿传奇装备)
+            const maxTrend = 600;
+            const percent = Math.min((totalTrend / maxTrend) * 100, 100);
+            
+            // 更新显示
+            animateNumber(document.getElementById('trendValue'), totalTrend, 500);
+            document.getElementById('trendBar').style.width = percent + '%';
+            document.getElementById('equippedCount').textContent = equippedCount;
+            document.getElementById('trendPercent').textContent = Math.round(percent) + '%';
+        }
+        
+        /**
+         * 更新部位标签的已穿戴状态
+         */
+        function updateSlotTabs() {
+            document.querySelectorAll('.slot-tab').forEach(tab => {
+                const slot = tab.dataset.slot;
+                tab.classList.toggle('equipped', state.equipped[slot] !== null);
+            });
+        }
+        
+        /**
+         * 保存当前搭配方案
+         */
+        function saveOutfit() {
+            const name = prompt('请输入方案名称：', '我的潮流穿搭');
+            if (!name) return;
+            
+            const outfit = {
+                id: Date.now().toString(),
+                name: name,
+                createdAt: Date.now(),
+                equipped: { ...state.equipped },
+                totalTrend: calculateTotalTrend()
+            };
+            
+            // 获取已保存的方案
+            let savedOutfits = JSON.parse(localStorage.getItem('agentOutfits') || '[]');
+            savedOutfits.push(outfit);
+            localStorage.setItem('agentOutfits', JSON.stringify(savedOutfits));
+            
+            showNotification(`方案 "${name}" 保存成功！`, 'success');
+        }
+        
+        /**
+         * 计算总潮流度
+         * @returns {number} 总潮流度
+         */
+        function calculateTotalTrend() {
+            let total = 0;
+            Object.values(state.equipped).forEach(itemId => {
+                if (itemId) {
+                    const item = outfitItems.find(i => i.id === itemId);
+                    if (item) total += item.trendPoints;
+                }
+            });
+            return total;
+        }
+        
+        /**
+         * 重置穿戴
+         */
+        function resetOutfit() {
+            if (!confirm('确定要重置所有穿戴吗？')) return;
+            
+            state.equipped = {
+                hair: null,
+                top: null,
+                bottom: null,
+                shoes: null,
+                accessory: null,
+                expression: null
+            };
+            
+            saveState();
+            updateCharacterDisplay();
+            updateTrendDisplay();
+            updateSlotTabs();
+            renderClothingGrid();
+            
+            showNotification('已重置所有穿戴', 'success');
+        }
+        
         // ==================== 交互逻辑 ====================
         
         function claimItem(id, type) {
@@ -1224,7 +2356,7 @@
                 state.ownedAgents.push(id);
             }
             
-            // 积分消耗动画 (优化)
+            // 积分消耗动画
             const pointsEl = document.getElementById('userPoints');
             animateNumber(pointsEl, state.userPoints, 600);
             
@@ -1239,6 +2371,15 @@
             document.getElementById('userPoints').textContent = state.userPoints;
             renderProducts();
             renderOutfit();
+            
+            // (装扮) 初始化装扮系统
+            if (state.currentTab === 'customize') {
+                document.getElementById('outfitSystem').style.display = 'grid';
+                updateCharacterDisplay();
+                updateTrendDisplay();
+                updateSlotTabs();
+                renderClothingGrid();
+            }
         }
         
         function showModal(item) {
@@ -1282,17 +2423,43 @@
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 state.currentTab = btn.dataset.tab;
-                renderProducts();
+                
+                // 控制内容显示
+                const productsGrid = document.getElementById('productsGrid');
+                const outfitSection = document.getElementById('outfitSection');
+                const outfitSystem = document.getElementById('outfitSystem');
+                
+                if (state.currentTab === 'customize') {
+                    productsGrid.style.display = 'none';
+                    outfitSection.style.display = 'none';
+                    outfitSystem.style.display = 'grid';
+                    updateCharacterDisplay();
+                    updateTrendDisplay();
+                    updateSlotTabs();
+                    renderClothingGrid();
+                } else if (state.currentTab === 'outfit') {
+                    productsGrid.style.display = 'none';
+                    outfitSystem.style.display = 'none';
+                    outfitSection.style.display = 'block';
+                    renderOutfit();
+                } else {
+                    outfitSection.style.display = 'none';
+                    outfitSystem.style.display = 'none';
+                    productsGrid.style.display = 'grid';
+                    renderProducts();
+                }
             });
         });
         
-        // 搜索栏 (优化)
+        // 搜索栏
         const searchInput = document.getElementById('searchInput');
         const searchClear = document.getElementById('searchClear');
         const debouncedSearch = debounce((value) => {
             state.currentSearch = value;
             searchClear.style.display = value ? 'flex' : 'none';
-            renderProducts();
+            if (state.currentTab !== 'customize') {
+                renderProducts();
+            }
         }, 250);
         searchInput.addEventListener('input', (e) => debouncedSearch(e.target.value));
         searchInput.addEventListener('keydown', (e) => { if (e.key === 'Escape') clearSearch(); });
@@ -1315,17 +2482,19 @@
             renderProducts();
         }
         
-        // 稀有度筛选 (优化)
+        // 稀有度筛选
         document.querySelectorAll('.rarity-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.rarity-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 state.currentRarity = btn.dataset.rarity;
-                renderProducts();
+                if (state.currentTab !== 'customize') {
+                    renderProducts();
+                }
             });
         });
         
-        // 骨架屏渲染 (优化)
+        // 骨架屏渲染
         function renderSkeletons() {
             const grid = document.getElementById('productsGrid');
             grid.innerHTML = Array.from({ length: 6 }, () => `
