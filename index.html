@@ -114,7 +114,55 @@
         .user-panel {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
+            gap: 1rem;
+        }
+        
+        /* 收藏按钮 */
+        .fav-btn {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .fav-btn:hover {
+            border-color: var(--accent-pink);
+            color: var(--accent-pink);
+            background: rgba(255, 0, 110, 0.1);
+        }
+        
+        .fav-btn.active {
+            border-color: var(--accent-pink);
+            color: var(--accent-pink);
+            background: rgba(255, 0, 110, 0.1);
+        }
+        
+        .fav-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--accent-pink);
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.15rem 0.4rem;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+            display: none;
+        }
+        
+        .fav-btn.has-items .fav-badge {
+            display: block;
         }
         
         .points-display {
@@ -225,11 +273,16 @@
         }
         
         /* 搜索栏 */
+        .search-container {
+            position: relative;
+            max-width: 500px;
+            margin: 2rem auto 1rem;
+        }
+        
         .search-bar {
             display: flex;
             align-items: center;
-            max-width: 500px;
-            margin: 2rem auto 1rem;
+            width: 100%;
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 50px;
@@ -262,6 +315,112 @@
             transition: background 0.2s;
         }
         .search-clear:hover { background: rgba(255,255,255,0.2); }
+        
+        /* 搜索建议面板 */
+        .search-suggestions {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            display: none;
+            z-index: 50;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            animation: slideDown 0.2s ease;
+        }
+        
+        .search-suggestions.show {
+            display: block;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .suggestion-section {
+            padding: 0.8rem 1rem;
+        }
+        
+        .suggestion-section:not(:last-child) {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .suggestion-title {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .suggestion-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .suggestion-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.4rem 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+        
+        .suggestion-item:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+        
+        .suggestion-item.history-item:hover .delete-history {
+            opacity: 1;
+        }
+        
+        .suggestion-item.history-item .delete-history {
+            opacity: 0;
+            margin-left: 0.3rem;
+            color: var(--accent-pink);
+            transition: opacity 0.2s;
+        }
+        
+        .suggestion-item.hot-item {
+            background: rgba(255, 0, 110, 0.1);
+            color: var(--accent-pink);
+        }
+        
+        .suggestion-item.hot-item:hover {
+            background: rgba(255, 0, 110, 0.2);
+            border-color: var(--accent-pink);
+        }
+        
+        .clear-all-btn {
+            width: 100%;
+            padding: 0.6rem;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: color 0.2s;
+            margin-top: 0.3rem;
+        }
+        
+        .clear-all-btn:hover {
+            color: var(--accent-pink);
+        }
         
         /* 稀有度筛选 */
         .rarity-filter {
@@ -447,6 +606,41 @@
         .rarity-badge.rare { background: var(--rare); }
         .rarity-badge.epic { background: var(--epic); }
         .rarity-badge.legendary { background: linear-gradient(135deg, var(--legendary), #ff6b6b); }
+        
+        /* 收藏按钮在卡片上 */
+        .card-fav-btn {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card-fav-btn:hover {
+            background: rgba(255, 0, 110, 0.3);
+            color: var(--accent-pink);
+            transform: scale(1.1);
+        }
+        
+        .card-fav-btn.favorited {
+            color: var(--accent-pink);
+            background: rgba(255, 0, 110, 0.2);
+        }
+        
+        .card-fav-btn.favorited:hover {
+            background: rgba(255, 0, 110, 0.4);
+        }
         
         .product-info {
             padding: 1.5rem;
@@ -726,6 +920,214 @@
         
         .notification-icon {
             font-size: 1.5rem;
+        }
+        
+        /* 收藏面板 */
+        .favorites-panel {
+            position: fixed;
+            top: 0;
+            right: -420px;
+            width: 400px;
+            max-width: 90vw;
+            height: 100vh;
+            background: var(--bg-card);
+            z-index: 150;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .favorites-panel.show {
+            right: 0;
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .panel-header h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .panel-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .panel-close:hover {
+            background: rgba(255, 0, 110, 0.2);
+            color: var(--accent-pink);
+        }
+        
+        .panel-tabs {
+            display: flex;
+            padding: 0.5rem 1rem;
+            gap: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .panel-tab {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+        
+        .panel-tab:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .panel-tab.active {
+            background: rgba(255, 0, 110, 0.2);
+            color: var(--accent-pink);
+        }
+        
+        .panel-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+        
+        .fav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            margin-bottom: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.2s;
+        }
+        
+        .fav-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 0, 110, 0.3);
+        }
+        
+        .fav-item-icon {
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-gradient);
+            border-radius: 12px;
+        }
+        
+        .fav-item-info {
+            flex: 1;
+        }
+        
+        .fav-item-name {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        
+        .fav-item-meta {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .fav-item-rarity {
+            padding: 0.1rem 0.4rem;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .fav-item-rarity.common { background: var(--common); color: #000; }
+        .fav-item-rarity.rare { background: var(--rare); }
+        .fav-item-rarity.epic { background: var(--epic); }
+        .fav-item-rarity.legendary { background: var(--legendary); }
+        
+        .fav-item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .fav-item-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .fav-item-btn:hover {
+            background: rgba(255, 0, 110, 0.2);
+            color: var(--accent-pink);
+        }
+        
+        .fav-item-btn.buy-btn:hover {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--accent-cyan);
+        }
+        
+        .fav-empty {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-secondary);
+        }
+        
+        .fav-empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        .fav-empty h4 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        /* 面板遮罩 */
+        .panel-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 140;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .panel-overlay.show {
+            opacity: 1;
+            visibility: visible;
         }
         
         /* (装扮) ==================== 装扮系统样式 ==================== */
@@ -1153,6 +1555,11 @@
                 Agent Fashion Hub
             </div>
             <div class="user-panel">
+                <!-- 收藏按钮 -->
+                <button class="fav-btn" id="favBtn" onclick="toggleFavoritesPanel()">
+                    ❤️
+                    <span class="fav-badge" id="favBadge">0</span>
+                </button>
                 <div class="points-display">
                     <span class="points-icon">💎</span>
                     <span class="points-value" id="userPoints">5000</span>
@@ -1161,6 +1568,23 @@
             </div>
         </div>
     </nav>
+    
+    <!-- 收藏面板遮罩 -->
+    <div class="panel-overlay" id="panelOverlay" onclick="closeFavoritesPanel()"></div>
+    
+    <!-- 收藏面板 -->
+    <div class="favorites-panel" id="favoritesPanel">
+        <div class="panel-header">
+            <h3>❤️ 我的收藏</h3>
+            <button class="panel-close" onclick="closeFavoritesPanel()">✕</button>
+        </div>
+        <div class="panel-tabs">
+            <button class="panel-tab active" data-type="items" onclick="switchFavTab('items')">潮流装备</button>
+            <button class="panel-tab" data-type="agents" onclick="switchFavTab('agents')">Agent收藏</button>
+            <button class="panel-tab" data-type="outfits" onclick="switchFavTab('outfits')">装扮物品</button>
+        </div>
+        <div class="panel-content" id="favoritesContent"></div>
+    </div>
     
     <!-- 主内容 -->
     <main>
@@ -1178,10 +1602,26 @@
             </div>
             
             <!-- 搜索栏 -->
-            <div class="search-bar">
-                <span class="search-icon">🔍</span>
-                <input type="text" id="searchInput" placeholder="搜索装备名称..." class="search-input">
-                <button class="search-clear" id="searchClear" style="display:none" onclick="clearSearch()">✕</button>
+            <div class="search-container">
+                <div class="search-bar">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="搜索装备名称..." class="search-input">
+                    <button class="search-clear" id="searchClear" style="display:none" onclick="clearSearch()">✕</button>
+                </div>
+                <!-- 搜索建议面板 -->
+                <div class="search-suggestions" id="searchSuggestions">
+                    <!-- 搜索历史 -->
+                    <div class="suggestion-section" id="historySection" style="display:none">
+                        <div class="suggestion-title">🕐 搜索历史</div>
+                        <div class="suggestion-items" id="historyItems"></div>
+                        <button class="clear-all-btn" onclick="clearSearchHistory()">清除全部历史</button>
+                    </div>
+                    <!-- 热门推荐 -->
+                    <div class="suggestion-section" id="hotSection">
+                        <div class="suggestion-title">🔥 热门推荐</div>
+                        <div class="suggestion-items" id="hotItems"></div>
+                    </div>
+                </div>
             </div>
             
             <!-- 稀有度筛选 -->
@@ -1729,7 +2169,7 @@
             }
         ];
         
-        // 产品数据 (保留原有)
+        // 产品数据
         const products = [
             {
                 id: 1,
@@ -1865,7 +2305,7 @@
             }
         ];
         
-        // Agent 数据 (保留原有)
+        // Agent 数据
         const agents = [
             {
                 id: 1,
@@ -1917,9 +2357,20 @@
             currentSearch: '',
             currentRarity: 'all',
             
+            // 收藏相关
+            favorites: {
+                items: [],    // 收藏的潮流装备ID
+                agents: [],   // 收藏的Agent ID
+                outfits: []   // 收藏的装扮物品ID
+            },
+            currentFavTab: 'items',  // 当前收藏面板标签
+            
+            // 搜索历史
+            searchHistory: [],
+            
             // (装扮) 装扮系统状态
-            currentSlot: 'hair',  // 当前选中的部位
-            equipped: {           // 按部位的穿戴状态
+            currentSlot: 'hair',
+            equipped: {
                 hair: null,
                 top: null,
                 bottom: null,
@@ -1927,7 +2378,7 @@
                 accessory: null,
                 expression: null
             },
-            ownedOutfits: []      // 已拥有的装扮物品ID
+            ownedOutfits: []
         };
         
         // 加载本地存储
@@ -1943,6 +2394,14 @@
                 }
                 if (parsedState.ownedOutfits) {
                     state.ownedOutfits = parsedState.ownedOutfits;
+                }
+                // 恢复收藏状态
+                if (parsedState.favorites) {
+                    state.favorites = { ...state.favorites, ...parsedState.favorites };
+                }
+                // 恢复搜索历史
+                if (parsedState.searchHistory) {
+                    state.searchHistory = parsedState.searchHistory;
                 }
             }
         }
@@ -1962,12 +2421,20 @@
             };
         }
         
+        /** HTML转义防XSS */
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
         /** 搜索关键词高亮 */
         function highlightText(text, keyword) {
-            if (!keyword || !keyword.trim()) return text;
-            const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            const regex = new RegExp(`(${escaped})`, 'gi');
-            return text.replace(regex, '<mark class="search-highlight">$1</mark>');
+            if (!keyword || !keyword.trim()) return escapeHtml(text);
+            const escaped = escapeHtml(keyword);
+            const escapedForRegex = escaped.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`(${escapedForRegex})`, 'gi');
+            return escapeHtml(text).replace(regex, '<mark class="search-highlight">$1</mark>');
         }
         
         /** 数字动画 */
@@ -1981,6 +2448,259 @@
                 if (p < 1) requestAnimationFrame(update);
             }
             requestAnimationFrame(update);
+        }
+        
+        // ==================== 收藏功能 ====================
+        
+        /** 切换收藏状态 */
+        function toggleFavorite(type, id) {
+            const favList = state.favorites[type];
+            const index = favList.indexOf(id);
+            
+            if (index > -1) {
+                favList.splice(index, 1);
+                showNotification('已取消收藏', 'success');
+            } else {
+                favList.push(id);
+                showNotification('已添加到收藏', 'success');
+            }
+            
+            saveState();
+            updateFavoritesBadge();
+            renderProducts();
+            renderFavoritesContent();
+        }
+        
+        /** 检查是否已收藏 */
+        function isFavorited(type, id) {
+            return state.favorites[type].includes(id);
+        }
+        
+        /** 更新收藏徽章 */
+        function updateFavoritesBadge() {
+            const total = state.favorites.items.length + state.favorites.agents.length + state.favorites.outfits.length;
+            const badge = document.getElementById('favBadge');
+            const btn = document.getElementById('favBtn');
+            
+            badge.textContent = total;
+            btn.classList.toggle('has-items', total > 0);
+        }
+        
+        /** 切换收藏面板 */
+        function toggleFavoritesPanel() {
+            const panel = document.getElementById('favoritesPanel');
+            const overlay = document.getElementById('panelOverlay');
+            const btn = document.getElementById('favBtn');
+            
+            if (panel.classList.contains('show')) {
+                closeFavoritesPanel();
+            } else {
+                panel.classList.add('show');
+                overlay.classList.add('show');
+                btn.classList.add('active');
+                renderFavoritesContent();
+            }
+        }
+        
+        function closeFavoritesPanel() {
+            const panel = document.getElementById('favoritesPanel');
+            const overlay = document.getElementById('panelOverlay');
+            const btn = document.getElementById('favBtn');
+            
+            panel.classList.remove('show');
+            overlay.classList.remove('show');
+            btn.classList.remove('active');
+        }
+        
+        /** 切换收藏面板标签 */
+        function switchFavTab(tab) {
+            state.currentFavTab = tab;
+            
+            document.querySelectorAll('.panel-tab').forEach(t => {
+                t.classList.toggle('active', t.dataset.type === tab);
+            });
+            
+            renderFavoritesContent();
+        }
+        
+        /** 渲染收藏内容 */
+        function renderFavoritesContent() {
+            const content = document.getElementById('favoritesContent');
+            let items = [];
+            
+            if (state.currentFavTab === 'items') {
+                items = state.favorites.items.map(id => products.find(p => p.id === id)).filter(Boolean);
+            } else if (state.currentFavTab === 'agents') {
+                items = state.favorites.agents.map(id => agents.find(a => a.id === id)).filter(Boolean);
+            } else if (state.currentFavTab === 'outfits') {
+                items = state.favorites.outfits.map(id => outfitItems.find(o => o.id === id)).filter(Boolean);
+            }
+            
+            if (items.length === 0) {
+                const emptyTexts = {
+                    items: '还没有收藏任何潮流装备',
+                    agents: '还没有收藏任何Agent',
+                    outfits: '还没有收藏任何装扮物品'
+                };
+                content.innerHTML = `
+                    <div class="fav-empty">
+                        <div class="fav-empty-icon">💔</div>
+                        <h4>${emptyTexts[state.currentFavTab]}</h4>
+                        <p>去装备列表看看有什么值得收藏的吧！</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            content.innerHTML = items.map(item => `
+                <div class="fav-item">
+                    <div class="fav-item-icon">${item.icon}</div>
+                    <div class="fav-item-info">
+                        <div class="fav-item-name">${escapeHtml(item.name)}</div>
+                        <div class="fav-item-meta">
+                            <span class="fav-item-rarity ${item.rarity}">${getRarityText(item.rarity)}</span>
+                            ${item.price ? `<span>💎 ${item.price}</span>` : `<span>潮流度 +${item.trendPoints}</span>`}
+                        </div>
+                    </div>
+                    <div class="fav-item-actions">
+                        ${state.currentFavTab !== 'outfits' && item.price && !isOwned(item.id) ? `
+                            <button class="fav-item-btn buy-btn" onclick="claimFromFav('${state.currentFavTab}', ${item.id})" title="购买">
+                                💎
+                            </button>
+                        ` : ''}
+                        <button class="fav-item-btn" onclick="toggleFavorite('${state.currentFavTab}', ${item.id})" title="取消收藏">
+                            🗑️
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        /** 从收藏快速购买 */
+        function claimFromFav(type, id) {
+            let items, ownedList;
+            
+            if (type === 'items') {
+                items = products;
+                ownedList = state.ownedItems;
+            } else if (type === 'agents') {
+                items = agents;
+                ownedList = state.ownedAgents;
+            }
+            
+            const item = items.find(i => i.id === id);
+            if (!item) return;
+            
+            if (state.userPoints < item.price) {
+                showNotification('积分不足！', 'error');
+                return;
+            }
+            
+            if (ownedList.includes(id)) {
+                showNotification('已拥有该物品！', 'error');
+                return;
+            }
+            
+            state.userPoints -= item.price;
+            ownedList.push(id);
+            
+            if (type === 'items') {
+                state.equippedItems.push(id);
+            }
+            
+            animateNumber(document.getElementById('userPoints'), state.userPoints, 600);
+            saveState();
+            renderProducts();
+            renderFavoritesContent();
+            updateFavoritesBadge();
+            
+            showModal(item);
+        }
+        
+        // ==================== 搜索历史与热门推荐 ====================
+        
+        /** 添加搜索历史 */
+        function addSearchHistory(keyword) {
+            if (!keyword || !keyword.trim()) return;
+            
+            const trimmed = keyword.trim();
+            // 去重：新词替换旧记录
+            state.searchHistory = state.searchHistory.filter(h => h !== trimmed);
+            state.searchHistory.unshift(trimmed);
+            // 最多保存10条
+            state.searchHistory = state.searchHistory.slice(0, 10);
+            
+            saveState();
+        }
+        
+        /** 删除单条搜索历史 */
+        function deleteSearchHistory(keyword) {
+            state.searchHistory = state.searchHistory.filter(h => h !== keyword);
+            saveState();
+            renderSearchSuggestions();
+        }
+        
+        /** 清空搜索历史 */
+        function clearSearchHistory() {
+            state.searchHistory = [];
+            saveState();
+            renderSearchSuggestions();
+        }
+        
+        /** 生成热门搜索词 */
+        function getHotKeywords() {
+            const allNames = [
+                ...products.map(p => p.name),
+                ...agents.map(a => a.name),
+                ...outfitItems.map(o => o.name)
+            ];
+            
+            // 随机选取8个不重复的词
+            const shuffled = allNames.sort(() => Math.random() - 0.5);
+            return shuffled.slice(0, 8);
+        }
+        
+        /** 渲染搜索建议面板 */
+        function renderSearchSuggestions() {
+            const suggestions = document.getElementById('searchSuggestions');
+            const historySection = document.getElementById('historySection');
+            const historyItems = document.getElementById('historyItems');
+            const hotItems = document.getElementById('hotItems');
+            
+            // 搜索历史
+            if (state.searchHistory.length > 0) {
+                historySection.style.display = 'block';
+                historyItems.innerHTML = state.searchHistory.map(keyword => `
+                    <div class="suggestion-item history-item" onclick="searchFromSuggestion('${escapeHtml(keyword)}')">
+                        🕐 ${escapeHtml(keyword)}
+                        <span class="delete-history" onclick="event.stopPropagation(); deleteSearchHistory('${escapeHtml(keyword)}')">✕</span>
+                    </div>
+                `).join('');
+            } else {
+                historySection.style.display = 'none';
+            }
+            
+            // 热门推荐
+            hotItems.innerHTML = getHotKeywords().map(keyword => `
+                <div class="suggestion-item hot-item" onclick="searchFromSuggestion('${escapeHtml(keyword)}')">
+                    🔥 ${escapeHtml(keyword)}
+                </div>
+            `).join('');
+        }
+        
+        /** 从建议词搜索 */
+        function searchFromSuggestion(keyword) {
+            const input = document.getElementById('searchInput');
+            input.value = keyword;
+            state.currentSearch = keyword;
+            document.getElementById('searchClear').style.display = 'flex';
+            document.getElementById('searchSuggestions').classList.remove('show');
+            
+            addSearchHistory(keyword);
+            
+            if (state.currentTab !== 'customize') {
+                renderProducts();
+            }
         }
         
         // ==================== UI 渲染 ====================
@@ -2018,8 +2738,14 @@
                 return;
             }
             
+            const type = state.currentTab === 'items' ? 'items' : 'agents';
+            
             grid.innerHTML = filtered.map((item, i) => `
                 <div class="product-card ${item.rarity}" style="animation: cardIn 0.4s ease ${i * 60}ms both;">
+                    <button class="card-fav-btn ${isFavorited(type, item.id) ? 'favorited' : ''}" 
+                            onclick="toggleFavorite('${type}', ${item.id})" title="${isFavorited(type, item.id) ? '取消收藏' : '收藏'}">
+                        ${isFavorited(type, item.id) ? '❤️' : '🤍'}
+                    </button>
                     <div class="product-image" style="background: ${getRarityBg(item.rarity)}">
                         ${item.icon}
                         <span class="rarity-badge ${item.rarity}">${item.rarity}</span>
@@ -2134,10 +2860,16 @@
             grid.innerHTML = slotItems.map(item => {
                 const isEquipped = state.equipped[state.currentSlot] === item.id;
                 const isOwned = state.ownedOutfits.includes(item.id);
+                const isFav = isFavorited('outfits', item.id);
                 
                 return `
                     <div class="clothing-card ${item.rarity} ${isEquipped ? 'equipped' : ''}" 
                          onclick="toggleEquip(${item.id})">
+                        <button class="card-fav-btn ${isFav ? 'favorited' : ''}" 
+                                onclick="event.stopPropagation(); toggleFavorite('outfits', ${item.id})"
+                                style="position:absolute;top:8px;left:8px;width:28px;height:28px;font-size:0.9rem;background:rgba(0,0,0,0.5);">
+                            ${isFav ? '❤️' : '🤍'}
+                        </button>
                         <span class="clothing-icon">${item.icon}</span>
                         <span class="clothing-name">${item.name}</span>
                         <div class="clothing-meta">
@@ -2371,6 +3103,7 @@
             document.getElementById('userPoints').textContent = state.userPoints;
             renderProducts();
             renderOutfit();
+            updateFavoritesBadge();
             
             // (装扮) 初始化装扮系统
             if (state.currentTab === 'customize') {
@@ -2454,21 +3187,65 @@
         // 搜索栏
         const searchInput = document.getElementById('searchInput');
         const searchClear = document.getElementById('searchClear');
+        const searchSuggestions = document.getElementById('searchSuggestions');
+        
         const debouncedSearch = debounce((value) => {
             state.currentSearch = value;
             searchClear.style.display = value ? 'flex' : 'none';
+            
+            // 输入时隐藏建议面板
+            if (value.trim()) {
+                searchSuggestions.classList.remove('show');
+            }
+            
             if (state.currentTab !== 'customize') {
                 renderProducts();
             }
         }, 250);
+        
         searchInput.addEventListener('input', (e) => debouncedSearch(e.target.value));
-        searchInput.addEventListener('keydown', (e) => { if (e.key === 'Escape') clearSearch(); });
+        
+        // 聚焦时显示建议
+        searchInput.addEventListener('focus', () => {
+            renderSearchSuggestions();
+            if (state.searchHistory.length > 0 || true) {
+                searchSuggestions.classList.add('show');
+            }
+        });
+        
+        // 键盘事件
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                clearSearch();
+                searchSuggestions.classList.remove('show');
+                searchInput.blur();
+            } else if (e.key === 'Enter') {
+                const value = searchInput.value.trim();
+                if (value) {
+                    addSearchHistory(value);
+                    state.currentSearch = value;
+                    searchSuggestions.classList.remove('show');
+                    if (state.currentTab !== 'customize') {
+                        renderProducts();
+                    }
+                }
+            }
+        });
+        
+        // 点击外部关闭建议
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-container')) {
+                searchSuggestions.classList.remove('show');
+            }
+        });
         
         function clearSearch() {
             state.currentSearch = '';
             searchInput.value = '';
             searchClear.style.display = 'none';
-            renderProducts();
+            if (state.currentTab !== 'customize') {
+                renderProducts();
+            }
         }
         
         function clearAllFilters() {
