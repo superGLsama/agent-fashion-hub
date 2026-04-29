@@ -534,41 +534,164 @@
             padding: 0 2px;
         }
         
-        /* 产品卡片入场动画 */
+        /* 产品卡片入场动画 - 交错缩放淡入 */
         @keyframes cardIn {
-            from { opacity: 0; transform: translateY(20px) scale(0.97); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            0% { 
+                opacity: 0; 
+                transform: translateY(30px) scale(0.9); 
+            }
+            60% {
+                opacity: 1;
+                transform: translateY(-5px) scale(1.02);
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+        
+        /* 稀有度光效 - 传奇 */
+        @keyframes legendaryGlow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(245, 158, 11, 0.3), 
+                           0 0 40px rgba(245, 158, 11, 0.1),
+                           inset 0 0 20px rgba(245, 158, 11, 0.1);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(245, 158, 11, 0.5), 
+                           0 0 60px rgba(245, 158, 11, 0.2),
+                           inset 0 0 30px rgba(245, 158, 11, 0.15);
+            }
+        }
+        
+        /* 稀有度光效 - 史诗 */
+        @keyframes epicGlow {
+            0%, 100% { 
+                box-shadow: 0 0 15px rgba(168, 85, 247, 0.3),
+                           0 0 30px rgba(168, 85, 247, 0.1);
+            }
+            50% { 
+                box-shadow: 0 0 25px rgba(168, 85, 247, 0.5),
+                           0 0 50px rgba(168, 85, 247, 0.2);
+            }
+        }
+        
+        /* 稀有度光效 - 稀有 */
+        @keyframes rareGlow {
+            0%, 100% { 
+                box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+            }
+            50% { 
+                box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+            }
+        }
+        
+        /* 粒子容器 */
+        .particle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleFade 0.8s ease-out forwards;
+        }
+        
+        @keyframes particleFade {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(0);
+            }
         }
         
         /* 产品卡片 */
         .product-card {
             background: var(--bg-card);
             border-radius: 20px;
-            overflow: hidden;
+            overflow: visible;
             border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            cursor: pointer;
         }
         
-        .product-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(0, 212, 255, 0.3);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
-        
+        /* 稀有度边框光效 */
         .product-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 3px;
+            bottom: 0;
+            border-radius: 20px;
+            padding: 2px;
+            background: linear-gradient(135deg, transparent, transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            z-index: 10;
         }
         
-        .product-card.common::before { background: var(--common); }
-        .product-card.rare::before { background: var(--rare); }
-        .product-card.epic::before { background: var(--epic); }
-        .product-card.legendary::before { background: linear-gradient(90deg, var(--legendary), #ff6b6b, var(--legendary)); }
+        .product-card.common::before { 
+            background: linear-gradient(135deg, rgba(156, 163, 175, 0.3), rgba(156, 163, 175, 0.1)); 
+        }
+        
+        .product-card.rare::before { 
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.5), rgba(59, 130, 246, 0.2)); 
+        }
+        
+        .product-card.epic::before { 
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.6), rgba(168, 85, 247, 0.3)); 
+        }
+        
+        .product-card.legendary::before { 
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.8), rgba(255, 107, 107, 0.5), rgba(245, 158, 11, 0.8)); 
+        }
+        
+        /* 稀有度光效激活状态 */
+        .product-card.legendary {
+            animation: legendaryGlow 3s ease-in-out infinite;
+        }
+        
+        .product-card.epic {
+            animation: epicGlow 2.5s ease-in-out infinite;
+        }
+        
+        .product-card.rare {
+            animation: rareGlow 2s ease-in-out infinite;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px);
+            z-index: 20;
+        }
+        
+        /* 3D悬浮效果容器 */
+        .product-card-inner {
+            transition: transform 0.15s ease-out;
+            transform-style: preserve-3d;
+        }
+        
+        .product-card.common:hover::before { opacity: 0.5; }
+        .product-card.rare:hover::before { opacity: 0.7; }
+        .product-card.epic:hover::before { opacity: 0.8; }
+        .product-card.legendary:hover::before { opacity: 1; }
         
         .product-image {
             height: 200px;
@@ -620,26 +743,43 @@
             color: var(--text-secondary);
             font-size: 1.1rem;
             cursor: pointer;
-            transition: all 0.3s;
-            z-index: 2;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 20;
             display: flex;
             align-items: center;
             justify-content: center;
+            transform-style: preserve-3d;
         }
         
         .card-fav-btn:hover {
             background: rgba(255, 0, 110, 0.3);
             color: var(--accent-pink);
-            transform: scale(1.1);
+            transform: scale(1.2) rotate(15deg);
+            box-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
         }
         
         .card-fav-btn.favorited {
             color: var(--accent-pink);
             background: rgba(255, 0, 110, 0.2);
+            animation: heartBeat 1.5s ease-in-out infinite;
         }
         
         .card-fav-btn.favorited:hover {
             background: rgba(255, 0, 110, 0.4);
+            animation: heartBeatFast 0.5s ease-in-out infinite;
+        }
+        
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            15% { transform: scale(1.15); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.1); }
+            60% { transform: scale(1); }
+        }
+        
+        @keyframes heartBeatFast {
+            0%, 100% { transform: scale(1.1); }
+            50% { transform: scale(1.25) rotate(-10deg); }
         }
         
         .product-info {
@@ -2741,35 +2881,122 @@
             const type = state.currentTab === 'items' ? 'items' : 'agents';
             
             grid.innerHTML = filtered.map((item, i) => `
-                <div class="product-card ${item.rarity}" style="animation: cardIn 0.4s ease ${i * 60}ms both;">
-                    <button class="card-fav-btn ${isFavorited(type, item.id) ? 'favorited' : ''}" 
-                            onclick="toggleFavorite('${type}', ${item.id})" title="${isFavorited(type, item.id) ? '取消收藏' : '收藏'}">
-                        ${isFavorited(type, item.id) ? '❤️' : '🤍'}
-                    </button>
-                    <div class="product-image" style="background: ${getRarityBg(item.rarity)}">
-                        ${item.icon}
-                        <span class="rarity-badge ${item.rarity}">${item.rarity}</span>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">${highlightText(item.name, state.currentSearch)}</h3>
-                        <p class="product-desc">${item.desc}</p>
-                        <div class="product-tags">
-                            ${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                <div class="product-card ${item.rarity}" 
+                     style="animation: cardIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 80}ms both;"
+                     onmousemove="handleCardTilt(event, this)"
+                     onmouseleave="resetCardTilt(this)"
+                     onclick="createParticles(event, '${item.rarity}')">
+                    <div class="product-card-inner">
+                        <button class="card-fav-btn ${isFavorited(type, item.id) ? 'favorited' : ''}" 
+                                onclick="event.stopPropagation(); toggleFavorite('${type}', ${item.id})" title="${isFavorited(type, item.id) ? '取消收藏' : '收藏'}">
+                            ${isFavorited(type, item.id) ? '❤️' : '🤍'}
+                        </button>
+                        <div class="product-image" style="background: ${getRarityBg(item.rarity)}">
+                            ${item.icon}
+                            <span class="rarity-badge ${item.rarity}">${getRarityText(item.rarity)}</span>
                         </div>
-                        <div class="product-footer">
-                            <div class="price">
-                                <span class="price-icon">💎</span>
-                                <span class="price-value">${item.price}</span>
+                        <div class="product-info">
+                            <h3 class="product-name">${highlightText(item.name, state.currentSearch)}</h3>
+                            <p class="product-desc">${item.desc}</p>
+                            <div class="product-tags">
+                                ${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                             </div>
-                            <button class="claim-btn" 
-                                onclick="claimItem(${item.id}, '${state.currentTab}')"
-                                ${state.userPoints < item.price || isOwned(item.id) ? 'disabled' : ''}>
-                                ${isOwned(item.id) ? '已拥有' : '领取'}
-                            </button>
+                            <div class="product-footer">
+                                <div class="price">
+                                    <span class="price-icon">💎</span>
+                                    <span class="price-value">${item.price}</span>
+                                </div>
+                                <button class="claim-btn" 
+                                    onclick="event.stopPropagation(); claimItem(${item.id}, '${state.currentTab}')"
+                                    ${state.userPoints < item.price || isOwned(item.id) ? 'disabled' : ''}>
+                                    ${isOwned(item.id) ? '已拥有' : '领取'}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             `).join('');
+            
+            // 初始化粒子容器
+            initParticleContainer();
+        }
+        
+        // ==================== 3D倾斜效果 ====================
+        
+        let particleContainer = null;
+        
+        function initParticleContainer() {
+            if (!particleContainer) {
+                particleContainer = document.createElement('div');
+                particleContainer.className = 'particle-container';
+                document.body.appendChild(particleContainer);
+            }
+        }
+        
+        function handleCardTilt(e, card) {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            // 计算倾斜角度（限制在 ±15 度）
+            const rotateX = (y - centerY) / centerY * -15;
+            const rotateY = (x - centerX) / centerX * 15;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px) scale(1.02)`;
+        }
+        
+        function resetCardTilt(card) {
+            card.style.transform = '';
+        }
+        
+        // ==================== 粒子反馈效果 ====================
+        
+        function createParticles(e, rarity) {
+            const colors = {
+                common: ['#9ca3af', '#d1d5db', '#e5e7eb'],
+                rare: ['#3b82f6', '#60a5fa', '#93c5fd'],
+                epic: ['#a855f7', '#c084fc', '#d8b4fe'],
+                legendary: ['#f59e0b', '#fbbf24', '#fcd34d', '#ff6b6b']
+            };
+            
+            const particleColors = colors[rarity] || colors.common;
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = e.clientX || (rect.left + rect.width / 2);
+            const y = e.clientY || (rect.top + rect.height / 2);
+            
+            // 创建 12-20 个粒子
+            const particleCount = 12 + Math.floor(Math.random() * 8);
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = 4 + Math.random() * 8;
+                const angle = (Math.PI * 2 * i) / particleCount + Math.random() * 0.5;
+                const distance = 50 + Math.random() * 80;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance - 20; // 稍微向上偏移
+                
+                particle.style.cssText = `
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: ${particleColors[Math.floor(Math.random() * particleColors.length)]};
+                    left: ${x}px;
+                    top: ${y}px;
+                    --tx: ${tx}px;
+                    --ty: ${ty}px;
+                    box-shadow: 0 0 ${size}px ${particleColors[0]};
+                `;
+                
+                particleContainer.appendChild(particle);
+                
+                // 动画结束后移除粒子
+                setTimeout(() => {
+                    particle.remove();
+                }, 800);
+            }
         }
         
         function getRarityBg(rarity) {
