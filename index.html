@@ -1270,6 +1270,634 @@
             visibility: visible;
         }
         
+        /* (装扮) ==================== 成就系统样式 ==================== */
+        
+        /* 成就按钮 */
+        .achievement-btn {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .achievement-btn:hover {
+            border-color: var(--legendary);
+            color: var(--legendary);
+            background: rgba(245, 158, 11, 0.1);
+        }
+        
+        .achievement-btn.active {
+            border-color: var(--legendary);
+            color: var(--legendary);
+            background: rgba(245, 158, 11, 0.1);
+        }
+        
+        .achievement-btn .badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--legendary);
+            color: #000;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 0.1rem 0.3rem;
+            border-radius: 10px;
+            min-width: 16px;
+            text-align: center;
+            display: none;
+        }
+        
+        .achievement-btn.has-new .badge {
+            display: block;
+            animation: pulseBadge 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes pulseBadge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        /* 用户等级显示 */
+        .user-level-display {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(245, 158, 11, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: 1px solid var(--legendary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .user-level-display:hover {
+            background: rgba(245, 158, 11, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .level-icon {
+            font-size: 1.2rem;
+        }
+        
+        .level-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        
+        .level-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--legendary);
+        }
+        
+        .level-xp {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+        
+        .level-bar-mini {
+            width: 60px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .level-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--legendary), var(--accent-pink));
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+        
+        /* 成就面板 */
+        .achievement-panel {
+            position: fixed;
+            top: 0;
+            left: -480px;
+            width: 460px;
+            max-width: 90vw;
+            height: 100vh;
+            background: var(--bg-card);
+            z-index: 150;
+            transition: left 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .achievement-panel.show {
+            left: 0;
+        }
+        
+        /* 成就头部 */
+        .achievement-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        
+        .achievement-header h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* 等级卡 */
+        .level-card {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(168, 85, 247, 0.1));
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 16px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .level-card-top {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .level-badge {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--legendary), var(--accent-pink));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+        }
+        
+        .level-details {
+            flex: 1;
+            text-align: left;
+        }
+        
+        .level-rank {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            color: var(--legendary);
+            margin-bottom: 0.3rem;
+        }
+        
+        .level-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .level-progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .level-progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .level-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--legendary), var(--accent-pink));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+        
+        .level-progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        /* 成就统计 */
+        .achievement-stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 1rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        /* 成就标签页 */
+        .achievement-tabs {
+            display: flex;
+            padding: 0.5rem 1rem;
+            gap: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .achievement-tab {
+            flex: 1;
+            padding: 0.6rem 0.5rem;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .achievement-tab:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .achievement-tab.active {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--legendary);
+        }
+        
+        /* 成就列表 */
+        .achievement-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+        
+        .achievement-category {
+            margin-bottom: 1.5rem;
+        }
+        
+        .category-title {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.8rem;
+            padding-left: 0.5rem;
+        }
+        
+        /* 成就卡片 */
+        .achievement-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .achievement-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .achievement-card.completed {
+            border-color: rgba(0, 255, 136, 0.3);
+            background: rgba(0, 255, 136, 0.05);
+        }
+        
+        .achievement-card.in-progress {
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+        
+        .achievement-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .achievement-card.completed .achievement-icon {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 212, 255, 0.2));
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+        }
+        
+        .achievement-card.in-progress .achievement-icon {
+            animation: achievementPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes achievementPulse {
+            0%, 100% { box-shadow: 0 0 5px rgba(245, 158, 11, 0.2); }
+            50% { box-shadow: 0 0 15px rgba(245, 158, 11, 0.4); }
+        }
+        
+        .achievement-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .achievement-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .achievement-card.completed .achievement-name::after {
+            content: '✅';
+            font-size: 0.8rem;
+        }
+        
+        .achievement-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .achievement-progress {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .achievement-progress-bar {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .achievement-progress-fill {
+            height: 100%;
+            background: var(--legendary);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        
+        .achievement-card.completed .achievement-progress-fill {
+            background: var(--accent-green);
+        }
+        
+        .achievement-progress-text {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        
+        .achievement-reward {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.3rem 0.6rem;
+            background: rgba(245, 158, 11, 0.1);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--legendary);
+            flex-shrink: 0;
+        }
+        
+        /* 成就达成动画 */
+        .achievement-unlock-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .achievement-unlock-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .achievement-unlock-modal {
+            text-align: center;
+            animation: achievementUnlock 0.5s ease-out;
+        }
+        
+        @keyframes achievementUnlock {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .unlock-glow {
+            font-size: 6rem;
+            margin-bottom: 1rem;
+            animation: unlockGlow 1s ease-in-out infinite alternate;
+        }
+        
+        @keyframes unlockGlow {
+            0% { 
+                text-shadow: 0 0 20px rgba(245, 158, 11, 0.5),
+                            0 0 40px rgba(245, 158, 11, 0.3),
+                            0 0 60px rgba(245, 158, 11, 0.2);
+            }
+            100% { 
+                text-shadow: 0 0 40px rgba(245, 158, 11, 0.8),
+                            0 0 80px rgba(245, 158, 11, 0.5),
+                            0 0 120px rgba(245, 158, 11, 0.3);
+            }
+        }
+        
+        .unlock-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--legendary);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .unlock-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .unlock-desc {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .unlock-reward {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(245, 158, 11, 0.2);
+            border: 1px solid var(--legendary);
+            border-radius: 50px;
+            color: var(--legendary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .unlock-dismiss {
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, var(--legendary), var(--accent-pink));
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .unlock-dismiss:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(245, 158, 11, 0.4);
+        }
+        
+        /* XP 获得动画 */
+        .xp-popup {
+            position: fixed;
+            z-index: 500;
+            pointer-events: none;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            color: var(--legendary);
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+            animation: xpFloat 1.5s ease-out forwards;
+        }
+        
+        @keyframes xpFloat {
+            0% { 
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% { 
+                opacity: 0;
+                transform: translateY(-80px) scale(1.2);
+            }
+        }
+        
+        /* 等级提升动画 */
+        .level-up-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .level-up-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .level-up-content {
+            text-align: center;
+            animation: levelUpBounce 0.8s ease-out;
+        }
+        
+        @keyframes levelUpBounce {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+        
+        .level-up-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: var(--legendary);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            animation: levelUpGlow 0.5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes levelUpGlow {
+            0% { 
+                text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+            }
+            100% { 
+                text-shadow: 0 0 60px rgba(245, 158, 11, 1),
+                            0 0 100px rgba(245, 158, 11, 0.5);
+            }
+        }
+        
+        .level-up-badge {
+            font-size: 10rem;
+            margin-bottom: 1rem;
+        }
+        
+        .level-up-rank {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .level-up-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--legendary), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* 面板遮罩 */
+        .panel-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 140;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .panel-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
         /* (装扮) ==================== 装扮系统样式 ==================== */
         
         /* 装扮系统主容器 */
@@ -1695,11 +2323,27 @@
                 Agent Fashion Hub
             </div>
             <div class="user-panel">
+                <!-- 成就按钮 -->
+                <button class="achievement-btn" id="achBtn" onclick="toggleAchievementPanel()">
+                    🏆
+                    <span class="badge" id="achBadge">0</span>
+                </button>
                 <!-- 收藏按钮 -->
                 <button class="fav-btn" id="favBtn" onclick="toggleFavoritesPanel()">
                     ❤️
                     <span class="fav-badge" id="favBadge">0</span>
                 </button>
+                <!-- 用户等级显示 -->
+                <div class="user-level-display" id="userLevelDisplay" onclick="toggleAchievementPanel()">
+                    <span class="level-icon">⭐</span>
+                    <div class="level-info">
+                        <div class="level-title" id="levelTitle">Lv.1</div>
+                        <div class="level-xp" id="levelXp">0 / 100 XP</div>
+                    </div>
+                    <div class="level-bar-mini">
+                        <div class="level-bar-fill" id="levelBarFill" style="width: 0%"></div>
+                    </div>
+                </div>
                 <div class="points-display">
                     <span class="points-icon">💎</span>
                     <span class="points-value" id="userPoints">5000</span>
@@ -1724,6 +2368,82 @@
             <button class="panel-tab" data-type="outfits" onclick="switchFavTab('outfits')">装扮物品</button>
         </div>
         <div class="panel-content" id="favoritesContent"></div>
+    </div>
+    
+    <!-- 成就面板遮罩 -->
+    <div class="panel-overlay" id="achOverlay" onclick="closeAchievementPanel()"></div>
+    
+    <!-- 成就面板 -->
+    <div class="achievement-panel" id="achievementPanel">
+        <div class="achievement-header">
+            <h3>🏆 我的成就</h3>
+            <button class="panel-close" onclick="closeAchievementPanel()">✕</button>
+        </div>
+        <!-- 等级卡 -->
+        <div class="level-card">
+            <div class="level-card-top">
+                <div class="level-badge" id="achLevelBadge">⭐</div>
+                <div class="level-details">
+                    <div class="level-rank" id="achLevelRank">潮流新人</div>
+                    <div class="level-name" id="achLevelName">初出茅庐</div>
+                </div>
+            </div>
+            <div class="level-progress-text">
+                <span id="achXpCurrent">0</span> / <span id="achXpMax">100</span> XP
+            </div>
+            <div class="level-progress-bar">
+                <div class="level-progress-fill" id="achProgressFill" style="width: 0%"></div>
+            </div>
+        </div>
+        
+        <!-- 成就统计 -->
+        <div class="achievement-stats">
+            <div class="stat-item">
+                <div class="stat-value" id="achTotalCount">0</div>
+                <div class="stat-label">已达成</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="achInProgressCount">0</div>
+                <div class="stat-label">进行中</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="achTotalXp">0</div>
+                <div class="stat-label">累计经验</div>
+            </div>
+        </div>
+        
+        <!-- 成就标签页 -->
+        <div class="achievement-tabs">
+            <button class="achievement-tab active" data-tab="all" onclick="switchAchTab('all')">全部</button>
+            <button class="achievement-tab" data-tab="beginner" onclick="switchAchTab('beginner')">新手</button>
+            <button class="achievement-tab" data-tab="active" onclick="switchAchTab('active')">活跃</button>
+            <button class="achievement-tab" data-tab="consume" onclick="switchAchTab('consume')">消费</button>
+        </div>
+        
+        <!-- 成就列表 -->
+        <div class="achievement-list" id="achievementList"></div>
+    </div>
+    
+    <!-- 成就达成动画 -->
+    <div class="achievement-unlock-overlay" id="achUnlockOverlay" onclick="dismissAchievementUnlock()">
+        <div class="achievement-unlock-modal">
+            <div class="unlock-glow" id="unlockIcon">🏆</div>
+            <div class="unlock-title">成就解锁</div>
+            <div class="unlock-name" id="unlockName">成就名称</div>
+            <div class="unlock-desc" id="unlockDesc">成就描述</div>
+            <div class="unlock-reward" id="unlockReward">+50 XP</div>
+            <button class="unlock-dismiss" onclick="dismissAchievementUnlock()">太棒了！</button>
+        </div>
+    </div>
+    
+    <!-- 等级提升动画 -->
+    <div class="level-up-overlay" id="levelUpOverlay" onclick="dismissLevelUp()">
+        <div class="level-up-content">
+            <div class="level-up-text">LEVEL UP!</div>
+            <div class="level-up-badge" id="levelUpBadge">⭐</div>
+            <div class="level-up-rank" id="levelUpRank">新等级</div>
+            <div class="level-up-name" id="levelUpName">等级名称</div>
+        </div>
     </div>
     
     <!-- 主内容 -->
@@ -2485,7 +3205,166 @@
             }
         ];
         
-        // ==================== 状态管理 ====================
+        // ==================== 成就系统数据 ====================
+        
+        // 等级系统配置
+        const LEVEL_CONFIG = [
+            { level: 1, name: "初出茅庐", rank: "潮流新人", minXp: 0, maxXp: 100 },
+            { level: 2, name: "崭露头角", rank: "潮流学徒", minXp: 100, maxXp: 250 },
+            { level: 3, name: "小有名气", rank: "潮流达人", minXp: 250, maxXp: 500 },
+            { level: 4, name: "声名鹊起", rank: "潮流高手", minXp: 500, maxXp: 800 },
+            { level: 5, name: "如日中天", rank: "潮流大师", minXp: 800, maxXp: 1200 },
+            { level: 6, name: "潮流教父", rank: "传奇人物", minXp: 1200, maxXp: 99999 }
+        ];
+        
+        // 成就数据
+        const ACHIEVEMENTS = [
+            // 新手成就
+            {
+                id: 'first_login',
+                name: '初次见面',
+                desc: '首次登录潮流联盟',
+                icon: '👋',
+                category: 'beginner',
+                reward: 20,
+                condition: (s) => true,
+                getProgress: () => 1,
+                getTarget: () => 1
+            },
+            {
+                id: 'first_fav',
+                name: '收藏癖好',
+                desc: '收藏第一件物品',
+                icon: '❤️',
+                category: 'beginner',
+                reward: 30,
+                condition: (s) => s.favorites.items.length + s.favorites.agents.length + s.favorites.outfits.length >= 1,
+                getProgress: (s) => Math.min(s.favorites.items.length + s.favorites.agents.length + s.favorites.outfits.length, 1),
+                getTarget: () => 1
+            },
+            {
+                id: 'first_buy',
+                name: '首次购物',
+                desc: '购买第一件装备',
+                icon: '🛒',
+                category: 'beginner',
+                reward: 50,
+                condition: (s) => s.ownedItems.length >= 1,
+                getProgress: (s) => Math.min(s.ownedItems.length, 1),
+                getTarget: () => 1
+            },
+            {
+                id: 'first_equip',
+                name: '装备上身',
+                desc: '装备第一件物品',
+                icon: '⚡',
+                category: 'beginner',
+                reward: 40,
+                condition: (s) => s.equippedItems.length >= 1,
+                getProgress: (s) => Math.min(s.equippedItems.length, 1),
+                getTarget: () => 1
+            },
+            
+            // 活跃成就
+            {
+                id: 'fav_5',
+                name: '收藏家',
+                desc: '收藏5件物品',
+                icon: '🏠',
+                category: 'active',
+                reward: 100,
+                condition: (s) => s.favorites.items.length + s.favorites.agents.length + s.favorites.outfits.length >= 5,
+                getProgress: (s) => Math.min(s.favorites.items.length + s.favorites.agents.length + s.favorites.outfits.length, 5),
+                getTarget: () => 5
+            },
+            {
+                id: 'equip_3',
+                name: '穿搭新手',
+                desc: '同时穿戴3件装备',
+                icon: '👔',
+                category: 'active',
+                reward: 120,
+                condition: (s) => s.equippedItems.length >= 3,
+                getProgress: (s) => Math.min(s.equippedItems.length, 3),
+                getTarget: () => 3
+            },
+            {
+                id: 'equip_6',
+                name: '全副武装',
+                desc: '同时穿戴6件装备（全身）',
+                icon: '🦸',
+                category: 'active',
+                reward: 200,
+                condition: (s) => s.equippedItems.length >= 6,
+                getProgress: (s) => Math.min(s.equippedItems.length, 6),
+                getTarget: () => 6
+            },
+            {
+                id: 'browse_20',
+                name: '潮流探索者',
+                desc: '浏览20件不同的装备',
+                icon: '🔍',
+                category: 'active',
+                reward: 80,
+                condition: (s) => (s.browsedItems?.size || 0) >= 20,
+                getProgress: (s) => Math.min(s.browsedItems?.size || 0, 20),
+                getTarget: () => 20
+            },
+            
+            // 消费成就
+            {
+                id: 'buy_3',
+                name: '买买买',
+                desc: '累计购买3件装备',
+                icon: '💳',
+                category: 'consume',
+                reward: 150,
+                condition: (s) => s.totalPurchases >= 3,
+                getProgress: (s) => Math.min(s.totalPurchases || 0, 3),
+                getTarget: () => 3
+            },
+            {
+                id: 'buy_10',
+                name: '购物达人',
+                desc: '累计购买10件装备',
+                icon: '🛍️',
+                category: 'consume',
+                reward: 300,
+                condition: (s) => s.totalPurchases >= 10,
+                getProgress: (s) => Math.min(s.totalPurchases || 0, 10),
+                getTarget: () => 10
+            },
+            {
+                id: 'legendary_owner',
+                name: '传奇收藏家',
+                desc: '拥有一件传奇装备',
+                icon: '👑',
+                category: 'consume',
+                reward: 250,
+                condition: (s) => {
+                    const ownedProductIds = s.ownedItems.map(id => products.find(p => p.id === id)).filter(Boolean);
+                    return ownedProductIds.some(p => p.rarity === 'legendary');
+                },
+                getProgress: (s) => {
+                    const ownedProductIds = s.ownedItems.map(id => products.find(p => p.id === id)).filter(Boolean);
+                    return ownedProductIds.some(p => p.rarity === 'legendary') ? 1 : 0;
+                },
+                getTarget: () => 1
+            },
+            {
+                id: 'spend_5000',
+                name: '挥金如土',
+                desc: '累计消费5000积分',
+                icon: '💎',
+                category: 'consume',
+                reward: 400,
+                condition: (s) => (s.totalSpent || 0) >= 5000,
+                getProgress: (s) => Math.min(s.totalSpent || 0, 5000),
+                getTarget: () => 5000
+            }
+        ];
+        
+        // 状态管理
         
         let state = {
             userPoints: 5000,
@@ -2518,7 +3397,16 @@
                 accessory: null,
                 expression: null
             },
-            ownedOutfits: []
+            ownedOutfits: [],
+            
+            // 成就系统状态
+            currentAchTab: 'all',  // 当前成就标签
+            completedAchievements: [],  // 已完成的成就ID列表
+            totalXp: 0,  // 累计经验值
+            totalPurchases: 0,  // 累计购买次数
+            totalSpent: 0,  // 累计消费积分
+            browsedItems: new Set(),  // 浏览过的物品ID集合
+            newAchievements: []  // 新达成的成就（用于显示动画）
         };
         
         // 加载本地存储
@@ -2543,11 +3431,27 @@
                 if (parsedState.searchHistory) {
                     state.searchHistory = parsedState.searchHistory;
                 }
+                // 恢复浏览记录（从数组转为Set）
+                if (parsedState.browsedItems && Array.isArray(parsedState.browsedItems)) {
+                    state.browsedItems = new Set(parsedState.browsedItems);
+                } else if (!parsedState.browsedItems) {
+                    state.browsedItems = new Set();
+                }
+                // 确保成就相关字段存在
+                if (!state.completedAchievements) state.completedAchievements = [];
+                if (!state.totalXp) state.totalXp = 0;
+                if (!state.totalPurchases) state.totalPurchases = 0;
+                if (!state.totalSpent) state.totalSpent = 0;
             }
         }
         
         function saveState() {
-            localStorage.setItem('agentFashionState', JSON.stringify(state));
+            // 将Set转为数组以便存储
+            const stateToSave = {
+                ...state,
+                browsedItems: Array.from(state.browsedItems || new Set())
+            };
+            localStorage.setItem('agentFashionState', JSON.stringify(stateToSave));
         }
         
         // ==================== 工具函数 ====================
@@ -2603,6 +3507,8 @@
             } else {
                 favList.push(id);
                 showNotification('已添加到收藏', 'success');
+                // 成就追踪：检查收藏成就
+                checkAchievements();
             }
             
             saveState();
@@ -3158,6 +4064,8 @@
                 card.classList.add('equipping');
                 setTimeout(() => card.classList.remove('equipping'), 300);
                 showNotification(`穿戴 ${item.name}！`, 'success');
+                // 成就追踪：检查装备成就
+                checkAchievements();
             }
             
             saveState();
@@ -3308,12 +4216,19 @@
             
             state.userPoints -= item.price;
             
+            // 成就追踪：累计购买次数和消费积分
+            state.totalPurchases++;
+            state.totalSpent += item.price;
+            
             if (type === 'items') {
                 state.ownedItems.push(id);
                 state.equippedItems.push(id);
             } else {
                 state.ownedAgents.push(id);
             }
+            
+            // 检查购买成就
+            checkAchievements();
             
             // 积分消耗动画
             const pointsEl = document.getElementById('userPoints');
@@ -3331,6 +4246,8 @@
             renderProducts();
             renderOutfit();
             updateFavoritesBadge();
+            updateLevelDisplay();
+            updateAchievementBadge();
             
             // (装扮) 初始化装扮系统
             if (state.currentTab === 'customize') {
@@ -3339,6 +4256,306 @@
                 updateTrendDisplay();
                 updateSlotTabs();
                 renderClothingGrid();
+            }
+            
+            // 初始化时检查新手成就
+            if (state.totalXp === 0 && state.completedAchievements.length === 0) {
+                setTimeout(() => checkAchievements(), 500);
+            }
+        }
+        
+        // ==================== 成就系统函数 ====================
+        
+        /** 获取当前等级信息 */
+        function getCurrentLevel() {
+            for (let i = LEVEL_CONFIG.length - 1; i >= 0; i--) {
+                if (state.totalXp >= LEVEL_CONFIG[i].minXp) {
+                    return LEVEL_CONFIG[i];
+                }
+            }
+            return LEVEL_CONFIG[0];
+        }
+        
+        /** 获取当前等级配置 */
+        function getLevelConfig(level) {
+            return LEVEL_CONFIG[Math.min(level - 1, LEVEL_CONFIG.length - 1)];
+        }
+        
+        /** 计算当前XP在等级内的进度百分比 */
+        function getLevelProgress() {
+            const level = getCurrentLevel();
+            const xpInLevel = state.totalXp - level.minXp;
+            const xpNeeded = level.maxXp - level.minXp;
+            return Math.min((xpInLevel / xpNeeded) * 100, 100);
+        }
+        
+        /** 更新等级显示 */
+        function updateLevelDisplay() {
+            const level = getCurrentLevel();
+            const progress = getLevelProgress();
+            const xpInLevel = state.totalXp - level.minXp;
+            
+            document.getElementById('levelTitle').textContent = `Lv.${level.level}`;
+            document.getElementById('levelXp').textContent = `${xpInLevel} / ${level.maxXp - level.minXp} XP`;
+            document.getElementById('levelBarFill').style.width = `${progress}%`;
+        }
+        
+        /** 更新成就徽章 */
+        function updateAchievementBadge() {
+            const badge = document.getElementById('achBadge');
+            const btn = document.getElementById('achBtn');
+            
+            if (state.newAchievements && state.newAchievements.length > 0) {
+                badge.textContent = state.newAchievements.length;
+                btn.classList.add('has-new');
+            } else {
+                badge.textContent = '0';
+                btn.classList.remove('has-new');
+            }
+        }
+        
+        /** 检查所有成就 */
+        function checkAchievements() {
+            const newCompleted = [];
+            
+            ACHIEVEMENTS.forEach(ach => {
+                // 跳过已完成的成就
+                if (state.completedAchievements.includes(ach.id)) return;
+                
+                // 检查条件是否满足
+                if (ach.condition(state)) {
+                    newCompleted.push(ach);
+                }
+            });
+            
+            // 处理新完成的成就
+            if (newCompleted.length > 0) {
+                // 添加到已完成列表
+                newCompleted.forEach(ach => {
+                    state.completedAchievements.push(ach.id);
+                    state.totalXp += ach.reward;
+                    state.newAchievements.push(ach.id);
+                });
+                
+                saveState();
+                
+                // 显示成就达成动画（逐个显示）
+                showNextAchievement(newCompleted, 0);
+                
+                // 检查等级提升
+                checkLevelUp();
+            }
+        }
+        
+        /** 逐个显示成就达成动画 */
+        function showNextAchievement(achievements, index) {
+            if (index >= achievements.length) {
+                // 所有成就都显示了，更新UI
+                updateLevelDisplay();
+                updateAchievementBadge();
+                return;
+            }
+            
+            const ach = achievements[index];
+            const prevLevel = getLevelConfig(getCurrentLevel().level);
+            
+            // 显示成就解锁动画
+            document.getElementById('unlockIcon').textContent = ach.icon;
+            document.getElementById('unlockName').textContent = ach.name;
+            document.getElementById('unlockDesc').textContent = ach.desc;
+            document.getElementById('unlockReward').textContent = `+${ach.reward} XP`;
+            document.getElementById('achUnlockOverlay').classList.add('show');
+            
+            // 3秒后自动显示下一个或关闭
+            setTimeout(() => {
+                document.getElementById('achUnlockOverlay').classList.remove('show');
+                setTimeout(() => {
+                    showNextAchievement(achievements, index + 1);
+                }, 300);
+            }, 2500);
+        }
+        
+        /** 关闭成就解锁动画 */
+        function dismissAchievementUnlock() {
+            document.getElementById('achUnlockOverlay').classList.remove('show');
+        }
+        
+        /** 检查等级提升 */
+        function checkLevelUp() {
+            const currentLevel = getCurrentLevel();
+            
+            // 重新计算当前等级
+            const newLevel = getCurrentLevel();
+            
+            if (newLevel.level > currentLevel.level) {
+                // 显示等级提升动画
+                showLevelUp(newLevel);
+            }
+        }
+        
+        /** 显示等级提升动画 */
+        function showLevelUp(level) {
+            const levelEmojis = ['⭐', '🌟', '✨', '💫', '🌠', '👑'];
+            const emoji = levelEmojis[Math.min(level.level - 1, levelEmojis.length - 1)];
+            
+            document.getElementById('levelUpBadge').textContent = emoji;
+            document.getElementById('levelUpRank').textContent = level.rank;
+            document.getElementById('levelUpName').textContent = level.name;
+            document.getElementById('levelUpOverlay').classList.add('show');
+            
+            // 3.5秒后自动关闭
+            setTimeout(() => {
+                dismissLevelUp();
+            }, 3500);
+        }
+        
+        /** 关闭等级提升动画 */
+        function dismissLevelUp() {
+            document.getElementById('levelUpOverlay').classList.remove('show');
+        }
+        
+        /** 切换成就面板 */
+        function toggleAchievementPanel() {
+            const panel = document.getElementById('achievementPanel');
+            const overlay = document.getElementById('achOverlay');
+            const btn = document.getElementById('achBtn');
+            
+            if (panel.classList.contains('show')) {
+                closeAchievementPanel();
+            } else {
+                // 关闭收藏面板
+                closeFavoritesPanel();
+                
+                // 清除新成就标记
+                state.newAchievements = [];
+                saveState();
+                updateAchievementBadge();
+                
+                panel.classList.add('show');
+                overlay.classList.add('show');
+                btn.classList.add('active');
+                renderAchievementPanel();
+            }
+        }
+        
+        function closeAchievementPanel() {
+            const panel = document.getElementById('achievementPanel');
+            const overlay = document.getElementById('achOverlay');
+            const btn = document.getElementById('achBtn');
+            
+            panel.classList.remove('show');
+            overlay.classList.remove('show');
+            btn.classList.remove('active');
+        }
+        
+        /** 切换成就标签 */
+        function switchAchTab(tab) {
+            state.currentAchTab = tab;
+            
+            document.querySelectorAll('.achievement-tab').forEach(t => {
+                t.classList.toggle('active', t.dataset.tab === tab);
+            });
+            
+            renderAchievementPanel();
+        }
+        
+        /** 渲染成就面板 */
+        function renderAchievementPanel() {
+            const list = document.getElementById('achievementList');
+            const level = getCurrentLevel();
+            
+            // 更新等级卡
+            document.getElementById('achLevelBadge').textContent = level.level <= 6 ? ['⭐', '🌟', '✨', '💫', '🌠', '👑'][level.level - 1] : '👑';
+            document.getElementById('achLevelRank').textContent = level.rank;
+            document.getElementById('achLevelName').textContent = level.name;
+            document.getElementById('achXpCurrent').textContent = state.totalXp;
+            document.getElementById('achXpMax').textContent = level.maxXp;
+            document.getElementById('achProgressFill').style.width = `${getLevelProgress()}%`;
+            
+            // 更新统计
+            const completedCount = state.completedAchievements.length;
+            const inProgressCount = ACHIEVEMENTS.filter(ach => {
+                if (state.completedAchievements.includes(ach.id)) return false;
+                return ach.getProgress(state) < ach.getTarget();
+            }).length;
+            
+            document.getElementById('achTotalCount').textContent = completedCount;
+            document.getElementById('achInProgressCount').textContent = inProgressCount;
+            document.getElementById('achTotalXp').textContent = state.totalXp;
+            
+            // 筛选成就
+            let filteredAchs = ACHIEVEMENTS;
+            if (state.currentAchTab !== 'all') {
+                filteredAchs = ACHIEVEMENTS.filter(ach => ach.category === state.currentAchTab);
+            }
+            
+            // 按类别分组
+            const categories = {
+                beginner: '🌱 新手成就',
+                active: '⚡ 活跃成就',
+                consume: '💎 消费成就'
+            };
+            
+            let html = '';
+            
+            if (state.currentAchTab === 'all') {
+                // 按类别显示
+                Object.keys(categories).forEach(cat => {
+                    const catAchs = filteredAchs.filter(ach => ach.category === cat);
+                    if (catAchs.length === 0) return;
+                    
+                    html += `<div class="achievement-category">
+                        <div class="category-title">${categories[cat]}</div>`;
+                    
+                    catAchs.forEach(ach => {
+                        html += renderAchievementCard(ach);
+                    });
+                    
+                    html += '</div>';
+                });
+            } else {
+                // 直接显示
+                filteredAchs.forEach(ach => {
+                    html += renderAchievementCard(ach);
+                });
+            }
+            
+            list.innerHTML = html || '<div class="fav-empty"><div class="fav-empty-icon">🎉</div><h4>该分类暂无成就</h4></div>';
+        }
+        
+        /** 渲染单个成就卡片 */
+        function renderAchievementCard(ach) {
+            const isCompleted = state.completedAchievements.includes(ach.id);
+            const progress = ach.getProgress(state);
+            const target = ach.getTarget();
+            const percent = Math.min((progress / target) * 100, 100);
+            
+            const statusClass = isCompleted ? 'completed' : (progress > 0 ? 'in-progress' : '');
+            
+            return `<div class="achievement-card ${statusClass}">
+                <div class="achievement-icon">${ach.icon}</div>
+                <div class="achievement-info">
+                    <div class="achievement-name">${ach.name}</div>
+                    <div class="achievement-desc">${ach.desc}</div>
+                    <div class="achievement-progress">
+                        <div class="achievement-progress-bar">
+                            <div class="achievement-progress-fill" style="width: ${percent}%"></div>
+                        </div>
+                        <span class="achievement-progress-text">${progress}/${target}</span>
+                    </div>
+                </div>
+                <div class="achievement-reward">+${ach.reward} XP</div>
+            </div>`;
+        }
+        
+        /** 添加浏览记录（用于浏览成就） */
+        function addBrowseRecord(itemId) {
+            if (!state.browsedItems) {
+                state.browsedItems = new Set();
+            }
+            if (!state.browsedItems.has(itemId)) {
+                state.browsedItems.add(itemId);
+                checkAchievements();
             }
         }
         
