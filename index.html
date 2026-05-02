@@ -2309,11 +2309,342 @@
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(0, 212, 255, 0.5);
         }
+        
+        /* ==================== 情绪化通知系统 ==================== */
+        
+        /* 情绪化Toast通知 */
+        .emotion-toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(150%);
+            z-index: 10000;
+            background: var(--bg-card);
+            border-radius: 50px;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            max-width: 90vw;
+        }
+        
+        .emotion-toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .emotion-toast.happy {
+            border-color: rgba(0, 255, 136, 0.3);
+            background: linear-gradient(135deg, var(--bg-card), rgba(0, 255, 136, 0.1));
+        }
+        
+        .emotion-toast.excited {
+            border-color: rgba(245, 158, 11, 0.3);
+            background: linear-gradient(135deg, var(--bg-card), rgba(245, 158, 11, 0.1));
+        }
+        
+        .emotion-toast.love {
+            border-color: rgba(255, 0, 110, 0.3);
+            background: linear-gradient(135deg, var(--bg-card), rgba(255, 0, 110, 0.1));
+        }
+        
+        .emotion-toast.cool {
+            border-color: rgba(0, 212, 255, 0.3);
+            background: linear-gradient(135deg, var(--bg-card), rgba(0, 212, 255, 0.1));
+        }
+        
+        .emotion-toast.wow {
+            border-color: rgba(168, 85, 247, 0.3);
+            background: linear-gradient(135deg, var(--bg-card), rgba(168, 85, 247, 0.1));
+        }
+        
+        .emotion-toast-icon {
+            font-size: 1.5rem;
+            animation: emotionBounce 0.6s ease;
+        }
+        
+        .emotion-toast-text {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+        
+        @keyframes emotionBounce {
+            0% { transform: scale(0) rotate(-20deg); }
+            50% { transform: scale(1.3) rotate(10deg); }
+            70% { transform: scale(0.9) rotate(-5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        
+        /* 问候语组件 */
+        .greeting-banner {
+            position: fixed;
+            top: 80px;
+            right: 2rem;
+            z-index: 99;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: slideInRight 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), fadeOut 0.5s ease 4s forwards;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .greeting-banner.happy {
+            border-color: rgba(0, 255, 136, 0.3);
+            background: linear-gradient(135deg, var(--bg-card), rgba(0, 255, 136, 0.05));
+        }
+        
+        .greeting-banner.night {
+            border-color: rgba(168, 85, 247, 0.3);
+            background: linear-gradient(135deg, var(--bg-card), rgba(168, 85, 247, 0.05));
+        }
+        
+        .greeting-banner.day {
+            border-color: rgba(0, 212, 255, 0.3);
+            background: linear-gradient(135deg, var(--bg-card), rgba(0, 212, 255, 0.05));
+        }
+        
+        .greeting-icon {
+            font-size: 2rem;
+        }
+        
+        .greeting-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        
+        .greeting-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .greeting-subtext {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; visibility: hidden; }
+        }
+        
+        /* 惊喜弹窗 */
+        .surprise-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 20000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.8);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .surprise-popup.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .surprise-content {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 2.5rem;
+            text-align: center;
+            max-width: 400px;
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 2px solid;
+        }
+        
+        .surprise-popup.show .surprise-content {
+            transform: scale(1);
+        }
+        
+        .surprise-popup.legendary .surprise-content {
+            border-color: var(--legendary);
+            box-shadow: 0 0 60px rgba(245, 158, 11, 0.3);
+        }
+        
+        .surprise-popup.epic .surprise-content {
+            border-color: var(--epic);
+            box-shadow: 0 0 60px rgba(168, 85, 247, 0.3);
+        }
+        
+        .surprise-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: surpriseBounce 0.8s ease infinite;
+        }
+        
+        @keyframes surpriseBounce {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            75% { transform: scale(1.1) rotate(5deg); }
+        }
+        
+        .surprise-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .surprise-desc {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .surprise-reward {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 212, 255, 0.15);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1.5rem;
+        }
+        
+        .surprise-btn {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .surprise-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+        }
+        
+        /* 情绪通知点 */
+        .emotion-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-pink);
+            animation: pulse 1.5s ease infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+        }
+        
+        /* 心情指示器 */
+        .mood-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.3rem 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+        
+        .mood-indicator:hover {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.1);
+        }
+        
+        .mood-emoji {
+            font-size: 1rem;
+        }
+        
+        .mood-text {
+            color: var(--text-secondary);
+        }
+        
+        /* 连续活跃提示 */
+        .streak-banner {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 99;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(255, 0, 110, 0.2));
+            border: 1px solid var(--legendary);
+            border-radius: 50px;
+            padding: 0.6rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            animation: slideDown 0.5s ease, fadeOut 0.5s ease 5s forwards;
+            box-shadow: 0 5px 30px rgba(245, 158, 11, 0.2);
+        }
+        
+        .streak-icon {
+            font-size: 1.5rem;
+            animation: flamePulse 1s ease infinite;
+        }
+        
+        @keyframes flamePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        .streak-text {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--legendary);
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
     </style>
 </head>
 <body>
     <!-- 背景动效 -->
     <div class="bg-particles" id="particles"></div>
+    
+    <!-- 情绪化通知系统 -->
+    <!-- 情绪化Toast -->
+    <div class="emotion-toast" id="emotionToast">
+        <span class="emotion-toast-icon" id="emotionToastIcon">😊</span>
+        <span class="emotion-toast-text" id="emotionToastText">你好呀！</span>
+    </div>
+    
+    <!-- 惊喜弹窗 -->
+    <div class="surprise-popup" id="surprisePopup">
+        <div class="surprise-content">
+            <div class="surprise-icon" id="surpriseIcon">🎁</div>
+            <div class="surprise-title" id="surpriseTitle">惊喜来袭！</div>
+            <div class="surprise-desc" id="surpriseDesc">你发现了隐藏内容</div>
+            <div class="surprise-reward" id="surpriseReward">+50 XP</div>
+            <button class="surprise-btn" onclick="closeSurprisePopup()">收下惊喜</button>
+        </div>
+    </div>
     
     <!-- 导航 -->
     <nav>
@@ -3504,11 +3835,15 @@
             if (index > -1) {
                 favList.splice(index, 1);
                 showNotification('已取消收藏', 'success');
+                triggerEmotionFeedback({ type: 'uncollect' });
             } else {
                 favList.push(id);
                 showNotification('已添加到收藏', 'success');
+                triggerEmotionFeedback({ type: 'collect' });
                 // 成就追踪：检查收藏成就
                 checkAchievements();
+                // 检查随机惊喜
+                checkRandomSurprise();
             }
             
             saveState();
@@ -4234,6 +4569,12 @@
             const pointsEl = document.getElementById('userPoints');
             animateNumber(pointsEl, state.userPoints, 600);
             
+            // 情绪化反馈
+            triggerEmotionFeedback({ type: 'purchase' });
+            
+            // 检查随机惊喜
+            checkRandomSurprise();
+            
             saveState();
             renderProducts();
             renderOutfit();
@@ -4366,6 +4707,9 @@
             document.getElementById('unlockReward').textContent = `+${ach.reward} XP`;
             document.getElementById('achUnlockOverlay').classList.add('show');
             
+            // 情绪化反馈
+            triggerEmotionFeedback({ type: 'achievement', data: { name: ach.name } });
+            
             // 3秒后自动显示下一个或关闭
             setTimeout(() => {
                 document.getElementById('achUnlockOverlay').classList.remove('show');
@@ -4402,6 +4746,9 @@
             document.getElementById('levelUpRank').textContent = level.rank;
             document.getElementById('levelUpName').textContent = level.name;
             document.getElementById('levelUpOverlay').classList.add('show');
+            
+            // 情绪化反馈
+            triggerEmotionFeedback({ type: 'levelup', data: { level: level.level, rank: level.rank } });
             
             // 3.5秒后自动关闭
             setTimeout(() => {
@@ -4556,6 +4903,13 @@
             if (!state.browsedItems.has(itemId)) {
                 state.browsedItems.add(itemId);
                 checkAchievements();
+                
+                // 情绪化反馈（浏览里程碑）
+                const count = state.browsedItems.size;
+                triggerEmotionFeedback({ type: 'browse', data: { count: count } });
+                
+                // 检查随机惊喜
+                checkRandomSurprise();
             }
         }
         
@@ -4580,6 +4934,280 @@
             setTimeout(() => {
                 notif.classList.remove('show');
             }, 3000);
+        }
+        
+        // ==================== 情绪化通知系统 ====================
+        
+        /** 情绪配置 */
+        const EMOTIONS = {
+            happy: { icon: '😊', messages: ['太棒了！', '干得漂亮！', '继续保持！', '你真厉害！'] },
+            excited: { icon: '🤩', messages: ['哇塞！', '超激动！', '太酷了！', '绝绝子！'] },
+            love: { icon: '🥰', messages: ['好感人！', '暖暖的~', '真美好！', '被治愈了~'] },
+            cool: { icon: '😎', messages: ['帅到我了！', '气场全开！', '绝绝子！', '这很可以！'] },
+            wow: { icon: '😲', messages: ['没想到吧！', '还有这种操作？', '惊了！', '太秀了！'] }
+        };
+        
+        /** 显示情绪化Toast */
+        function showEmotionToast(emotion = 'happy', customMessage = null) {
+            const toast = document.getElementById('emotionToast');
+            const icon = document.getElementById('emotionToastIcon');
+            const text = document.getElementById('emotionToastText');
+            
+            const config = EMOTIONS[emotion] || EMOTIONS.happy;
+            icon.textContent = config.icon;
+            text.textContent = customMessage || config.messages[Math.floor(Math.random() * config.messages.length)];
+            
+            toast.className = `emotion-toast ${emotion} show`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        /** 获取时间段的问候配置 */
+        function getGreetingConfig() {
+            const hour = new Date().getHours();
+            const level = getCurrentLevel();
+            
+            if (hour >= 5 && hour < 9) {
+                return {
+                    icon: '🌅',
+                    theme: 'day',
+                    texts: ['早起的鸟儿有虫吃~', `新的一天，${level.rank}！`, '清晨的阳光真舒服~', '早安！今天也要元气满满哦~']
+                };
+            } else if (hour >= 9 && hour < 12) {
+                return {
+                    icon: '☀️',
+                    theme: 'day',
+                    texts: ['上午好！学习使我快乐~', `${level.rank}今天状态不错嘛！`, '上午时光，效率满满！', '继续保持，冲鸭！']
+                };
+            } else if (hour >= 12 && hour < 14) {
+                return {
+                    icon: '🌞',
+                    theme: 'day',
+                    texts: ['午休时间到~', '吃饱了才有力气！', '休息一下下午继续~', '午安，别太累了哦~']
+                };
+            } else if (hour >= 14 && hour < 18) {
+                return {
+                    icon: '🌤️',
+                    theme: 'day',
+                    texts: ['下午好！fighting~', `${level.rank}下午也要加油！`, '下午茶时间？', '下午效率依旧！']
+                };
+            } else if (hour >= 18 && hour < 22) {
+                return {
+                    icon: '🌙',
+                    theme: 'night',
+                    texts: ['晚上好！放松一下吧~', '夜生活开始！', '晚上好，${level.rank}~', '夜猫子出没~']
+                };
+            } else {
+                return {
+                    icon: '🌛',
+                    theme: 'night',
+                    texts: ['夜深了，早点休息哦~', '熬夜伤身，${level.rank}~', '深夜也在这里？', '夜深了，注意身体~']
+                };
+            }
+        }
+        
+        /** 显示问候语横幅 */
+        function showGreetingBanner() {
+            // 检查是否今日已显示过
+            const today = new Date().toDateString();
+            const lastGreeting = localStorage.getItem('lastGreetingDate');
+            
+            if (lastGreeting === today && state.totalXp > 0) {
+                return; // 今天已显示过
+            }
+            
+            const config = getGreetingConfig();
+            const message = config.texts[Math.floor(Math.random() * config.texts.length)];
+            
+            const banner = document.createElement('div');
+            banner.className = `greeting-banner ${config.theme}`;
+            banner.innerHTML = `
+                <div class="greeting-icon">${config.icon}</div>
+                <div class="greeting-content">
+                    <div class="greeting-text">${message}</div>
+                    <div class="greeting-subtext">当前等级: ${getCurrentLevel().name}</div>
+                </div>
+            `;
+            
+            document.body.appendChild(banner);
+            
+            // 5秒后移除
+            setTimeout(() => {
+                banner.remove();
+            }, 5000);
+            
+            // 记录今日已显示
+            localStorage.setItem('lastGreetingDate', today);
+        }
+        
+        /** 惊喜通知配置 */
+        const SURPRISES = [
+            { icon: '🎁', title: '神秘礼包', desc: '感谢你的坚持！这是一份小礼物~', reward: 30, rarity: 'epic' },
+            { icon: '🌟', title: '隐藏成就解锁', desc: '探索精神值得嘉奖！', reward: 50, rarity: 'legendary' },
+            { icon: '💫', title: '幸运时刻', desc: '今天的运气不错嘛~', reward: 25, rarity: 'epic' },
+            { icon: '🎀', title: '彩蛋发现', desc: '细心的人运气都不会差！', reward: 40, rarity: 'legendary' },
+            { icon: '✨', title: '小确幸', desc: '平凡日子里的小惊喜~', reward: 20, rarity: 'epic' },
+            { icon: '🏵️', title: '忠实用户奖励', desc: '你是最棒的用户！', reward: 60, rarity: 'legendary' }
+        ];
+        
+        /** 显示惊喜弹窗 */
+        function showSurprise() {
+            const surprise = SURPRISES[Math.floor(Math.random() * SURPRISES.length)];
+            
+            const popup = document.getElementById('surprisePopup');
+            document.getElementById('surpriseIcon').textContent = surprise.icon;
+            document.getElementById('surpriseTitle').textContent = surprise.title;
+            document.getElementById('surpriseDesc').textContent = surprise.desc;
+            document.getElementById('surpriseReward').textContent = `+${surprise.reward} XP`;
+            
+            popup.className = `surprise-popup ${surprise.rarity} show`;
+            
+            // 自动给予奖励
+            setTimeout(() => {
+                state.totalXp += surprise.reward;
+                addXp(surprise.reward);
+            }, 1000);
+        }
+        
+        /** 关闭惊喜弹窗 */
+        function closeSurprisePopup() {
+            document.getElementById('surprisePopup').classList.remove('show');
+        }
+        
+        /** 行为驱动的情绪反馈 */
+        function triggerEmotionFeedback(action) {
+            const feedbackRules = {
+                // 收藏相关
+                'collect': () => {
+                    const messages = ['收藏成功！眼光不错~', '这件宝贝逃不出你的手心了！', '收藏+1，品味+1！'];
+                    return { emotion: 'love', message: messages[Math.floor(Math.random() * messages.length)] };
+                },
+                'uncollect': () => {
+                    return { emotion: 'cool', message: '忍痛割爱了？没关系~' };
+                },
+                // 购买相关
+                'purchase': () => {
+                    const messages = ['购买成功！恭喜恭喜~', '新装备到手！帅到没朋友！', '买它买它！'];
+                    return { emotion: 'excited', message: messages[Math.floor(Math.random() * messages.length)] };
+                },
+                // 连续活跃
+                'streak': (data) => {
+                    return { 
+                        emotion: 'excited', 
+                        message: `🔥 连续活跃${data.days}天！你是最棒的！` 
+                    };
+                },
+                // 等级提升
+                'levelup': (data) => {
+                    const levelUpMessages = [
+                        `恭喜升级到 ${data.level} 级！${data.rank}！`,
+                        `新等级解锁！${data.rank} 称号获得！`,
+                        `${data.level} 级达成！离潮流教父又近了一步！`
+                    ];
+                    return { 
+                        emotion: 'wow', 
+                        message: levelUpMessages[Math.floor(Math.random() * levelUpMessages.length)] 
+                    };
+                },
+                // 成就解锁
+                'achievement': (data) => {
+                    return { 
+                        emotion: 'excited', 
+                        message: `🏆 成就解锁：${data.name}！太厉害了！` 
+                    };
+                },
+                // 浏览
+                'browse': (data) => {
+                    if (data.count === 10) {
+                        return { emotion: 'cool', message: '浏览小达人了！' };
+                    }
+                    return null;
+                },
+                // 搜索
+                'search': () => {
+                    const messages = ['找到想要的了？', '搜索小能手~', '在找什么好东西呢？'];
+                    return { emotion: 'happy', message: messages[Math.floor(Math.random() * messages.length)] };
+                },
+                // 空搜索结果
+                'no-result': () => {
+                    return { emotion: 'wow', message: '没找到？换个关键词试试~' };
+                },
+                // 默认
+                'default': () => {
+                    return { emotion: 'happy', message: '你好呀！' };
+                }
+            };
+            
+            const rule = feedbackRules[action.type] || feedbackRules['default'];
+            const result = rule(action.data);
+            
+            if (result) {
+                showEmotionToast(result.emotion, result.message);
+            }
+        }
+        
+        /** 显示连续活跃提示 */
+        function showStreakBanner(days) {
+            const banner = document.createElement('div');
+            banner.className = 'streak-banner';
+            banner.innerHTML = `
+                <span class="streak-icon">🔥</span>
+                <span class="streak-text">连续活跃 ${days} 天！</span>
+            `;
+            
+            document.body.appendChild(banner);
+            
+            setTimeout(() => {
+                banner.remove();
+            }, 6000);
+        }
+        
+        /** 检查连续活跃状态 */
+        function checkStreak() {
+            const today = new Date().toDateString();
+            const lastActive = localStorage.getItem('lastActiveDate');
+            
+            if (lastActive) {
+                const lastDate = new Date(lastActive);
+                const todayDate = new Date(today);
+                const diffDays = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+                
+                if (diffDays === 1) {
+                    // 连续活跃
+                    let streak = parseInt(localStorage.getItem('streakDays') || '0') + 1;
+                    localStorage.setItem('streakDays', streak);
+                    
+                    if (streak >= 3) {
+                        showStreakBanner(streak);
+                        triggerEmotionFeedback({ type: 'streak', data: { days: streak } });
+                    }
+                } else if (diffDays > 1) {
+                    // 中断
+                    localStorage.setItem('streakDays', '1');
+                }
+            } else {
+                localStorage.setItem('streakDays', '1');
+            }
+            
+            localStorage.setItem('lastActiveDate', today);
+        }
+        
+        /** 随机惊喜检测（基于浏览量） */
+        function checkRandomSurprise() {
+            const browseCount = state.browsedItems ? state.browsedItems.size : 0;
+            const lastSurpriseCount = parseInt(localStorage.getItem('lastSurpriseBrowseCount') || '0');
+            
+            // 每浏览20个物品有一次惊喜机会
+            if (browseCount > 0 && browseCount % 20 === 0 && browseCount !== lastSurpriseCount) {
+                localStorage.setItem('lastSurpriseBrowseCount', browseCount);
+                
+                // 30%概率触发惊喜
+                if (Math.random() < 0.3) {
+                    setTimeout(() => showSurprise(), 500);
+                }
+            }
         }
         
         // ==================== 事件绑定 ====================
@@ -4672,6 +5300,8 @@
                     if (state.currentTab !== 'customize') {
                         renderProducts();
                     }
+                    // 情绪化反馈
+                    triggerEmotionFeedback({ type: 'search' });
                 }
             }
         });
@@ -4752,6 +5382,22 @@
         
         createParticles();
         updateUI();
+        
+        // ==================== 情绪化通知初始化 ====================
+        // 检查连续活跃状态
+        checkStreak();
+        
+        // 显示问候语（延迟1秒，让页面先加载）
+        setTimeout(() => {
+            showGreetingBanner();
+        }, 1000);
+        
+        // 首次访问提示
+        if (state.totalXp === 0) {
+            setTimeout(() => {
+                showEmotionToast('excited', '欢迎来到潮流联盟！开始你的潮流之旅吧~');
+            }, 2000);
+        }
     </script>
 </body>
 </html>
