@@ -74,6 +74,504 @@
             100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
         }
         
+        /* ==================== 沉浸式首页重构 ==================== */
+        
+        /* 动态网格背景 */
+        .hero-grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .hero-grid-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridMove 20s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+        
+        /* 动态光晕效果 */
+        .hero-glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.4;
+            animation: glowPulse 8s ease-in-out infinite;
+        }
+        
+        .hero-glow-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--accent-cyan), transparent 70%);
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+        
+        .hero-glow-2 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, var(--accent-pink), transparent 70%);
+            top: -50px;
+            right: -100px;
+            animation-delay: -4s;
+        }
+        
+        .hero-glow-3 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--epic), transparent 70%);
+            bottom: -50px;
+            left: 30%;
+            animation-delay: -2s;
+        }
+        
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.1); }
+        }
+        
+        /* 用户专属元素区域 */
+        .user-exclusive-zone {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .exclusive-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 1.2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+        
+        .exclusive-badge:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.06);
+        }
+        
+        .exclusive-badge.tech { border-color: rgba(0, 212, 255, 0.3); }
+        .exclusive-badge.tech:hover { border-color: rgba(0, 212, 255, 0.5); background: rgba(0, 212, 255, 0.08); }
+        
+        .exclusive-badge.nature { border-color: rgba(0, 255, 136, 0.3); }
+        .exclusive-badge.nature:hover { border-color: rgba(0, 255, 136, 0.5); background: rgba(0, 255, 136, 0.08); }
+        
+        .exclusive-badge.chaos { border-color: rgba(255, 0, 110, 0.3); }
+        .exclusive-badge.chaos:hover { border-color: rgba(255, 0, 110, 0.5); background: rgba(255, 0, 110, 0.08); }
+        
+        .exclusive-icon {
+            font-size: 1.4rem;
+        }
+        
+        .exclusive-name {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .exclusive-count {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+        
+        /* 风格推荐系统 */
+        .style-recommendations {
+            margin: 2.5rem 0;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+        
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section-title-icon {
+            font-size: 1.3rem;
+        }
+        
+        /* 风格标签页 */
+        .style-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .style-tab {
+            padding: 0.6rem 1.2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .style-tab:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+        }
+        
+        .style-tab.active {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+        
+        .style-tab-icon {
+            font-size: 1.1rem;
+        }
+        
+        /* 风格卡片网格 */
+        .style-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .style-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .style-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-pink));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .style-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .style-card:hover::before {
+            opacity: 1;
+        }
+        
+        .style-card.spring::before { background: linear-gradient(90deg, #a8e6cf, #88d8b0); }
+        .style-card.spring:hover { border-color: rgba(168, 232, 175, 0.3); }
+        .style-card.street::before { background: linear-gradient(90deg, #ff6b6b, #ee5a5a); }
+        .style-card.street:hover { border-color: rgba(255, 107, 107, 0.3); }
+        .style-card.tech::before { background: linear-gradient(90deg, #00d4ff, #0099cc); }
+        .style-card.tech:hover { border-color: rgba(0, 212, 255, 0.3); }
+        .style-card.vintage::before { background: linear-gradient(90deg, #d4a574, #c49464); }
+        .style-card.vintage:hover { border-color: rgba(212, 165, 116, 0.3); }
+        .style-card.sport::before { background: linear-gradient(90deg, #4facfe, #00f2fe); }
+        .style-card.sport:hover { border-color: rgba(79, 172, 254, 0.3); }
+        
+        .style-card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+        }
+        
+        .style-card-name {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        
+        .style-card-count {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .style-card-hot {
+            position: absolute;
+            top: 0.8rem;
+            right: 0.8rem;
+            background: var(--accent-pink);
+            color: #fff;
+            font-size: 0.65rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        
+        /* 今日穿搭挑战 */
+        .daily-challenge {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(0, 212, 255, 0.1));
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin: 2.5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .daily-challenge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23a855f7' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+        
+        .challenge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.2rem;
+            position: relative;
+        }
+        
+        .challenge-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid var(--epic);
+            color: var(--epic);
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .challenge-timer {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        
+        .challenge-timer-icon {
+            animation: pulse 2s ease infinite;
+        }
+        
+        .challenge-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+        
+        .challenge-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .challenge-reward {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid var(--legendary);
+            color: var(--legendary);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin-bottom: 1.2rem;
+            position: relative;
+        }
+        
+        .challenge-items {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            position: relative;
+        }
+        
+        .challenge-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 0.8rem 1rem;
+            flex: 1;
+            min-width: 200px;
+            transition: all 0.3s;
+        }
+        
+        .challenge-item:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .challenge-item-icon {
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-gradient);
+            border-radius: 10px;
+        }
+        
+        .challenge-item-info {
+            flex: 1;
+        }
+        
+        .challenge-item-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+        
+        .challenge-item-slot {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .challenge-item-status {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+        
+        .challenge-item-status.owned {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+            color: #000;
+        }
+        
+        .challenge-progress {
+            margin-top: 1.2rem;
+            position: relative;
+        }
+        
+        .progress-bar-container {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--epic), var(--accent-cyan));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .challenge-claim-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(135deg, var(--epic), var(--accent-cyan));
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+            position: relative;
+        }
+        
+        .challenge-claim-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(168, 85, 247, 0.4);
+        }
+        
+        .challenge-claim-btn:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* 动态入场动画 */
+        @keyframes heroFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .hero-content {
+            animation: heroFadeIn 0.8s ease forwards;
+        }
+        
+        .user-exclusive-zone {
+            animation: heroFadeIn 0.8s ease 0.1s forwards;
+            opacity: 0;
+        }
+        
+        .style-recommendations {
+            animation: heroFadeIn 0.8s ease 0.2s forwards;
+            opacity: 0;
+        }
+        
+        .daily-challenge {
+            animation: heroFadeIn 0.8s ease 0.3s forwards;
+            opacity: 0;
+        }
+        
         /* 导航栏 */
         nav {
             position: fixed;
@@ -3304,15 +3802,49 @@
     <main>
         <!-- 英雄区 -->
         <section class="hero">
-            <span class="hero-badge">🚀 2026 春季限定</span>
-            <h1>AI Agent 潮流联盟</h1>
-            <p>收集稀有装备，打造你的专属 AI Agent。加入联盟，解锁无限可能！</p>
+            <!-- 动态网格背景 -->
+            <div class="hero-grid-bg"></div>
+            <!-- 动态光晕 -->
+            <div class="hero-glow hero-glow-1"></div>
+            <div class="hero-glow hero-glow-2"></div>
+            <div class="hero-glow hero-glow-3"></div>
             
-            <div class="alliances">
-                <button class="alliance-btn active" data-alliance="all">🌟 全部联盟</button>
-                <button class="alliance-btn" data-alliance="tech">⚡ 科技派</button>
-                <button class="alliance-btn" data-alliance="nature">🌿 自然派</button>
-                <button class="alliance-btn" data-alliance="chaos">🔥 混沌派</button>
+            <div class="hero-content">
+                <span class="hero-badge">🚀 2026 春季限定</span>
+                <h1>AI Agent 潮流联盟</h1>
+                <p>收集稀有装备，打造你的专属 AI Agent。加入联盟，解锁无限可能！</p>
+                
+                <div class="alliances">
+                    <button class="alliance-btn active" data-alliance="all">🌟 全部联盟</button>
+                    <button class="alliance-btn" data-alliance="tech">⚡ 科技派</button>
+                    <button class="alliance-btn" data-alliance="nature">🌿 自然派</button>
+                    <button class="alliance-btn" data-alliance="chaos">🔥 混沌派</button>
+                </div>
+            </div>
+            
+            <!-- 用户专属元素区域 -->
+            <div class="user-exclusive-zone" id="userExclusiveZone">
+                <div class="exclusive-badge tech">
+                    <span class="exclusive-icon">⚡</span>
+                    <div>
+                        <div class="exclusive-name">科技派</div>
+                        <div class="exclusive-count" id="techCount">0 件收藏</div>
+                    </div>
+                </div>
+                <div class="exclusive-badge nature">
+                    <span class="exclusive-icon">🌿</span>
+                    <div>
+                        <div class="exclusive-name">自然派</div>
+                        <div class="exclusive-count" id="natureCount">0 件收藏</div>
+                    </div>
+                </div>
+                <div class="exclusive-badge chaos">
+                    <span class="exclusive-icon">🔥</span>
+                    <div>
+                        <div class="exclusive-name">混沌派</div>
+                        <div class="exclusive-count" id="chaosCount">0 件收藏</div>
+                    </div>
+                </div>
             </div>
             
             <!-- 搜索栏 -->
@@ -3347,6 +3879,80 @@
                 <button class="rarity-btn" data-rarity="common">普通</button>
             </div>
         </section>
+        
+        <!-- 风格推荐系统 -->
+        <div class="style-recommendations">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-title-icon">🎨</span>
+                    风格探索
+                </h2>
+            </div>
+            
+            <!-- 风格标签页 -->
+            <div class="style-tabs" id="styleTabs">
+                <button class="style-tab active" data-style="all" onclick="switchStyle('all')">
+                    <span class="style-tab-icon">✨</span>
+                    全部风格
+                </button>
+                <button class="style-tab" data-style="spring" onclick="switchStyle('spring')">
+                    <span class="style-tab-icon">🌸</span>
+                    春季风格
+                </button>
+                <button class="style-tab" data-style="street" onclick="switchStyle('street')">
+                    <span class="style-tab-icon">🏙️</span>
+                    街头风格
+                </button>
+                <button class="style-tab" data-style="tech" onclick="switchStyle('tech')">
+                    <span class="style-tab-icon">🤖</span>
+                    科技风格
+                </button>
+                <button class="style-tab" data-style="vintage" onclick="switchStyle('vintage')">
+                    <span class="style-tab-icon">🎭</span>
+                    复古风格
+                </button>
+                <button class="style-tab" data-style="sport" onclick="switchStyle('sport')">
+                    <span class="style-tab-icon">⚡</span>
+                    运动风格
+                </button>
+            </div>
+            
+            <!-- 风格卡片网格 -->
+            <div class="style-grid" id="styleGrid"></div>
+        </div>
+        
+        <!-- 今日穿搭挑战 -->
+        <div class="daily-challenge" id="dailyChallenge">
+            <div class="challenge-header">
+                <span class="challenge-badge">
+                    <span>🎯</span>
+                    每日挑战
+                </span>
+                <div class="challenge-timer">
+                    <span class="challenge-timer-icon">⏰</span>
+                    <span id="challengeTimer">刷新倒计时: 23:45:12</span>
+                </div>
+            </div>
+            <h3 class="challenge-title" id="challengeTitle">🎽 今日穿搭挑战</h3>
+            <p class="challenge-desc" id="challengeDesc">完成挑战任务，获取丰厚奖励！</p>
+            <div class="challenge-reward">
+                <span>🏆</span>
+                <span id="challengeReward">奖励: +100 XP + 50 积分</span>
+            </div>
+            <div class="challenge-items" id="challengeItems"></div>
+            <div class="challenge-progress">
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="challengeProgressBar" style="width: 0%"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="challengeProgressText">0/3 已完成</span>
+                    <span id="challengeStatus">进行中</span>
+                </div>
+            </div>
+            <button class="challenge-claim-btn" id="challengeClaimBtn" onclick="claimChallengeReward()" disabled>
+                领取奖励
+            </button>
+        </div>
         
         <!-- 标签页 -->
         <div class="tabs">
@@ -4426,8 +5032,10 @@
             
             saveState();
             updateFavoritesBadge();
+            updateExclusiveZone();
             renderProducts();
             renderFavoritesContent();
+            updateChallengeDisplay();
         }
         
         /** 检查是否已收藏 */
@@ -5960,6 +6568,343 @@
         
         createParticles();
         updateUI();
+        
+        // ==================== 沉浸式首页重构 - 风格推荐系统 ====================
+        
+        // 风格配置
+        const STYLE_CONFIG = {
+            spring: {
+                name: '春季风格',
+                icon: '🌸',
+                tags: ['自然', '清新', '甜美'],
+                color: '#a8e6cf'
+            },
+            street: {
+                name: '街头风格',
+                icon: '🏙️',
+                tags: ['潮流', '嘻哈', '酷'],
+                color: '#ff6b6b'
+            },
+            tech: {
+                name: '科技风格',
+                icon: '🤖',
+                tags: ['未来', '赛博', '机械'],
+                color: '#00d4ff'
+            },
+            vintage: {
+                name: '复古风格',
+                icon: '🎭',
+                tags: ['怀旧', '经典', '优雅'],
+                color: '#d4a574'
+            },
+            sport: {
+                name: '运动风格',
+                icon: '⚡',
+                tags: ['活力', '健康', '动感'],
+                color: '#4facfe'
+            }
+        };
+        
+        // 当前选中的风格
+        let currentStyle = 'all';
+        
+        /** 切换风格筛选 */
+        function switchStyle(style) {
+            currentStyle = style;
+            
+            // 更新标签高亮
+            document.querySelectorAll('.style-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.style === style);
+            });
+            
+            // 渲染风格卡片
+            renderStyleCards();
+        }
+        
+        /** 根据风格获取匹配的产品 */
+        function getProductsByStyle(style) {
+            if (style === 'all') return products.slice(0, 12);
+            
+            const styleTags = STYLE_CONFIG[style]?.tags || [];
+            return products.filter(p => {
+                const itemTags = p.tags || [];
+                return itemTags.some(tag => 
+                    styleTags.some(st => tag.toLowerCase().includes(st.toLowerCase()))
+                );
+            }).slice(0, 12);
+        }
+        
+        /** 渲染风格卡片 */
+        function renderStyleCards() {
+            const grid = document.getElementById('styleGrid');
+            const productsToShow = getProductsByStyle(currentStyle);
+            
+            grid.innerHTML = productsToShow.map((product, index) => `
+                <div class="style-card ${currentStyle}" 
+                     style="animation-delay: ${index * 60}ms"
+                     onclick="handleStyleCardClick(${product.id})">
+                    <span class="style-card-hot" style="${Math.random() > 0.7 ? '' : 'display:none'}">HOT</span>
+                    <div class="style-card-icon">${product.icon}</div>
+                    <div class="style-card-name">${product.name}</div>
+                    <div class="style-card-count">
+                        ${product.alliance === 'tech' ? '⚡' : product.alliance === 'nature' ? '🌿' : '🔥'} 
+                        ${product.rarity === 'legendary' ? '传奇' : product.rarity === 'epic' ? '史诗' : product.rarity === 'rare' ? '稀有' : '普通'}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        /** 处理风格卡片点击 */
+        function handleStyleCardClick(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            // 显示商品详情
+            showModal(product);
+        }
+        
+        /** 更新用户专属区域统计 */
+        function updateExclusiveZone() {
+            const techCount = state.favorites.items.filter(id => {
+                const p = products.find(prod => prod.id === id);
+                return p?.alliance === 'tech';
+            }).length;
+            
+            const natureCount = state.favorites.items.filter(id => {
+                const p = products.find(prod => prod.id === id);
+                return p?.alliance === 'nature';
+            }).length;
+            
+            const chaosCount = state.favorites.items.filter(id => {
+                const p = products.find(prod => prod.id === id);
+                return p?.alliance === 'chaos';
+            }).length;
+            
+            document.getElementById('techCount').textContent = `${techCount} 件收藏`;
+            document.getElementById('natureCount').textContent = `${natureCount} 件收藏`;
+            document.getElementById('chaosCount').textContent = `${chaosCount} 件收藏`;
+        }
+        
+        // ==================== 沉浸式首页重构 - 每日挑战系统 ====================
+        
+        // 每日挑战配置
+        const DAILY_CHALLENGES = [
+            {
+                id: 'collect_legendary',
+                title: '🎽 传奇收集者',
+                desc: '收藏一件传奇装备',
+                reward: { xp: 100, points: 50 },
+                check: () => state.favorites.items.some(id => {
+                    const p = products.find(prod => prod.id === id);
+                    return p?.rarity === 'legendary';
+                })
+            },
+            {
+                id: 'own_3_alliances',
+                title: '🌟 联盟探索者',
+                desc: '收藏三个不同联盟的装备',
+                reward: { xp: 80, points: 40 },
+                check: () => {
+                    const alliances = new Set();
+                    state.favorites.items.forEach(id => {
+                        const p = products.find(prod => prod.id === id);
+                        if (p?.alliance) alliances.add(p.alliance);
+                    });
+                    return alliances.size >= 3;
+                }
+            },
+            {
+                id: 'browse_10',
+                title: '👀 潮流观察者',
+                desc: '浏览10件不同的装备',
+                reward: { xp: 50, points: 30 },
+                check: () => (state.browsedItems?.size || 0) >= 10
+            },
+            {
+                id: 'first_purchase',
+                title: '🛒 初次购物',
+                desc: '购买第一件装备',
+                reward: { xp: 120, points: 60 },
+                check: () => state.totalPurchases >= 1
+            },
+            {
+                id: 'equip_full',
+                title: '🦸 全副武装',
+                desc: '穿戴6件装备（全身）',
+                reward: { xp: 150, points: 80 },
+                check: () => state.equippedItems.length >= 6
+            }
+        ];
+        
+        // 今日挑战状态
+        let dailyChallengeState = {
+            completed: [],      // 已完成的挑战ID
+            claimed: false,     // 是否已领取奖励
+            lastDate: null      // 上次加载日期
+        };
+        
+        /** 加载挑战状态 */
+        function loadChallengeState() {
+            const saved = localStorage.getItem('dailyChallengeState');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                // 检查是否是今天
+                const today = new Date().toDateString();
+                if (parsed.lastDate !== today) {
+                    // 新的一天，重置挑战
+                    dailyChallengeState = {
+                        completed: [],
+                        claimed: false,
+                        lastDate: today
+                    };
+                    saveChallengeState();
+                } else {
+                    dailyChallengeState = parsed;
+                }
+            } else {
+                const today = new Date().toDateString();
+                dailyChallengeState = {
+                    completed: [],
+                    claimed: false,
+                    lastDate: today
+                };
+                saveChallengeState();
+            }
+        }
+        
+        function saveChallengeState() {
+            localStorage.setItem('dailyChallengeState', JSON.stringify(dailyChallengeState));
+        }
+        
+        /** 获取今日挑战（随机3个） */
+        function getTodayChallenges() {
+            const shuffled = [...DAILY_CHALLENGES].sort(() => Math.random() - 0.5);
+            return shuffled.slice(0, 3);
+        }
+        
+        /** 检查挑战完成状态 */
+        function checkChallengeCompletion() {
+            const challenges = getTodayChallenges();
+            challenges.forEach(challenge => {
+                if (!dailyChallengeState.completed.includes(challenge.id) && challenge.check()) {
+                    dailyChallengeState.completed.push(challenge.id);
+                }
+            });
+            saveChallengeState();
+            return dailyChallengeState.completed;
+        }
+        
+        /** 更新挑战显示 */
+        function updateChallengeDisplay() {
+            const challenges = getTodayChallenges();
+            const completed = checkChallengeCompletion();
+            
+            // 更新挑战物品
+            const itemsContainer = document.getElementById('challengeItems');
+            itemsContainer.innerHTML = challenges.map((challenge, index) => {
+                const isCompleted = completed.includes(challenge.id);
+                const product = products[index % products.length];
+                
+                return `
+                    <div class="challenge-item" onclick="handleChallengeItemClick('${challenge.id}')">
+                        <div class="challenge-item-icon">${product.icon}</div>
+                        <div class="challenge-item-info">
+                            <div class="challenge-item-name">${challenge.title}</div>
+                            <div class="challenge-item-slot">${challenge.desc}</div>
+                        </div>
+                        <div class="challenge-item-status ${isCompleted ? 'owned' : ''}">
+                            ${isCompleted ? '✓' : (index + 1)}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // 更新进度条
+            const progress = (completed.length / challenges.length) * 100;
+            document.getElementById('challengeProgressBar').style.width = `${progress}%`;
+            document.getElementById('challengeProgressText').textContent = 
+                `${completed.length}/${challenges.length} 已完成`;
+            
+            // 更新状态文字
+            const allCompleted = completed.length === challenges.length;
+            document.getElementById('challengeStatus').textContent = 
+                allCompleted ? (dailyChallengeState.claimed ? '已领取' : '可领取') : '进行中';
+            
+            // 更新按钮状态
+            const claimBtn = document.getElementById('challengeClaimBtn');
+            if (allCompleted && !dailyChallengeState.claimed) {
+                claimBtn.disabled = false;
+                claimBtn.textContent = '领取奖励';
+            } else if (dailyChallengeState.claimed) {
+                claimBtn.disabled = true;
+                claimBtn.textContent = '已领取';
+            } else {
+                claimBtn.disabled = true;
+                claimBtn.textContent = '完成挑战后领取';
+            }
+        }
+        
+        /** 处理挑战项点击 */
+        function handleChallengeItemClick(challengeId) {
+            const challenge = DAILY_CHALLENGES.find(c => c.id === challengeId);
+            if (challenge) {
+                showEmotionToast('cool', challenge.desc);
+            }
+        }
+        
+        /** 领取挑战奖励 */
+        function claimChallengeReward() {
+            if (dailyChallengeState.claimed) return;
+            
+            const challenges = getTodayChallenges();
+            const totalXp = challenges.reduce((sum, c) => sum + c.reward.xp, 0);
+            const totalPoints = challenges.reduce((sum, c) => sum + c.reward.points, 0);
+            
+            // 发放奖励
+            state.totalXp += totalXp;
+            state.userPoints += totalPoints;
+            dailyChallengeState.claimed = true;
+            
+            saveChallengeState();
+            saveState();
+            
+            // 显示奖励
+            showEmotionToast('excited', `获得 +${totalXp} XP 和 +${totalPoints} 积分！`);
+            
+            // 显示等级提升动画（如果有）
+            setTimeout(() => checkLevelUp(), 300);
+            
+            // 更新UI
+            updateChallengeDisplay();
+            updateLevelDisplay();
+            updateUI();
+        }
+        
+        /** 更新挑战倒计时 */
+        function updateChallengeTimer() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0);
+            
+            const diff = tomorrow - now;
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('challengeTimer').textContent = 
+                `刷新倒计时: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // 初始化风格推荐和每日挑战
+        loadChallengeState();
+        renderStyleCards();
+        updateChallengeDisplay();
+        updateExclusiveZone();
+        updateChallengeTimer();
+        
+        // 每秒更新倒计时
+        setInterval(updateChallengeTimer, 1000);
         
         // ==================== 情绪化通知初始化 ====================
         // 检查连续活跃状态
