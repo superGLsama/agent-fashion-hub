@@ -2761,6 +2761,530 @@
         .clothing-card.equipping {
             animation: equipPulse 0.3s ease;
         }
+
+        /* ==================== 装扮系统2.0 样式 ==================== */
+        
+        /* 方案管理面板 */
+        .outfit-manager {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .outfit-manager-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+        
+        .outfit-manager-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .outfit-schemes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .outfit-scheme-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.6rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .outfit-scheme-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+        
+        .outfit-scheme-item.active {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--accent-cyan);
+        }
+        
+        .outfit-scheme-preview {
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-gradient);
+            border-radius: 8px;
+        }
+        
+        .outfit-scheme-info {
+            flex: 1;
+        }
+        
+        .outfit-scheme-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .outfit-scheme-meta {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .outfit-scheme-trend {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-green);
+        }
+        
+        .outfit-scheme-actions {
+            display: flex;
+            gap: 0.3rem;
+        }
+        
+        .outfit-scheme-btn {
+            padding: 0.4rem 0.6rem;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .outfit-scheme-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+        
+        .outfit-scheme-btn.delete:hover {
+            border-color: var(--accent-pink);
+            color: var(--accent-pink);
+        }
+        
+        .outfit-empty {
+            text-align: center;
+            padding: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        
+        /* AI推荐面板 */
+        .ai-recommend-panel {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(0, 212, 255, 0.1));
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 16px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .ai-recommend-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+        
+        .ai-recommend-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .ai-badge {
+            background: linear-gradient(135deg, var(--epic), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+        }
+        
+        .ai-theme-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+        }
+        
+        .ai-theme-tab {
+            padding: 0.4rem 0.8rem;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .ai-theme-tab:hover {
+            border-color: rgba(168, 85, 247, 0.5);
+            color: var(--epic);
+        }
+        
+        .ai-theme-tab.active {
+            background: rgba(168, 85, 247, 0.2);
+            border-color: var(--epic);
+            color: var(--epic);
+        }
+        
+        .ai-recommend-result {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+        
+        .ai-recommend-items {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.8rem;
+        }
+        
+        .ai-recommend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.3rem 0.6rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+        
+        .ai-recommend-item-icon {
+            font-size: 1rem;
+        }
+        
+        .ai-recommend-score {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .ai-recommend-total {
+            font-size: 0.9rem;
+        }
+        
+        .ai-recommend-total span {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+        
+        .ai-apply-btn {
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, var(--epic), var(--accent-cyan));
+            border: none;
+            border-radius: 20px;
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .ai-apply-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4);
+        }
+        
+        /* 装扮评分系统 */
+        .outfit-score-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .outfit-score-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+        
+        .outfit-score-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .outfit-score-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.6rem;
+        }
+        
+        .outfit-score-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+        }
+        
+        .outfit-score-item-icon {
+            font-size: 1.2rem;
+        }
+        
+        .outfit-score-item-info {
+            flex: 1;
+        }
+        
+        .outfit-score-item-name {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .outfit-score-item-value {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .outfit-score-item-value.high { color: var(--accent-green); }
+        .outfit-score-item-value.mid { color: var(--legendary); }
+        .outfit-score-item-value.low { color: var(--text-secondary); }
+        
+        /* 时装周活动 */
+        .fashion-week-banner {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(255, 0, 110, 0.15));
+            border: 1px solid var(--legendary);
+            border-radius: 16px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .fashion-week-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .fashion-week-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            position: relative;
+        }
+        
+        .fashion-week-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .fashion-week-badge {
+            background: linear-gradient(135deg, var(--legendary), var(--accent-pink));
+            padding: 0.2rem 0.6rem;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .fashion-week-timer {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+        
+        .fashion-week-content {
+            position: relative;
+        }
+        
+        .fashion-week-theme {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .fashion-week-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.8rem;
+        }
+        
+        .fashion-week-reward {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: rgba(245, 158, 11, 0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: var(--legendary);
+            margin-bottom: 0.8rem;
+        }
+        
+        .fashion-week-progress {
+            margin-bottom: 0.8rem;
+        }
+        
+        .fashion-week-progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.3rem;
+        }
+        
+        .fashion-week-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--legendary), var(--accent-pink));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .fashion-week-progress-text {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .fashion-week-claim-btn {
+            width: 100%;
+            padding: 0.7rem;
+            background: linear-gradient(135deg, var(--legendary), var(--accent-pink));
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .fashion-week-claim-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(245, 158, 11, 0.4);
+        }
+        
+        .fashion-week-claim-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* 装扮系统2.0操作按钮 */
+        .outfit-actions-v2 {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .outfit-btn-v2 {
+            flex: 1;
+            padding: 0.6rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+        
+        .outfit-btn-v2:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+        
+        /* 稀有度搭配动画 */
+        @keyframes rarityMatch {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); text-shadow: 0 0 20px var(--accent-green); }
+            100% { transform: scale(1); }
+        }
+        
+        .rarity-match {
+            animation: rarityMatch 0.5s ease;
+        }
+        
+        /* 联盟风格统一度 */
+        .alliance-harmony {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            margin-top: 0.5rem;
+        }
+        
+        .alliance-harmony-icon {
+            font-size: 1.2rem;
+        }
+        
+        .alliance-harmony-info {
+            flex: 1;
+        }
+        
+        .alliance-harmony-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .alliance-harmony-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-top: 0.3rem;
+            overflow: hidden;
+        }
+        
+        .alliance-harmony-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+        
+        .alliance-harmony-fill.tech { background: var(--accent-cyan); }
+        .alliance-harmony-fill.nature { background: var(--accent-green); }
+        .alliance-harmony-fill.chaos { background: var(--accent-pink); }
+
         
         /* 响应式 */
         @media (max-width: 768px) {
@@ -3977,7 +4501,7 @@
             </div>
         </section>
         
-        <!-- (装扮) 装扮系统区块 -->
+                <!-- (装扮) 装扮系统区块 -->
         <section class="outfit-system" id="outfitSystem" style="display: none;">
             <!-- 左侧：角色形象展示区 -->
             <div class="character-preview">
@@ -4002,13 +4526,144 @@
                 
                 <!-- 操作按钮 -->
                 <div class="outfit-actions">
-                    <button class="outfit-btn outfit-btn-save" onclick="saveOutfit()">💾 保存方案</button>
+                    <button class="outfit-btn outfit-btn-save" onclick="toggleOutfitManager()">💾 方案管理</button>
                     <button class="outfit-btn outfit-btn-reset" onclick="resetOutfit()">🔄 重置穿戴</button>
                 </div>
             </div>
             
             <!-- 右侧：装扮面板 -->
             <div class="outfit-panel">
+                <!-- 时装周活动 -->
+                <div class="fashion-week-banner" id="fashionWeekBanner">
+                    <div class="fashion-week-header">
+                        <div class="fashion-week-title">
+                            <span>👑</span> 时装周挑战
+                            <span class="fashion-week-badge">限时</span>
+                        </div>
+                        <div class="fashion-week-timer">
+                            <span>⏰</span>
+                            <span id="fashionWeekTimer">23:45:12</span>
+                        </div>
+                    </div>
+                    <div class="fashion-week-content">
+                        <div class="fashion-week-theme" id="fashionWeekTheme">🎭 今日主题：赛博朋克之夜</div>
+                        <div class="fashion-week-desc" id="fashionWeekDesc">穿戴科技派装备，提升潮流度至指定目标</div>
+                        <div class="fashion-week-reward">
+                            <span>🏆</span>
+                            <span>+200 XP + 100 积分</span>
+                        </div>
+                        <div class="fashion-week-progress">
+                            <div class="fashion-week-progress-bar">
+                                <div class="fashion-week-progress-fill" id="fashionWeekProgress" style="width: 0%"></div>
+                            </div>
+                            <div class="fashion-week-progress-text" id="fashionWeekProgressText">0 / 200 潮流度</div>
+                        </div>
+                        <button class="fashion-week-claim-btn" id="fashionWeekClaimBtn" onclick="claimFashionWeekReward()" disabled>
+                            领取奖励
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- AI智能推荐 -->
+                <div class="ai-recommend-panel">
+                    <div class="ai-recommend-header">
+                        <div class="ai-recommend-title">
+                            <span>🤖</span> AI智能搭配
+                            <span class="ai-badge">NEW</span>
+                        </div>
+                    </div>
+                    <div class="ai-theme-tabs" id="aiThemeTabs">
+                        <button class="ai-theme-tab active" data-theme="balanced" onclick="switchAiTheme('balanced')">
+                            ⚖️ 均衡
+                        </button>
+                        <button class="ai-theme-tab" data-theme="tech" onclick="switchAiTheme('tech')">
+                            ⚡ 科技风
+                        </button>
+                        <button class="ai-theme-tab" data-theme="nature" onclick="switchAiTheme('nature')">
+                            🌿 自然风
+                        </button>
+                        <button class="ai-theme-tab" data-theme="chaos" onclick="switchAiTheme('chaos')">
+                            🔥 混沌风
+                        </button>
+                    </div>
+                    <div class="ai-recommend-result">
+                        <div class="ai-recommend-items" id="aiRecommendItems">
+                            <div class="outfit-empty">点击推荐获取AI搭配方案~</div>
+                        </div>
+                        <div class="ai-recommend-score">
+                            <div class="ai-recommend-total">预计潮流度: <span id="aiRecommendScore">0</span></div>
+                            <button class="ai-apply-btn" id="aiApplyBtn" onclick="applyAiRecommendation()" disabled>
+                                一键应用
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 装扮评分系统 -->
+                <div class="outfit-score-panel">
+                    <div class="outfit-score-header">
+                        <div class="outfit-score-title">
+                            <span>📊</span> 搭配评分
+                        </div>
+                    </div>
+                    <div class="outfit-score-grid" id="outfitScoreGrid">
+                        <div class="outfit-score-item">
+                            <span class="outfit-score-item-icon">🎯</span>
+                            <div class="outfit-score-item-info">
+                                <div class="outfit-score-item-name">稀有度</div>
+                                <div class="outfit-score-item-value low" id="rarityScore">--</div>
+                            </div>
+                        </div>
+                        <div class="outfit-score-item">
+                            <span class="outfit-score-item-icon">🌟</span>
+                            <div class="outfit-score-item-info">
+                                <div class="outfit-score-item-name">完整度</div>
+                                <div class="outfit-score-item-value low" id="completenessScore">--</div>
+                            </div>
+                        </div>
+                        <div class="outfit-score-item">
+                            <span class="outfit-score-item-icon">🎨</span>
+                            <div class="outfit-score-item-info">
+                                <div class="outfit-score-item-name">风格统一</div>
+                                <div class="outfit-score-item-value low" id="harmonyScore">--</div>
+                            </div>
+                        </div>
+                        <div class="outfit-score-item">
+                            <span class="outfit-score-item-icon">💎</span>
+                            <div class="outfit-score-item-info">
+                                <div class="outfit-score-item-name">综合评分</div>
+                                <div class="outfit-score-item-value low" id="totalScore">--</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alliance-harmony" id="allianceHarmony" style="display: none;">
+                        <span class="alliance-harmony-icon" id="allianceIcon">⚡</span>
+                        <div class="alliance-harmony-info">
+                            <div class="alliance-harmony-name" id="allianceName">科技派统一度</div>
+                            <div class="alliance-harmony-bar">
+                                <div class="alliance-harmony-fill tech" id="allianceFill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 方案管理面板 -->
+                <div class="outfit-manager" id="outfitManager" style="display: none;">
+                    <div class="outfit-manager-header">
+                        <div class="outfit-manager-title">
+                            <span>📁</span> 已保存方案
+                        </div>
+                    </div>
+                    <div class="outfit-schemes-list" id="outfitSchemesList">
+                        <div class="outfit-empty">暂无保存的方案~</div>
+                    </div>
+                    <div class="outfit-actions-v2">
+                        <button class="outfit-btn-v2" onclick="saveOutfit()">
+                            <span>💾</span> 保存当前
+                        </button>
+                    </div>
+                </div>
+                
                 <!-- 部位切换标签 -->
                 <div class="slot-tabs" id="slotTabs">
                     <button class="slot-tab active" data-slot="hair" onclick="switchSlot('hair')">💇 发型</button>
@@ -5717,6 +6372,8 @@
             renderClothingGrid();
             
             showNotification('已重置所有穿戴', 'success');
+            updateOutfitScores();
+            updateFashionWeekProgress();
         }
         
         // ==================== 交互逻辑 ====================
@@ -5783,6 +6440,11 @@
                 updateTrendDisplay();
                 updateSlotTabs();
                 renderClothingGrid();
+                // 装扮系统2.0初始化
+                initFashionWeek();
+                updateOutfitScores();
+                generateAiRecommendation();
+                setInterval(updateFashionWeekTimer, 1000);
             }
             
             // 初始化时检查新手成就
