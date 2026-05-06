@@ -4111,6 +4111,470 @@
         .rank-change.up {
             animation: rankUp 0.5s ease;
         }
+        
+        /* ==================== 每日签到系统 ==================== */
+        
+        /* 签到按钮 */
+        .checkin-btn {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
+            border: none;
+            color: #fff;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+        
+        .checkin-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+        }
+        
+        .checkin-btn.signed {
+            background: linear-gradient(135deg, var(--accent-green), #00b894);
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+        }
+        
+        .checkin-btn .streak-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--legendary);
+            color: #000;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.15rem 0.4rem;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+            display: none;
+        }
+        
+        .checkin-btn.has-streak .streak-badge {
+            display: block;
+        }
+        
+        /* 签到面板 */
+        .checkin-panel {
+            position: fixed;
+            top: 0;
+            left: -480px;
+            width: 460px;
+            max-width: 90vw;
+            height: 100vh;
+            background: var(--bg-card);
+            z-index: 150;
+            transition: left 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .checkin-panel.show {
+            left: 0;
+        }
+        
+        .checkin-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            background: linear-gradient(180deg, rgba(245, 158, 11, 0.08), transparent);
+        }
+        
+        .checkin-header h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* 连续签到显示 */
+        .streak-display {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(255, 0, 110, 0.1));
+            border: 1px solid var(--legendary);
+            border-radius: 16px;
+            padding: 1.2rem;
+            margin: 1.5rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        .streak-flame {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            animation: flamePulse 1s ease infinite;
+        }
+        
+        .streak-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--legendary);
+            text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+        }
+        
+        .streak-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        /* 签到日历 */
+        .checkin-calendar {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.2rem;
+            margin: 0 1.5rem 1.5rem;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .calendar-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+        
+        .calendar-nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .calendar-nav-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .calendar-nav-btn:hover {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--accent-cyan);
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            text-align: center;
+        }
+        
+        .calendar-weekday {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            padding: 0.5rem 0;
+        }
+        
+        .calendar-day {
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid transparent;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .calendar-day:hover:not(.empty):not(.future) {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+        
+        .calendar-day.signed {
+            background: linear-gradient(135deg, var(--accent-green), #00b894);
+            color: #000;
+            font-weight: 700;
+        }
+        
+        .calendar-day.signed::after {
+            content: '✓';
+            position: absolute;
+            bottom: -2px;
+            font-size: 0.6rem;
+        }
+        
+        .calendar-day.today {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+        
+        .calendar-day.today.signed {
+            border-color: var(--accent-green);
+        }
+        
+        .calendar-day.future {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .calendar-day.empty {
+            background: transparent;
+            cursor: default;
+        }
+        
+        /* 签到按钮（大） */
+        .checkin-main-btn {
+            margin: 0 1.5rem 1.5rem;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+        
+        .checkin-main-btn.can-sign {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
+            animation: signPulse 2s ease infinite;
+        }
+        
+        .checkin-main-btn.can-sign:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 212, 255, 0.5);
+        }
+        
+        @keyframes signPulse {
+            0%, 100% { box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4); }
+            50% { box-shadow: 0 4px 30px rgba(0, 212, 255, 0.6); }
+        }
+        
+        .checkin-main-btn.signed {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+            border: 2px solid var(--accent-green);
+            cursor: default;
+            animation: none;
+        }
+        
+        /* 奖励预览 */
+        .reward-preview {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.2rem;
+            margin: 0 1.5rem 1.5rem;
+        }
+        
+        .reward-title {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .reward-list {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+        
+        .reward-day {
+            text-align: center;
+            padding: 0.5rem 0.3rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        .reward-day:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .reward-day.current {
+            background: rgba(0, 212, 255, 0.15);
+            border: 1px solid var(--accent-cyan);
+        }
+        
+        .reward-day.completed {
+            background: rgba(0, 255, 136, 0.1);
+        }
+        
+        .reward-day-number {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.3rem;
+        }
+        
+        .reward-day-icon {
+            font-size: 1.2rem;
+        }
+        
+        .reward-day-value {
+            font-size: 0.65rem;
+            color: var(--legendary);
+            font-weight: 600;
+        }
+        
+        /* 签到成功动画 */
+        .checkin-success-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .checkin-success-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .checkin-success-content {
+            text-align: center;
+            animation: checkinBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        @keyframes checkinBounce {
+            0% { transform: scale(0) rotate(-20deg); }
+            50% { transform: scale(1.2) rotate(10deg); }
+            70% { transform: scale(0.9) rotate(-5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        
+        .checkin-success-icon {
+            font-size: 6rem;
+            margin-bottom: 1rem;
+            animation: successShake 0.5s ease;
+        }
+        
+        @keyframes successShake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+        
+        .checkin-success-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: var(--accent-green);
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+        }
+        
+        .checkin-success-streak {
+            font-size: 1.2rem;
+            color: var(--legendary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .checkin-success-reward {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 212, 255, 0.15);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--accent-cyan);
+        }
+        
+        .checkin-reward-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0 0.8rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .checkin-reward-item:last-child {
+            border-right: none;
+        }
+        
+        .checkin-reward-icon {
+            font-size: 1.2rem;
+        }
+        
+        .checkin-reward-value {
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+        
+        .checkin-success-btn {
+            padding: 0.8rem 2.5rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .checkin-success-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+        }
+        
+        /* 签到统计 */
+        .checkin-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+            padding: 1rem;
+            margin: 0 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+        }
+        
+        .checkin-stat {
+            text-align: center;
+        }
+        
+        .checkin-stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+        
+        .checkin-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
     </style>
 </head>
 <body>
@@ -4143,6 +4607,11 @@
                 Agent Fashion Hub
             </div>
             <div class="user-panel">
+                <!-- 签到按钮 -->
+                <button class="checkin-btn" id="checkinBtn" onclick="toggleCheckinPanel()">
+                    📅
+                    <span class="streak-badge" id="streakBadge">0</span>
+                </button>
                 <!-- 排行榜按钮 -->
                 <button class="leaderboard-btn" id="leaderboardBtn" onclick="toggleLeaderboardPanel()">
                     🏆
@@ -4226,6 +4695,95 @@
         <div class="leaderboard-refresh">
             <span class="refresh-icon">🔄</span>
             <span>每10分钟更新一次</span>
+        </div>
+    </div>
+    
+    <!-- 签到面板遮罩 -->
+    <div class="panel-overlay" id="checkinOverlay" onclick="closeCheckinPanel()"></div>
+    
+    <!-- 签到面板 -->
+    <div class="checkin-panel" id="checkinPanel">
+        <div class="checkin-header">
+            <h3>📅 每日签到</h3>
+            <button class="panel-close" onclick="closeCheckinPanel()">✕</button>
+        </div>
+        
+        <!-- 连续签到显示 -->
+        <div class="streak-display">
+            <div class="streak-flame" id="streakFlame">🔥</div>
+            <div class="streak-number" id="streakNumber">0</div>
+            <div class="streak-label">连续签到天数</div>
+        </div>
+        
+        <!-- 签到日历 -->
+        <div class="checkin-calendar">
+            <div class="calendar-header">
+                <div class="calendar-title" id="calendarTitle">2026年5月</div>
+                <div class="calendar-nav">
+                    <button class="calendar-nav-btn" onclick="prevMonth()">◀</button>
+                    <button class="calendar-nav-btn" onclick="nextMonth()">▶</button>
+                </div>
+            </div>
+            <div class="calendar-grid" id="calendarGrid">
+                <div class="calendar-weekday">日</div>
+                <div class="calendar-weekday">一</div>
+                <div class="calendar-weekday">二</div>
+                <div class="calendar-weekday">三</div>
+                <div class="calendar-weekday">四</div>
+                <div class="calendar-weekday">五</div>
+                <div class="calendar-weekday">六</div>
+            </div>
+        </div>
+        
+        <!-- 签到按钮 -->
+        <button class="checkin-main-btn can-sign" id="checkinMainBtn" onclick="doCheckin()">
+            <span>✨</span>
+            <span id="checkinBtnText">立即签到</span>
+        </button>
+        
+        <!-- 奖励预览 -->
+        <div class="reward-preview">
+            <div class="reward-title">
+                <span>🎁</span>
+                <span>本周签到奖励</span>
+            </div>
+            <div class="reward-list" id="rewardList"></div>
+        </div>
+        
+        <!-- 签到统计 -->
+        <div class="checkin-stats">
+            <div class="checkin-stat">
+                <div class="checkin-stat-value" id="totalCheckins">0</div>
+                <div class="checkin-stat-label">累计签到</div>
+            </div>
+            <div class="checkin-stat">
+                <div class="checkin-stat-value" id="currentStreak">0</div>
+                <div class="checkin-stat-label">连续天数</div>
+            </div>
+            <div class="checkin-stat">
+                <div class="checkin-stat-value" id="totalXpEarned">0</div>
+                <div class="checkin-stat-label">获得XP</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 签到成功动画 -->
+    <div class="checkin-success-overlay" id="checkinSuccessOverlay" onclick="closeCheckinSuccess()">
+        <div class="checkin-success-content">
+            <div class="checkin-success-icon" id="checkinSuccessIcon">🎉</div>
+            <div class="checkin-success-title">签到成功!</div>
+            <div class="checkin-success-streak" id="checkinSuccessStreak">🔥 连续 1 天</div>
+            <div class="checkin-success-reward" id="checkinSuccessReward">
+                <div class="checkin-reward-item">
+                    <span class="checkin-reward-icon">⭐</span>
+                    <span class="checkin-reward-value" id="checkinXpReward">+10 XP</span>
+                </div>
+                <div class="checkin-reward-item">
+                    <span class="checkin-reward-icon">💎</span>
+                    <span class="checkin-reward-value" id="checkinPointsReward">+50</span>
+                </div>
+            </div>
+            <button class="checkin-success-btn" onclick="closeCheckinSuccess()">太棒了!</button>
         </div>
     </div>
     
@@ -5476,6 +6034,52 @@
                 condition: (s) => (s.totalSpent || 0) >= 5000,
                 getProgress: (s) => Math.min(s.totalSpent || 0, 5000),
                 getTarget: () => 5000
+            },
+            
+            // 签到成就
+            {
+                id: 'checkin_1',
+                name: '初次签到',
+                desc: '完成第一次签到',
+                icon: '📅',
+                category: 'beginner',
+                reward: 20,
+                condition: (s) => (s.checkinData?.totalCheckins || 0) >= 1,
+                getProgress: (s) => Math.min(s.checkinData?.totalCheckins || 0, 1),
+                getTarget: () => 1
+            },
+            {
+                id: 'checkin_7',
+                name: '坚持不懈',
+                desc: '连续签到7天',
+                icon: '🔥',
+                category: 'active',
+                reward: 150,
+                condition: (s) => (s.checkinData?.currentStreak || 0) >= 7,
+                getProgress: (s) => Math.min(s.checkinData?.currentStreak || 0, 7),
+                getTarget: () => 7
+            },
+            {
+                id: 'checkin_30',
+                name: '签到王者',
+                desc: '连续签到30天',
+                icon: '👑',
+                category: 'active',
+                reward: 500,
+                condition: (s) => (s.checkinData?.currentStreak || 0) >= 30,
+                getProgress: (s) => Math.min(s.checkinData?.currentStreak || 0, 30),
+                getTarget: () => 30
+            },
+            {
+                id: 'total_checkin_100',
+                name: '签到达人',
+                desc: '累计签到100天',
+                icon: '🏅',
+                category: 'consume',
+                reward: 300,
+                condition: (s) => (s.checkinData?.totalCheckins || 0) >= 100,
+                getProgress: (s) => Math.min(s.checkinData?.totalCheckins || 0, 100),
+                getTarget: () => 100
             }
         ];
         
@@ -5521,7 +6125,18 @@
             totalPurchases: 0,  // 累计购买次数
             totalSpent: 0,  // 累计消费积分
             browsedItems: new Set(),  // 浏览过的物品ID集合
-            newAchievements: []  // 新达成的成就（用于显示动画）
+            newAchievements: [],  // 新达成的成就（用于显示动画）
+            
+            // 签到系统状态
+            checkinData: {
+                signedDates: [],  // 已签到的日期数组 ['2026-05-01', '2026-05-02', ...]
+                lastSignDate: null,  // 最后签到日期
+                currentStreak: 0,  // 当前连续签到天数
+                totalCheckins: 0,  // 累计签到天数
+                totalXpEarned: 0,  // 累计获得XP
+                totalPointsEarned: 0  // 累计获得积分
+            },
+            checkinCalendarMonth: new Date().getMonth()  // 日历当前月份
         };
         
         // ==================== 社交排行榜数据 ====================
@@ -5612,6 +6227,12 @@
                 if (!state.totalXp) state.totalXp = 0;
                 if (!state.totalPurchases) state.totalPurchases = 0;
                 if (!state.totalSpent) state.totalSpent = 0;
+                // 恢复签到状态
+                if (parsedState.checkinData) {
+                    state.checkinData = { ...state.checkinData, ...parsedState.checkinData };
+                }
+                // 检查是否需要重置连续签到（跨天时）
+                checkStreakReset();
             }
         }
         
@@ -5622,6 +6243,308 @@
                 browsedItems: Array.from(state.browsedItems || new Set())
             };
             localStorage.setItem('agentFashionState', JSON.stringify(stateToSave));
+        }
+        
+        // ==================== 每日签到系统 ====================
+        
+        // 签到奖励配置（7天循环）
+        const CHECKIN_REWARDS = [
+            { day: 1, xp: 10, points: 50, icon: '🌟', name: '新开始' },
+            { day: 2, xp: 15, points: 80, icon: '🌟', name: '小试牛刀' },
+            { day: 3, xp: 20, points: 100, icon: '✨', name: '渐入佳境' },
+            { day: 4, xp: 25, points: 120, icon: '💫', name: '动力十足' },
+            { day: 5, xp: 30, points: 150, icon: '🔥', name: '热情高涨' },
+            { day: 6, xp: 40, points: 200, icon: '🌈', name: '彩虹降临' },
+            { day: 7, xp: 100, points: 500, icon: '👑', name: '王者归来' }
+        ];
+        
+        /** 检查并重置连续签到状态 */
+        function checkStreakReset() {
+            const today = getDateString(new Date());
+            const lastSign = state.checkinData.lastSignDate;
+            
+            if (lastSign && lastSign !== today) {
+                const lastDate = new Date(lastSign);
+                const todayDate = new Date(today);
+                const diffDays = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+                
+                // 如果超过1天没签到，重置连续天数
+                if (diffDays > 1) {
+                    state.checkinData.currentStreak = 0;
+                    saveState();
+                }
+            }
+        }
+        
+        /** 获取日期字符串 YYYY-MM-DD */
+        function getDateString(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+        
+        /** 获取当前是否已签到 */
+        function isSignedToday() {
+            const today = getDateString(new Date());
+            return state.checkinData.signedDates.includes(today);
+        }
+        
+        /** 获取今天应该获得的奖励（第几天） */
+        function getTodayRewardDay() {
+            const streak = state.checkinData.currentStreak;
+            // 如果今天已签到，返回当前连续天数对应的奖励
+            // 如果还没签到，返回下一个奖励
+            return (streak % 7) + 1;
+        }
+        
+        /** 执行签到 */
+        function doCheckin() {
+            if (isSignedToday()) {
+                showNotification('今天已经签到过了！', 'error');
+                return;
+            }
+            
+            const today = getDateString(new Date());
+            const lastSign = state.checkinData.lastSignDate;
+            
+            // 计算连续天数
+            if (lastSign) {
+                const lastDate = new Date(lastSign);
+                const todayDate = new Date(today);
+                const diffDays = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+                
+                if (diffDays === 1) {
+                    // 连续签到
+                    state.checkinData.currentStreak++;
+                } else {
+                    // 断签，重新开始
+                    state.checkinData.currentStreak = 1;
+                }
+            } else {
+                // 第一次签到
+                state.checkinData.currentStreak = 1;
+            }
+            
+            // 更新签到数据
+            state.checkinData.signedDates.push(today);
+            state.checkinData.lastSignDate = today;
+            state.checkinData.totalCheckins++;
+            
+            // 计算奖励
+            const rewardDay = getTodayRewardDay();
+            const reward = CHECKIN_REWARDS[rewardDay - 1];
+            const xpReward = reward.xp;
+            const pointsReward = reward.points;
+            
+            // 发放奖励
+            state.totalXp += xpReward;
+            state.userPoints += pointsReward;
+            state.checkinData.totalXpEarned += xpReward;
+            state.checkinData.totalPointsEarned += pointsReward;
+            
+            // 保存状态
+            saveState();
+            
+            // 更新UI
+            updateCheckinUI();
+            updateLevelDisplay();
+            document.getElementById('userPoints').textContent = state.userPoints;
+            
+            // 显示签到成功动画
+            showCheckinSuccess(xpReward, pointsReward);
+            
+            // 检查签到成就
+            checkAchievements();
+            
+            // 情绪化反馈
+            triggerEmotionFeedback({ type: 'checkin', data: { streak: state.checkinData.currentStreak } });
+            
+            // 检查惊喜
+            checkRandomSurprise();
+        }
+        
+        /** 显示签到成功动画 */
+        function showCheckinSuccess(xp, points) {
+            const streak = state.checkinData.currentStreak;
+            const rewardDay = getTodayRewardDay();
+            const reward = CHECKIN_REWARDS[rewardDay - 1];
+            
+            document.getElementById('checkinSuccessStreak').textContent = `🔥 连续 ${streak} 天`;
+            document.getElementById('checkinXpReward').textContent = `+${xp} XP`;
+            document.getElementById('checkinPointsReward').textContent = `+${points}`;
+            
+            // 根据连续天数显示不同图标
+            const icons = ['🎉', '🎊', '🎈', '🏆', '🌟', '💫', '👑'];
+            document.getElementById('checkinSuccessIcon').textContent = icons[Math.min(streak - 1, icons.length - 1)];
+            
+            document.getElementById('checkinSuccessOverlay').classList.add('show');
+        }
+        
+        /** 关闭签到成功动画 */
+        function closeCheckinSuccess() {
+            document.getElementById('checkinSuccessOverlay').classList.remove('show');
+        }
+        
+        /** 切换签到面板 */
+        function toggleCheckinPanel() {
+            const panel = document.getElementById('checkinPanel');
+            const overlay = document.getElementById('checkinOverlay');
+            
+            if (panel.classList.contains('show')) {
+                closeCheckinPanel();
+            } else {
+                // 关闭其他面板
+                closeFavoritesPanel();
+                closeAchievementPanel();
+                closeLeaderboardPanel();
+                
+                updateCheckinUI();
+                renderCalendar();
+                renderRewardPreview();
+                
+                panel.classList.add('show');
+                overlay.classList.add('show');
+            }
+        }
+        
+        function closeCheckinPanel() {
+            document.getElementById('checkinPanel').classList.remove('show');
+            document.getElementById('checkinOverlay').classList.remove('show');
+        }
+        
+        /** 更新签到UI */
+        function updateCheckinUI() {
+            const checkinBtn = document.getElementById('checkinBtn');
+            const streakBadge = document.getElementById('streakBadge');
+            const mainBtn = document.getElementById('checkinMainBtn');
+            const btnText = document.getElementById('checkinBtnText');
+            
+            // 更新签到按钮状态
+            if (isSignedToday()) {
+                checkinBtn.classList.add('signed');
+                mainBtn.classList.remove('can-sign');
+                mainBtn.classList.add('signed');
+                btnText.textContent = '已签到';
+            } else {
+                checkinBtn.classList.remove('signed');
+                mainBtn.classList.add('can-sign');
+                mainBtn.classList.remove('signed');
+                btnText.textContent = '立即签到';
+            }
+            
+            // 更新连续签到徽章
+            const streak = state.checkinData.currentStreak;
+            if (streak > 0) {
+                checkinBtn.classList.add('has-streak');
+                streakBadge.textContent = streak;
+            } else {
+                checkinBtn.classList.remove('has-streak');
+            }
+            
+            // 更新面板内显示
+            document.getElementById('streakNumber').textContent = streak;
+            document.getElementById('totalCheckins').textContent = state.checkinData.totalCheckins;
+            document.getElementById('currentStreak').textContent = streak;
+            document.getElementById('totalXpEarned').textContent = state.checkinData.totalXpEarned;
+            
+            // 更新火焰图标
+            const flameEmojis = ['🌱', '🌿', '🔥', '🔥', '🔥', '💥', '👑'];
+            document.getElementById('streakFlame').textContent = streak > 0 ? flameEmojis[Math.min(streak - 1, flameEmojis.length - 1)] : '🌱';
+        }
+        
+        /** 渲染签到日历 */
+        function renderCalendar() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = state.checkinCalendarMonth;
+            
+            // 更新标题
+            document.getElementById('calendarTitle').textContent = `${year}年${month + 1}月`;
+            
+            const grid = document.getElementById('calendarGrid');
+            const weekdays = grid.querySelectorAll('.calendar-weekday');
+            
+            // 获取当月第一天和最后一天
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const startWeekday = firstDay.getDay();
+            const daysInMonth = lastDay.getDate();
+            
+            // 保留星期标题
+            let html = '';
+            weekdays.forEach(w => { html += w.outerHTML; });
+            
+            // 添加空白格子
+            for (let i = 0; i < startWeekday; i++) {
+                html += '<div class="calendar-day empty"></div>';
+            }
+            
+            // 添加日期格子
+            const todayStr = getDateString(today);
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const isToday = dateStr === todayStr;
+                const isSigned = state.checkinData.signedDates.includes(dateStr);
+                const isFuture = new Date(dateStr) > today;
+                
+                let classes = 'calendar-day';
+                if (isToday) classes += ' today';
+                if (isSigned) classes += ' signed';
+                if (isFuture) classes += ' future';
+                
+                html += `<div class="${classes}">${day}</div>`;
+            }
+            
+            grid.innerHTML = html;
+        }
+        
+        /** 渲染奖励预览 */
+        function renderRewardPreview() {
+            const list = document.getElementById('rewardList');
+            const currentDay = getTodayRewardDay();
+            const todaySigned = isSignedToday();
+            
+            let html = '';
+            CHECKIN_REWARDS.forEach((reward, index) => {
+                const day = index + 1;
+                const isCurrent = day === currentDay && !todaySigned;
+                const isCompleted = state.checkinData.signedDates.length >= day;
+                
+                let classes = 'reward-day';
+                if (isCurrent) classes += ' current';
+                if (isCompleted) classes += ' completed';
+                
+                html += `
+                    <div class="${classes}">
+                        <div class="reward-day-number">第${day}天</div>
+                        <div class="reward-day-icon">${reward.icon}</div>
+                        <div class="reward-day-value">+${reward.xp}</div>
+                    </div>
+                `;
+            });
+            
+            list.innerHTML = html;
+        }
+        
+        /** 上个月 */
+        function prevMonth() {
+            if (state.checkinCalendarMonth === 0) {
+                state.checkinCalendarMonth = 11;
+            } else {
+                state.checkinCalendarMonth--;
+            }
+            renderCalendar();
+        }
+        
+        /** 下个月 */
+        function nextMonth() {
+            if (state.checkinCalendarMonth === 11) {
+                state.checkinCalendarMonth = 0;
+            } else {
+                state.checkinCalendarMonth++;
+            }
+            renderCalendar();
         }
         
         // ==================== 工具函数 ====================
@@ -6432,6 +7355,7 @@
             updateFavoritesBadge();
             updateLevelDisplay();
             updateAchievementBadge();
+            updateCheckinUI(); // 初始化签到状态
             
             // (装扮) 初始化装扮系统
             if (state.currentTab === 'customize') {
@@ -6981,6 +7905,24 @@
                 // 空搜索结果
                 'no-result': () => {
                     return { emotion: 'wow', message: '没找到？换个关键词试试~' };
+                },
+                // 签到相关
+                'checkin': (data) => {
+                    if (data.streak >= 7) {
+                        return { 
+                            emotion: 'excited', 
+                            message: `🔥 连续签到${data.streak}天！王者风范！` 
+                        };
+                    } else if (data.streak >= 3) {
+                        return { 
+                            emotion: 'love', 
+                            message: `✨ 连续签到${data.streak}天！越来越有范了！` 
+                        };
+                    }
+                    return { 
+                        emotion: 'happy', 
+                        message: '🌟 签到成功！今日份努力已打卡~' 
+                    };
                 },
                 // 默认
                 'default': () => {
