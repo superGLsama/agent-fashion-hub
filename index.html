@@ -4632,6 +4632,11 @@
                     ⚔️
                     <span class="challenge-badge" id="challengeBadge">0</span>
                 </button>
+                <!-- 限时活动按钮 -->
+                <button class="event-btn" id="eventBtn" onclick="toggleEventPanel()">
+                    🎯
+                    <span class="event-badge pulse" id="eventBadge">NEW</span>
+                </button>
                 <!-- 用户等级显示 -->
                 <div class="user-level-display" id="userLevelDisplay" onclick="toggleAchievementPanel()">
                     <span class="level-icon">⭐</span>
@@ -4806,6 +4811,61 @@
         </div>
         <div class="challenge-content" id="challengeContent">
             <!-- Content will be rendered by JS -->
+        </div>
+    </div>
+    
+    <!-- 限时活动面板遮罩 -->
+    <div class="event-overlay" id="eventOverlay" onclick="closeEventPanel()"></div>
+    
+    <!-- 限时活动面板 -->
+    <div class="event-panel" id="eventPanel">
+        <div class="event-header">
+            <h3>🎯 限时活动</h3>
+            <button class="event-close-btn" onclick="closeEventPanel()">✕</button>
+        </div>
+        
+        <!-- 活动倒计时 -->
+        <div class="event-countdown">
+            <div class="countdown-label">⏰ 活动倒计时</div>
+            <div class="countdown-timer" id="eventCountdown">
+                <span class="countdown-num" id="countdownDays">00</span>
+                <span class="countdown-sep">天</span>
+                <span class="countdown-num" id="countdownHours">00</span>
+                <span class="countdown-sep">时</span>
+                <span class="countdown-num" id="countdownMins">00</span>
+                <span class="countdown-sep">分</span>
+                <span class="countdown-num" id="countdownSecs">00</span>
+                <span class="countdown-sep">秒</span>
+            </div>
+        </div>
+        
+        <!-- 活动列表 -->
+        <div class="event-list" id="eventList">
+            <!-- Events will be rendered by JS -->
+        </div>
+        
+        <!-- 我的活动记录 -->
+        <div class="event-my-records">
+            <div class="records-header">
+                <span>📊 我的活动</span>
+            </div>
+            <div class="records-stats">
+                <div class="record-item">
+                    <span class="record-icon">🎖️</span>
+                    <span class="record-value" id="eventParticipated">0</span>
+                    <span class="record-label">参与活动</span>
+                </div>
+                <div class="record-item">
+                    <span class="record-icon">🏅</span>
+                    <span class="record-value" id="eventCompleted">0</span>
+                    <span class="record-label">完成活动</span>
+                </div>
+                <div class="record-item">
+                    <span class="record-icon">💎</span>
+                    <span class="record-value" id="eventPointsEarned">0</span>
+                    <span class="record-label">获得积分</span>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -9244,6 +9304,408 @@
                 showEmotionToast('happy', `查看 ${user.name} 的潮流主页~`);
             }
         }
+        
+        // ==================== 限时活动系统 ====================
+        
+        // 活动配置
+        const EVENTS = [
+            {
+                id: 'flash_sale_50',
+                type: 'discount',
+                title: '🔥 传奇装备半价抢购',
+                desc: '活动期间，指定传奇级装备享受5折优惠！先到先得，抢完即止！',
+                discount: 0.5,
+                targetItems: ['i1', 'i2', 'i3'], // 传奇装备
+                startDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2天前开始
+                endDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5天后结束
+                rewards: { xp: 50, points: 200 },
+                requirement: { type: 'purchase_event', count: 1 },
+                actionLabel: '立即抢购'
+            },
+            {
+                id: 'spending_challenge',
+                type: 'challenge',
+                title: '💎 消费挑战赛',
+                desc: '活动期间消费满2000积分，即可获得额外500积分返还和专属徽章！',
+                requirement: { type: 'spending', count: 2000 },
+                startDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+                endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+                rewards: { xp: 100, points: 500, badge: '消费王者' },
+                actionLabel: '挑战消费'
+            },
+            {
+                id: 'collection_rush',
+                type: 'reward',
+                title: '🎁 收藏冲刺活动',
+                desc: '收藏10件心仪装备，即可领取100积分奖励！',
+                requirement: { type: 'favorites', count: 10 },
+                startDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+                endDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
+                rewards: { xp: 30, points: 100 },
+                actionLabel: '去收藏'
+            },
+            {
+                id: 'xp_grind',
+                type: 'challenge',
+                title: '⭐ 经验冲刺周',
+                desc: '本周获取300 XP，即可在活动结束时领取神秘大礼包！',
+                requirement: { type: 'xp', count: 300 },
+                startDate: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000),
+                endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+                rewards: { xp: 0, points: 300, bonus: '神秘礼包' },
+                actionLabel: '查看进度'
+            },
+            {
+                id: 'epic_discount',
+                type: 'discount',
+                title: '⚡ 史诗装备限时8折',
+                desc: '指定史诗级装备限时8折优惠，潮流达人不容错过！',
+                discount: 0.8,
+                targetItems: ['i4', 'i5', 'i6', 'i7'], // 史诗装备
+                startDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+                endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+                rewards: { xp: 30, points: 100 },
+                requirement: { type: 'purchase_event', count: 1 },
+                actionLabel: '查看折扣'
+            }
+        ];
+        
+        // 活动状态管理
+        let eventState = {
+            participatedEvents: [],
+            completedEvents: [],
+            eventPointsEarned: 0,
+            lastUpdated: null
+        };
+        
+        /** 加载活动状态 */
+        function loadEventState() {
+            const saved = localStorage.getItem('eventState');
+            if (saved) {
+                eventState = { ...eventState, ...JSON.parse(saved) };
+            }
+        }
+        
+        /** 保存活动状态 */
+        function saveEventState() {
+            localStorage.setItem('eventState', JSON.stringify(eventState));
+        }
+        
+        /** 获取活动剩余时间 */
+        function getTimeLeft(endDate) {
+            const now = new Date();
+            const end = new Date(endDate);
+            const diff = end - now;
+            
+            if (diff <= 0) return { expired: true, text: '已结束' };
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const secs = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            return {
+                expired: false,
+                days, hours, mins, secs,
+                text: `${days}天${hours}时${mins}分${secs}秒`
+            };
+        }
+        
+        /** 获取全局活动结束时间（最晚结束的活动） */
+        function getEventEndTime() {
+            let latestEnd = new Date();
+            EVENTS.forEach(event => {
+                const end = new Date(event.endDate);
+                if (end > latestEnd) {
+                    latestEnd = end;
+                }
+            });
+            return latestEnd;
+        }
+        
+        /** 更新倒计时显示 */
+        function updateCountdown() {
+            const endTime = getEventEndTime();
+            const timeLeft = getTimeLeft(endTime);
+            
+            if (timeLeft.expired) {
+                document.getElementById('countdownDays').textContent = '00';
+                document.getElementById('countdownHours').textContent = '00';
+                document.getElementById('countdownMins').textContent = '00';
+                document.getElementById('countdownSecs').textContent = '00';
+            } else {
+                document.getElementById('countdownDays').textContent = String(timeLeft.days).padStart(2, '0');
+                document.getElementById('countdownHours').textContent = String(timeLeft.hours).padStart(2, '0');
+                document.getElementById('countdownMins').textContent = String(timeLeft.mins).padStart(2, '0');
+                document.getElementById('countdownSecs').textContent = String(timeLeft.secs).padStart(2, '0');
+            }
+        }
+        
+        /** 检查活动进度 */
+        function getEventProgress(event) {
+            const req = event.requirement;
+            switch (req.type) {
+                case 'spending':
+                    return Math.min(state.totalSpent || 0, req.count);
+                case 'favorites':
+                    const totalFavs = (state.favorites.items?.length || 0) + 
+                                      (state.favorites.agents?.length || 0) + 
+                                      (state.favorites.outfits?.length || 0);
+                    return Math.min(totalFavs, req.count);
+                case 'xp':
+                    return Math.min(state.totalXp || 0, req.count);
+                case 'purchase_event':
+                    return eventState.participatedEvents.includes(event.id) ? 1 : 0;
+                default:
+                    return 0;
+            }
+        }
+        
+        /** 检查活动是否完成 */
+        function isEventCompleted(eventId) {
+            return eventState.completedEvents.includes(eventId);
+        }
+        
+        /** 检查活动是否已过期 */
+        function isEventExpired(event) {
+            return new Date() > new Date(event.endDate);
+        }
+        
+        /** 渲染活动列表 */
+        function renderEvents() {
+            const container = document.getElementById('eventList');
+            
+            container.innerHTML = EVENTS.map(event => {
+                const progress = getEventProgress(event);
+                const requirement = event.requirement.count;
+                const progressPercent = Math.min((progress / requirement) * 100, 100);
+                const completed = isEventCompleted(event.id);
+                const expired = isEventExpired(event);
+                const timeLeft = getTimeLeft(event.endDate);
+                
+                let cardClass = `event-card ${event.type}`;
+                if (completed) cardClass += ' completed';
+                if (expired && !completed) cardClass += ' expired';
+                
+                let typeLabel = '';
+                let actionBtn = '';
+                
+                if (event.type === 'discount') {
+                    typeLabel = `<span class="event-type-badge discount">限时折扣</span>`;
+                } else if (event.type === 'challenge') {
+                    typeLabel = `<span class="event-type-badge challenge">挑战活动</span>`;
+                } else {
+                    typeLabel = `<span class="event-type-badge reward">奖励活动</span>`;
+                }
+                
+                if (completed) {
+                    actionBtn = `<button class="event-action-btn secondary" disabled>已完成 ✓</button>`;
+                } else if (expired) {
+                    actionBtn = `<button class="event-action-btn secondary" disabled>已结束</button>`;
+                } else {
+                    actionBtn = `<button class="event-action-btn primary" onclick="handleEventAction('${event.id}')">${event.actionLabel}</button>`;
+                }
+                
+                let discountTag = '';
+                if (event.type === 'discount' && event.discount) {
+                    const offPercent = Math.round((1 - event.discount) * 100);
+                    discountTag = `<div class="discount-tag">${offPercent}% OFF</div>`;
+                }
+                
+                let progressHtml = '';
+                if (event.requirement.type !== 'purchase_event') {
+                    progressHtml = `
+                        <div class="event-progress">
+                            <div class="progress-header">
+                                <span>进度</span>
+                                <span>${progress} / ${requirement}</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill" style="width: ${progressPercent}%"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                let rewardsHtml = '';
+                if (event.rewards.xp || event.rewards.points) {
+                    rewardsHtml = `
+                        <div class="event-reward-preview">
+                            ${event.rewards.xp ? `<div class="reward-item"><span class="reward-item-icon">⭐</span><span class="reward-item-value">+${event.rewards.xp} XP</span></div>` : ''}
+                            ${event.rewards.points ? `<div class="reward-item"><span class="reward-item-icon">💎</span><span class="reward-item-value">+${event.rewards.points}</span></div>` : ''}
+                            ${event.rewards.badge ? `<div class="reward-item"><span class="reward-item-icon">🏅</span><span class="reward-item-value">${event.rewards.badge}</span></div>` : ''}
+                        </div>
+                    `;
+                }
+                
+                return `
+                    <div class="${cardClass}">
+                        ${discountTag}
+                        ${typeLabel}
+                        <div class="event-title">${event.title}</div>
+                        <div class="event-desc">${event.desc}</div>
+                        ${progressHtml}
+                        ${rewardsHtml}
+                        ${actionBtn}
+                        <div class="event-time-left">
+                            <span class="timer-icon">⏰</span>
+                            <span>剩余 ${timeLeft.text}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        /** 处理活动按钮点击 */
+        function handleEventAction(eventId) {
+            const event = EVENTS.find(e => e.id === eventId);
+            if (!event) return;
+            
+            const req = event.requirement;
+            
+            switch (event.type) {
+                case 'discount':
+                    // 关闭活动面板，跳转到装备页面
+                    closeEventPanel();
+                    showEmotionToast('excited', '🎉 折扣活动进行中，快去抢购！');
+                    // 可以触发筛选打折装备
+                    break;
+                case 'challenge':
+                    // 根据类型跳转到对应页面
+                    if (req.type === 'spending') {
+                        closeEventPanel();
+                        showEmotionToast('cool', '💎 消费挑战进行中，继续买买买！');
+                    } else if (req.type === 'xp') {
+                        closeEventPanel();
+                        triggerEmotionFeedback({ type: 'browse', data: { count: 1 } });
+                        showEmotionToast('happy', '⭐ 经验冲刺中，继续加油！');
+                    }
+                    break;
+                case 'reward':
+                    if (req.type === 'favorites') {
+                        toggleFavoritesPanel();
+                    }
+                    break;
+            }
+            
+            // 标记参与活动
+            if (!eventState.participatedEvents.includes(eventId)) {
+                eventState.participatedEvents.push(eventId);
+                saveEventState();
+            }
+        }
+        
+        /** 领取活动奖励 */
+        function claimEventReward(eventId) {
+            const event = EVENTS.find(e => e.id === eventId);
+            if (!event) return;
+            
+            const progress = getEventProgress(event);
+            const requirement = event.requirement.count;
+            
+            if (progress < requirement) {
+                showEmotionToast('wow', '还没达到条件，继续加油！');
+                return;
+            }
+            
+            if (isEventCompleted(eventId)) {
+                showEmotionToast('cool', '已经领过啦~');
+                return;
+            }
+            
+            // 发放奖励
+            if (event.rewards.xp) {
+                state.totalXp += event.rewards.xp;
+            }
+            if (event.rewards.points) {
+                state.userPoints += event.rewards.points;
+                eventState.eventPointsEarned += event.rewards.points;
+            }
+            
+            // 标记完成
+            eventState.completedEvents.push(eventId);
+            saveEventState();
+            saveState();
+            
+            // 更新UI
+            updateUI();
+            renderEvents();
+            updateEventRecords();
+            
+            // 触发情绪反馈
+            showEmotionToast('excited', `🎉 恭喜完成活动，获得 ${event.rewards.points || 0} 积分！`);
+            
+            // 检查成就
+            checkAchievements();
+        }
+        
+        /** 更新活动统计 */
+        function updateEventRecords() {
+            document.getElementById('eventParticipated').textContent = eventState.participatedEvents.length;
+            document.getElementById('eventCompleted').textContent = eventState.completedEvents.length;
+            document.getElementById('eventPointsEarned').textContent = eventState.eventPointsEarned;
+        }
+        
+        /** 切换活动面板 */
+        function toggleEventPanel() {
+            const panel = document.getElementById('eventPanel');
+            const overlay = document.getElementById('eventOverlay');
+            
+            if (panel.classList.contains('show')) {
+                closeEventPanel();
+            } else {
+                panel.classList.add('show');
+                overlay.classList.add('show');
+                renderEvents();
+                updateEventRecords();
+                updateCountdown();
+            }
+        }
+        
+        /** 关闭活动面板 */
+        function closeEventPanel() {
+            const panel = document.getElementById('eventPanel');
+            const overlay = document.getElementById('eventOverlay');
+            
+            panel.classList.remove('show');
+            overlay.classList.remove('show');
+        }
+        
+        /** 初始化活动系统 */
+        function initEventSystem() {
+            loadEventState();
+            renderEvents();
+            updateEventRecords();
+            
+            // 每秒更新倒计时
+            setInterval(updateCountdown, 1000);
+            
+            // 每30秒检查活动状态
+            setInterval(() => {
+                renderEvents();
+                checkEventCompletion();
+            }, 30000);
+        }
+        
+        /** 检查活动完成状态并自动发放奖励 */
+        function checkEventCompletion() {
+            EVENTS.forEach(event => {
+                const progress = getEventProgress(event);
+                const requirement = event.requirement.count;
+                const expired = isEventExpired(event);
+                
+                if (progress >= requirement && !isEventCompleted(event.id)) {
+                    // 活动完成但未领取
+                    if (expired) {
+                        // 活动已过期，自动发放奖励
+                        claimEventReward(event.id);
+                    }
+                }
+            });
+        }
+        
+        // 启动活动系统
+        initEventSystem();
     </script>
 </body>
 </html>
@@ -9841,6 +10303,431 @@
         to { opacity: 1; }
     }
     
+    /* ==================== 限时活动系统 ==================== */
+    
+    .event-btn {
+        position: relative;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--legendary), var(--accent-pink));
+        border: none;
+        color: #fff;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3);
+    }
+    
+    .event-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 20px rgba(245, 158, 11, 0.5);
+    }
+    
+    .event-badge {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        background: var(--accent-pink);
+        color: #fff;
+        font-size: 0.6rem;
+        font-weight: 700;
+        padding: 0.15rem 0.4rem;
+        border-radius: 8px;
+        min-width: 32px;
+        text-align: center;
+    }
+    
+    .event-badge.pulse {
+        animation: eventBadgePulse 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes eventBadgePulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+    
+    .event-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(5px);
+        z-index: 200;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s;
+    }
+    
+    .event-overlay.show {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .event-panel {
+        position: fixed;
+        top: 0;
+        right: -450px;
+        width: 420px;
+        height: 100vh;
+        background: var(--bg-card);
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 201;
+        transition: right 0.3s ease;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .event-panel.show {
+        right: 0;
+    }
+    
+    .event-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.2rem 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(255, 0, 110, 0.1));
+    }
+    
+    .event-header h3 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.2rem;
+        background: linear-gradient(90deg, var(--legendary), var(--accent-pink));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .event-close-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: var(--text-secondary);
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.2s;
+    }
+    
+    .event-close-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: var(--text-primary);
+    }
+    
+    .event-countdown {
+        padding: 1.2rem 1.5rem;
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.05), rgba(255, 0, 110, 0.05));
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .countdown-label {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+    
+    .countdown-timer {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-family: 'Orbitron', sans-serif;
+    }
+    
+    .countdown-num {
+        background: linear-gradient(135deg, var(--legendary), var(--accent-pink));
+        color: #fff;
+        padding: 0.4rem 0.6rem;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        min-width: 42px;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3);
+    }
+    
+    .countdown-sep {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+    
+    .event-list {
+        flex: 1;
+        padding: 1rem 1.5rem;
+        overflow-y: auto;
+    }
+    
+    .event-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 1.2rem;
+        margin-bottom: 1rem;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s;
+    }
+    
+    .event-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(245, 158, 11, 0.3);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+    
+    .event-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--legendary), var(--accent-pink));
+    }
+    
+    .event-card.discount::before {
+        background: linear-gradient(90deg, #ff6b6b, #ff4757);
+    }
+    
+    .event-card.challenge::before {
+        background: linear-gradient(90deg, #4facfe, #00f2fe);
+    }
+    
+    .event-card.reward::before {
+        background: linear-gradient(90deg, #a8e6cf, #88d8b0);
+    }
+    
+    .event-card.expired {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+    
+    .event-card.completed {
+        border-color: var(--accent-green);
+    }
+    
+    .event-card.completed::after {
+        content: '✓';
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: var(--accent-green);
+        color: #000;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+    }
+    
+    .event-type-badge {
+        display: inline-block;
+        padding: 0.25rem 0.6rem;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        margin-bottom: 0.8rem;
+    }
+    
+    .event-type-badge.discount {
+        background: rgba(255, 107, 107, 0.2);
+        color: #ff6b6b;
+    }
+    
+    .event-type-badge.challenge {
+        background: rgba(79, 172, 254, 0.2);
+        color: #4facfe;
+    }
+    
+    .event-type-badge.reward {
+        background: rgba(168, 230, 207, 0.2);
+        color: #88d8b0;
+    }
+    
+    .event-title {
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+    }
+    
+    .event-desc {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+        line-height: 1.5;
+    }
+    
+    .event-progress {
+        margin-bottom: 1rem;
+    }
+    
+    .progress-header {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.4rem;
+    }
+    
+    .progress-bar-container {
+        height: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+        overflow: hidden;
+    }
+    
+    .progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--legendary), var(--accent-pink));
+        border-radius: 3px;
+        transition: width 0.5s ease;
+    }
+    
+    .event-reward-preview {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        padding: 0.8rem;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 10px;
+    }
+    
+    .reward-item {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+    
+    .reward-item-icon {
+        font-size: 1.2rem;
+    }
+    
+    .reward-item-value {
+        font-weight: 600;
+        color: var(--legendary);
+    }
+    
+    .event-action-btn {
+        width: 100%;
+        padding: 0.8rem;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    .event-action-btn.primary {
+        background: linear-gradient(135deg, var(--legendary), var(--accent-pink));
+        color: #fff;
+    }
+    
+    .event-action-btn.primary:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+    }
+    
+    .event-action-btn.secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-secondary);
+    }
+    
+    .event-action-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none !important;
+        box-shadow: none !important;
+    }
+    
+    .event-time-left {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.8rem;
+        color: var(--accent-pink);
+        margin-top: 0.8rem;
+    }
+    
+    .event-time-left .timer-icon {
+        animation: pulse 2s ease infinite;
+    }
+    
+    .event-my-records {
+        padding: 1rem 1.5rem;
+        background: rgba(0, 0, 0, 0.2);
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .records-header {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+    }
+    
+    .records-stats {
+        display: flex;
+        justify-content: space-around;
+    }
+    
+    .record-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.3rem;
+    }
+    
+    .record-icon {
+        font-size: 1.3rem;
+    }
+    
+    .record-value {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: var(--accent-cyan);
+    }
+    
+    .record-label {
+        font-size: 0.7rem;
+        color: var(--text-secondary);
+    }
+    
+    /* 限时折扣标签 */
+    .discount-tag {
+        position: absolute;
+        top: 0.8rem;
+        right: 0.8rem;
+        background: linear-gradient(135deg, #ff6b6b, #ff4757);
+        color: #fff;
+        padding: 0.3rem 0.6rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        animation: discountPulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes discountPulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+    
     /* 响应式 */
     @media (max-width: 768px) {
         .challenge-panel {
@@ -9850,5 +10737,10 @@
         
         .challenge-type-grid {
             grid-template-columns: 1fr;
+        }
+        
+        .event-panel {
+            width: 100%;
+            right: -100%;
         }
     }
