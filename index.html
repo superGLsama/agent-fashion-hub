@@ -4637,6 +4637,11 @@
                     🎯
                     <span class="event-badge pulse" id="eventBadge">NEW</span>
                 </button>
+                <!-- 动态/说说按钮 -->
+                <button class="post-btn" id="postBtn" onclick="togglePostPanel()">
+                    ✨
+                    <span class="post-badge" id="postBadge">0</span>
+                </button>
                 <!-- 用户等级显示 -->
                 <div class="user-level-display" id="userLevelDisplay" onclick="toggleAchievementPanel()">
                     <span class="level-icon">⭐</span>
@@ -4866,6 +4871,65 @@
                     <span class="record-label">获得积分</span>
                 </div>
             </div>
+        </div>
+    </div>
+    
+    <!-- 动态/说说面板 -->
+    <div class="panel-overlay" id="postOverlay" onclick="closePostPanel()"></div>
+    <div class="post-panel" id="postPanel">
+        <div class="post-header">
+            <h3>✨ 潮流动态</h3>
+            <button class="panel-close" onclick="closePostPanel()">✕</button>
+        </div>
+        
+        <!-- 发布区域 -->
+        <div class="post-create-area">
+            <div class="post-input-wrapper">
+                <div class="post-user-avatar">🤖</div>
+                <div class="post-input-container">
+                    <textarea class="post-textarea" id="postTextarea" placeholder="分享你的潮流穿搭和生活~" maxlength="500"></textarea>
+                    <div class="post-options">
+                        <div class="post-type-selector">
+                            <button class="post-type-btn active" data-type="thought" onclick="selectPostType('thought')">
+                                💭 想法
+                            </button>
+                            <button class="post-type-btn" data-type="outfit" onclick="selectPostType('outfit')">
+                                👔 穿搭
+                            </button>
+                            <button class="post-type-btn" data-type="haul" onclick="selectPostType('haul')">
+                                📦 开箱
+                            </button>
+                        </div>
+                        <button class="post-submit-btn" id="postSubmitBtn" onclick="submitPost()" disabled>
+                            发布
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 动态筛选标签 -->
+        <div class="post-filter-tabs">
+            <button class="post-filter-tab active" data-filter="all" onclick="filterPosts('all')">
+                🌟 全部
+            </button>
+            <button class="post-filter-tab" data-filter="outfit" onclick="filterPosts('outfit')">
+                👔 穿搭
+            </button>
+            <button class="post-filter-tab" data-filter="thought" onclick="filterPosts('thought')">
+                💭 想法
+            </button>
+            <button class="post-filter-tab" data-filter="haul" onclick="filterPosts('haul')">
+                📦 开箱
+            </button>
+            <button class="post-filter-tab" data-filter="following" onclick="filterPosts('following')">
+                ❤️ 关注
+            </button>
+        </div>
+        
+        <!-- 动态列表 -->
+        <div class="post-list" id="postList">
+            <!-- 动态将由JS渲染 -->
         </div>
     </div>
     
@@ -5335,6 +5399,108 @@
     
     <script>
         // ==================== 数据模型 ====================
+        
+        // ==================== 动态/说说系统数据 ====================
+        
+        // 动态帖子类型
+        const POST_TYPES = {
+            THOUGHT: 'thought', // 想法
+            OUTFIT: 'outfit',   // 穿搭
+            HAUL: 'haul'        // 开箱
+        };
+        
+        // 示例动态数据
+        const samplePosts = [
+            {
+                id: 'p1',
+                userId: 'u1',
+                userName: '星河漫步',
+                userAvatar: '🌟',
+                userAlliance: 'nature',
+                userTier: 'legendary',
+                userBadge: 'vip',
+                type: POST_TYPES.OUTFIT,
+                content: '今日份穿搭打卡~赛博朋克风格，量子战甲配星空马尾，你们觉得怎么样？',
+                outfitPreview: ['🦾', '🧡', '👖', '👟'],
+                time: Date.now() - 3600000,
+                likes: 128,
+                comments: 23,
+                liked: false
+            },
+            {
+                id: 'p2',
+                userId: 'u2',
+                userName: '潮流小王子',
+                userAvatar: '👑',
+                userAlliance: 'chaos',
+                userTier: 'gold',
+                userBadge: null,
+                type: POST_TYPES.HAUL,
+                content: '终于收到期待已久的限量版球鞋！颜值超高，穿上直接气场全开！',
+                outfitPreview: ['👟', '👕'],
+                time: Date.now() - 7200000,
+                likes: 89,
+                comments: 15,
+                liked: false
+            },
+            {
+                id: 'p3',
+                userId: 'u3',
+                userName: '时尚博主A',
+                userAvatar: '💫',
+                userAlliance: 'tech',
+                userTier: 'diamond',
+                userBadge: 'vip',
+                type: POST_TYPES.THOUGHT,
+                content: '最近在研究可持续时尚，发现自然派的服装不仅好看，还很环保。大家有推荐的环保品牌吗？',
+                outfitPreview: null,
+                time: Date.now() - 10800000,
+                likes: 256,
+                comments: 42,
+                liked: false
+            },
+            {
+                id: 'p4',
+                userId: 'u4',
+                userName: '穿搭女王',
+                userAvatar: '👸',
+                userAlliance: 'nature',
+                userTier: 'platinum',
+                userBadge: null,
+                type: POST_TYPES.OUTFIT,
+                content: '森林精灵风格get！🌿 今天的ootd是自然系look，感觉整个人都清新了~',
+                outfitPreview: ['👗', '🌿', '👒'],
+                time: Date.now() - 14400000,
+                likes: 312,
+                comments: 56,
+                liked: false
+            },
+            {
+                id: 'p5',
+                userId: 'u5',
+                userName: '街头潮人',
+                userAvatar: '🎸',
+                userAlliance: 'chaos',
+                userTier: 'silver',
+                userBadge: 'new',
+                type: POST_TYPES.HAUL,
+                content: '开箱测评 | 这件混沌派限定卫衣真的太酷了！火焰图案设计感满满，推荐入手！',
+                outfitPreview: ['🔥', '👕'],
+                time: Date.now() - 18000000,
+                likes: 67,
+                comments: 12,
+                liked: false
+            }
+        ];
+        
+        // 动态系统状态
+        let postState = {
+            currentFilter: 'all',
+            currentPostType: POST_TYPES.THOUGHT,
+            posts: [...samplePosts],
+            myPosts: JSON.parse(localStorage.getItem('myPosts') || '[]'),
+            likedPosts: new Set(JSON.parse(localStorage.getItem('likedPosts') || '[]'))
+        };
         
         // 部位常量
         const CLOTHING_SLOTS = {
@@ -9706,6 +9872,341 @@
         
         // 启动活动系统
         initEventSystem();
+        
+        // ==================== 动态/说说系统函数 ====================
+        
+        /** 格式化时间差 */
+        function formatTimeAgo(timestamp) {
+            const now = Date.now();
+            const diff = now - timestamp;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+            
+            if (minutes < 1) return '刚刚';
+            if (minutes < 60) return `${minutes}分钟前`;
+            if (hours < 24) return `${hours}小时前`;
+            if (days < 7) return `${days}天前`;
+            return new Date(timestamp).toLocaleDateString('zh-CN');
+        }
+        
+        /** 渲染动态列表 */
+        function renderPosts() {
+            const postList = document.getElementById('postList');
+            if (!postList) return;
+            
+            let filteredPosts = postState.posts;
+            
+            // 根据筛选条件过滤
+            if (postState.currentFilter !== 'all') {
+                if (postState.currentFilter === 'following') {
+                    filteredPosts = filteredPosts.filter(p => p.userId !== 'me');
+                } else {
+                    filteredPosts = filteredPosts.filter(p => p.type === postState.currentFilter);
+                }
+            }
+            
+            // 合并我的帖子
+            const allPosts = [...postState.myPosts, ...filteredPosts];
+            
+            if (allPosts.length === 0) {
+                postList.innerHTML = `
+                    <div class="post-empty">
+                        <div class="post-empty-icon">📭</div>
+                        <div class="post-empty-text">暂无动态</div>
+                        <div class="post-empty-hint">快来发布第一条动态吧~</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            postList.innerHTML = allPosts.map(post => {
+                const isLiked = postState.likedPosts.has(post.id);
+                const isMyPost = post.userId === 'me';
+                
+                return `
+                    <div class="post-item ${isMyPost ? 'my-post' : ''}" data-id="${post.id}">
+                        <div class="post-item-header">
+                            <div class="post-user-info">
+                                <div class="post-avatar ${post.userAlliance || ''}">${post.userAvatar}</div>
+                                <div class="post-user-meta">
+                                    <div class="post-user-name">
+                                        ${post.userName}
+                                        ${post.userBadge ? `<span class="post-user-badge ${post.userBadge}">${post.userBadge === 'vip' ? 'VIP' : '新秀'}</span>` : ''}
+                                    </div>
+                                    <div class="post-time">${formatTimeAgo(post.time)}</div>
+                                </div>
+                            </div>
+                            <span class="post-type-tag ${post.type}">${getPostTypeLabel(post.type)}</span>
+                        </div>
+                        
+                        ${post.outfitPreview ? `
+                            <div class="post-outfit-preview">
+                                <div class="post-outfit-avatar">🤖</div>
+                                <div class="post-outfit-items">
+                                    ${post.outfitPreview.map(icon => `
+                                        <span class="post-outfit-item">
+                                            <span class="post-outfit-item-icon">${icon}</span>
+                                        </span>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                        
+                        <div class="post-content">${escapeHtml(post.content)}</div>
+                        
+                        <div class="post-stats">
+                            <div class="post-stats-left">
+                                <button class="post-stat-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${post.id}')">
+                                    <span class="post-stat-icon">${isLiked ? '❤️' : '🤍'}</span>
+                                    <span>${post.likes}</span>
+                                </button>
+                                <button class="post-stat-btn" onclick="showComments('${post.id}')">
+                                    <span class="post-stat-icon">💬</span>
+                                    <span>${post.comments}</span>
+                                </button>
+                            </div>
+                            <div class="post-actions">
+                                <button class="post-action-btn share" onclick="sharePost('${post.id}')">📤 分享</button>
+                                ${isMyPost ? '<button class="post-action-btn" onclick="deletePost(\'' + post.id + '\')">🗑️ 删除</button>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // 更新badge
+            updatePostBadge();
+        }
+        
+        /** 获取帖子类型标签 */
+        function getPostTypeLabel(type) {
+            const labels = {
+                [POST_TYPES.THOUGHT]: '💭 想法',
+                [POST_TYPES.OUTFIT]: '👔 穿搭',
+                [POST_TYPES.HAUL]: '📦 开箱'
+            };
+            return labels[type] || '💭 想法';
+        }
+        
+        /** HTML转义 */
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        /** 切换动态面板 */
+        function togglePostPanel() {
+            const panel = document.getElementById('postPanel');
+            const overlay = document.getElementById('postOverlay');
+            
+            if (panel.classList.contains('show')) {
+                closePostPanel();
+            } else {
+                panel.classList.add('show');
+                overlay.classList.add('show');
+                renderPosts();
+            }
+        }
+        
+        /** 关闭动态面板 */
+        function closePostPanel() {
+            const panel = document.getElementById('postPanel');
+            const overlay = document.getElementById('postOverlay');
+            
+            panel.classList.remove('show');
+            overlay.classList.remove('show');
+        }
+        
+        /** 选择帖子类型 */
+        function selectPostType(type) {
+            postState.currentPostType = type;
+            
+            // 更新UI
+            document.querySelectorAll('.post-type-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.type === type);
+            });
+        }
+        
+        /** 筛选动态 */
+        function filterPosts(filter) {
+            postState.currentFilter = filter;
+            
+            // 更新UI
+            document.querySelectorAll('.post-filter-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.filter === filter);
+            });
+            
+            renderPosts();
+        }
+        
+        /** 发布动态 */
+        function submitPost() {
+            const textarea = document.getElementById('postTextarea');
+            const content = textarea.value.trim();
+            
+            if (!content) {
+                showNotification('请输入内容', 'error');
+                return;
+            }
+            
+            // 获取当前穿戴的装备
+            let outfitPreview = null;
+            if (postState.currentPostType === POST_TYPES.OUTFIT) {
+                outfitPreview = [];
+                Object.keys(currentOutfit).forEach(slot => {
+                    const item = outfitItems.find(i => i.id === currentOutfit[slot]);
+                    if (item) {
+                        outfitPreview.push(item.icon);
+                    }
+                });
+                if (outfitPreview.length === 0) {
+                    outfitPreview = ['🤖']; // 默认头像
+                }
+            }
+            
+            // 创建新帖子
+            const newPost = {
+                id: 'p_' + Date.now(),
+                userId: 'me',
+                userName: '我的潮流',
+                userAvatar: '🤖',
+                userAlliance: 'tech',
+                userTier: 'silver',
+                userBadge: null,
+                type: postState.currentPostType,
+                content: content,
+                outfitPreview: outfitPreview,
+                time: Date.now(),
+                likes: 0,
+                comments: 0,
+                liked: false
+            };
+            
+            // 保存到本地
+            postState.myPosts.unshift(newPost);
+            localStorage.setItem('myPosts', JSON.stringify(postState.myPosts));
+            
+            // 清空输入框
+            textarea.value = '';
+            document.getElementById('postSubmitBtn').disabled = true;
+            
+            // 重新渲染
+            renderPosts();
+            
+            // 显示成功提示
+            showEmotionFeedback({ type: 'excited', data: { action: 'post' } });
+            showNotification('发布成功！', 'success');
+            
+            // 检查成就
+            checkAchievements();
+        }
+        
+        /** 切换点赞状态 */
+        function toggleLike(postId) {
+            const post = postState.posts.find(p => p.id === postId) || 
+                        postState.myPosts.find(p => p.id === postId);
+            
+            if (!post) return;
+            
+            if (postState.likedPosts.has(postId)) {
+                postState.likedPosts.delete(postId);
+                post.likes--;
+            } else {
+                postState.likedPosts.add(postId);
+                post.likes++;
+                
+                // 情绪反馈
+                if (post.userId !== 'me') {
+                    showEmotionFeedback({ type: 'love', data: { action: 'like' } });
+                }
+            }
+            
+            // 保存状态
+            localStorage.setItem('likedPosts', JSON.stringify([...postState.likedPosts]));
+            
+            // 重新渲染
+            renderPosts();
+        }
+        
+        /** 显示评论（简单实现） */
+        function showComments(postId) {
+            showNotification('评论功能开发中~', 'info');
+        }
+        
+        /** 分享动态 */
+        function sharePost(postId) {
+            const post = postState.posts.find(p => p.id === postId) || 
+                        postState.myPosts.find(p => p.id === postId);
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: '潮流动态',
+                    text: `${post.userName}: ${post.content}`,
+                    url: window.location.href
+                });
+            } else {
+                // 复制到剪贴板
+                navigator.clipboard.writeText(`${post.userName}: ${post.content}`);
+                showNotification('已复制到剪贴板！', 'success');
+            }
+        }
+        
+        /** 删除动态 */
+        function deletePost(postId) {
+            postState.myPosts = postState.myPosts.filter(p => p.id !== postId);
+            localStorage.setItem('myPosts', JSON.stringify(postState.myPosts));
+            renderPosts();
+            showNotification('已删除', 'success');
+        }
+        
+        /** 更新动态徽章 */
+        function updatePostBadge() {
+            const badge = document.getElementById('postBadge');
+            const btn = document.getElementById('postBtn');
+            
+            if (!badge || !btn) return;
+            
+            const totalPosts = postState.myPosts.length + postState.posts.length;
+            
+            if (totalPosts > 0) {
+                badge.textContent = totalPosts;
+                btn.classList.add('has-posts');
+            } else {
+                btn.classList.remove('has-posts');
+            }
+        }
+        
+        /** 初始化动态系统 */
+        function initPostSystem() {
+            // 监听textarea输入
+            const textarea = document.getElementById('postTextarea');
+            const submitBtn = document.getElementById('postSubmitBtn');
+            
+            if (textarea && submitBtn) {
+                textarea.addEventListener('input', function() {
+                    submitBtn.disabled = this.value.trim().length === 0;
+                });
+                
+                // Enter键提交（Ctrl+Enter）
+                textarea.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' && e.ctrlKey) {
+                        e.preventDefault();
+                        if (!submitBtn.disabled) {
+                            submitPost();
+                        }
+                    }
+                });
+            }
+            
+            // 初始渲染
+            renderPosts();
+            updatePostBadge();
+        }
+        
+        // 启动动态系统
+        initPostSystem();
     </script>
 </body>
 </html>
@@ -10726,6 +11227,534 @@
     @keyframes discountPulse {
         0%, 100% { transform: scale(1); }
         50% { transform: scale(1.05); }
+    }
+    
+    /* ==================== 动态/说说系统样式 ==================== */
+    
+    /* 动态按钮 */
+    .post-btn {
+        position: relative;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(0, 255, 136, 0.1);
+        border: 1px solid rgba(0, 255, 136, 0.3);
+        color: var(--accent-green);
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .post-btn:hover {
+        background: rgba(0, 255, 136, 0.2);
+        border-color: var(--accent-green);
+        transform: scale(1.1);
+        box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+    }
+    
+    .post-badge {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        background: var(--accent-green);
+        color: #000;
+        font-size: 0.65rem;
+        font-weight: 700;
+        padding: 0.15rem 0.4rem;
+        border-radius: 10px;
+        min-width: 18px;
+        text-align: center;
+        display: none;
+    }
+    
+    .post-btn.has-posts .post-badge {
+        display: block;
+    }
+    
+    /* 动态面板 */
+    .post-panel {
+        position: fixed;
+        top: 0;
+        right: -500px;
+        width: 480px;
+        max-width: 100%;
+        height: 100vh;
+        background: var(--bg-card);
+        z-index: 150;
+        transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: flex;
+        flex-direction: column;
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .post-panel.show {
+        right: 0;
+    }
+    
+    .post-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.2rem 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .post-header h3 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .panel-close {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+        border: none;
+        color: var(--text-secondary);
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .panel-close:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-primary);
+    }
+    
+    /* 发布区域 */
+    .post-create-area {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .post-input-wrapper {
+        display: flex;
+        gap: 0.8rem;
+    }
+    
+    .post-user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--bg-gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        border: 2px solid var(--accent-cyan);
+        flex-shrink: 0;
+    }
+    
+    .post-input-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    
+    .post-textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 0.8rem;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        color: var(--text-primary);
+        font-family: inherit;
+        font-size: 0.95rem;
+        resize: none;
+        transition: border-color 0.3s;
+    }
+    
+    .post-textarea:focus {
+        outline: none;
+        border-color: var(--accent-cyan);
+    }
+    
+    .post-textarea::placeholder {
+        color: var(--text-secondary);
+    }
+    
+    .post-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .post-type-selector {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .post-type-btn {
+        padding: 0.4rem 0.8rem;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        color: var(--text-secondary);
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+    
+    .post-type-btn:hover {
+        border-color: var(--accent-cyan);
+        color: var(--text-primary);
+    }
+    
+    .post-type-btn.active {
+        background: rgba(0, 212, 255, 0.1);
+        border-color: var(--accent-cyan);
+        color: var(--accent-cyan);
+    }
+    
+    .post-submit-btn {
+        padding: 0.6rem 1.2rem;
+        background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
+        border: none;
+        border-radius: 20px;
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .post-submit-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3);
+    }
+    
+    .post-submit-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    /* 动态筛选标签 */
+    .post-filter-tabs {
+        display: flex;
+        gap: 0.5rem;
+        padding: 0.8rem 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        overflow-x: auto;
+    }
+    
+    .post-filter-tab {
+        padding: 0.5rem 1rem;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        white-space: nowrap;
+    }
+    
+    .post-filter-tab:hover {
+        border-color: var(--accent-cyan);
+        color: var(--text-primary);
+    }
+    
+    .post-filter-tab.active {
+        background: rgba(0, 212, 255, 0.1);
+        border-color: var(--accent-cyan);
+        color: var(--accent-cyan);
+    }
+    
+    /* 动态列表 */
+    .post-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem 1.5rem;
+    }
+    
+    .post-item {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 1.2rem;
+        margin-bottom: 1rem;
+        animation: postSlideIn 0.4s ease;
+    }
+    
+    @keyframes postSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .post-item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 0.8rem;
+    }
+    
+    .post-user-info {
+        display: flex;
+        gap: 0.8rem;
+        align-items: center;
+    }
+    
+    .post-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--bg-gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        border: 2px solid var(--accent-cyan);
+    }
+    
+    .post-avatar.tech { border-color: var(--accent-cyan); }
+    .post-avatar.nature { border-color: var(--accent-green); }
+    .post-avatar.chaos { border-color: var(--accent-pink); }
+    .post-avatar.legendary { border-color: var(--legendary); }
+    
+    .post-user-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+    
+    .post-user-name {
+        font-weight: 600;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .post-user-badge {
+        font-size: 0.7rem;
+        padding: 0.1rem 0.4rem;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+    
+    .post-user-badge.vip {
+        background: linear-gradient(135deg, var(--legendary), var(--accent-pink));
+        color: #fff;
+    }
+    
+    .post-user-badge.new {
+        background: rgba(0, 255, 136, 0.2);
+        color: var(--accent-green);
+    }
+    
+    .post-time {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+    }
+    
+    .post-type-tag {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-secondary);
+    }
+    
+    .post-type-tag.outfit {
+        background: rgba(0, 212, 255, 0.1);
+        color: var(--accent-cyan);
+    }
+    
+    .post-type-tag.thought {
+        background: rgba(168, 85, 247, 0.1);
+        color: var(--epic);
+    }
+    
+    .post-type-tag.haul {
+        background: rgba(245, 158, 11, 0.1);
+        color: var(--legendary);
+    }
+    
+    .post-content {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+    }
+    
+    .post-outfit-preview {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .post-outfit-avatar {
+        font-size: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 80px;
+        height: 80px;
+        background: var(--bg-gradient);
+        border-radius: 16px;
+    }
+    
+    .post-outfit-items {
+        flex: 1;
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .post-outfit-item {
+        padding: 0.3rem 0.6rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+    
+    .post-outfit-item-icon {
+        font-size: 1rem;
+    }
+    
+    .post-stats {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 0.8rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .post-stats-left {
+        display: flex;
+        gap: 1.5rem;
+    }
+    
+    .post-stat-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        background: none;
+        border: none;
+        padding: 0;
+    }
+    
+    .post-stat-btn:hover {
+        color: var(--accent-cyan);
+    }
+    
+    .post-stat-btn.liked {
+        color: var(--accent-pink);
+    }
+    
+    .post-stat-btn.liked .stat-icon {
+        animation: likeHeartBeat 0.5s ease;
+    }
+    
+    @keyframes likeHeartBeat {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.3); }
+        100% { transform: scale(1); }
+    }
+    
+    .post-stat-icon {
+        font-size: 1.1rem;
+        transition: transform 0.3s;
+    }
+    
+    .post-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .post-action-btn {
+        padding: 0.3rem 0.6rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .post-action-btn:hover {
+        border-color: var(--accent-cyan);
+        color: var(--accent-cyan);
+    }
+    
+    .post-action-btn.share:hover {
+        border-color: var(--accent-green);
+        color: var(--accent-green);
+    }
+    
+    /* 空状态 */
+    .post-empty {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--text-secondary);
+    }
+    
+    .post-empty-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+    
+    .post-empty-text {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .post-empty-hint {
+        font-size: 0.85rem;
+        opacity: 0.7;
+    }
+    
+    /* 发布成功动画 */
+    @keyframes postSuccess {
+        0% { transform: scale(0.8); opacity: 0; }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); opacity: 1; }
+    }
+    
+    .post-item.just-posted {
+        animation: postSuccess 0.5s ease;
+    }
+    
+    /* 响应式 */
+    @media (max-width: 768px) {
+        .post-panel {
+            width: 100%;
+            right: -100%;
+        }
     }
     
     /* 响应式 */
