@@ -3382,6 +3382,293 @@
             background: linear-gradient(135deg, var(--bg-card), rgba(168, 85, 247, 0.1));
         }
         
+        .emotion-toast.celebrate {
+            border-color: rgba(245, 158, 11, 0.4);
+            background: linear-gradient(135deg, var(--bg-card), rgba(245, 158, 11, 0.15));
+            animation: celebratePulse 1s ease infinite;
+        }
+        
+        .emotion-toast.proud {
+            border-color: rgba(255, 215, 0, 0.4);
+            background: linear-gradient(135deg, var(--bg-card), rgba(255, 215, 0, 0.15));
+        }
+        
+        .emotion-toast.encourage {
+            border-color: rgba(52, 211, 153, 0.4);
+            background: linear-gradient(135deg, var(--bg-card), rgba(52, 211, 153, 0.15));
+        }
+        
+        .emotion-toast.shy {
+            border-color: rgba(251, 146, 60, 0.3);
+            background: linear-gradient(135deg, var(--bg-card), rgba(251, 146, 60, 0.1));
+        }
+        
+        .emotion-toast.surprise {
+            border-color: rgba(6, 182, 212, 0.4);
+            background: linear-gradient(135deg, var(--bg-card), rgba(6, 182, 212, 0.15));
+        }
+        
+        @keyframes celebratePulse {
+            0%, 100% { box-shadow: 0 10px 40px rgba(245, 158, 11, 0.3); }
+            50% { box-shadow: 0 10px 60px rgba(245, 158, 11, 0.5); }
+        }
+        
+        /* 通知历史记录按钮 */
+        .notification-history-btn {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 9999;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .notification-history-btn:hover {
+            transform: scale(1.1);
+            border-color: var(--accent-cyan);
+        }
+        
+        .notification-history-btn .icon {
+            font-size: 1.4rem;
+        }
+        
+        .notification-history-btn .badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 9px;
+            background: var(--accent-pink);
+            color: white;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        /* 通知历史面板 */
+        .notification-history-panel {
+            position: fixed;
+            top: 0;
+            right: -420px;
+            width: 400px;
+            height: 100vh;
+            background: var(--bg-card);
+            z-index: 10001;
+            transition: right 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .notification-history-panel.show {
+            right: 0;
+        }
+        
+        .notification-history-panel .header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .notification-history-panel .header h3 {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+        
+        .notification-history-panel .header .close-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .notification-history-panel .header .close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+        
+        .notification-history-panel .clear-all-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        
+        .notification-history-panel .clear-all-btn:hover {
+            background: rgba(255, 0, 110, 0.2);
+            border-color: var(--accent-pink);
+            color: var(--accent-pink);
+        }
+        
+        .notification-history-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+        
+        .notification-history-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .notification-history-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+        
+        .history-item {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            margin-bottom: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.2s;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .history-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .history-item .item-header {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .history-item .item-icon {
+            font-size: 1.2rem;
+        }
+        
+        .history-item .item-emotion {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        
+        .history-item .item-emotion.happy { background: rgba(0, 255, 136, 0.2); color: #00ff88; }
+        .history-item .item-emotion.excited { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .history-item .item-emotion.love { background: rgba(255, 0, 110, 0.2); color: #ff006e; }
+        .history-item .item-emotion.cool { background: rgba(0, 212, 255, 0.2); color: #00d4ff; }
+        .history-item .item-emotion.wow { background: rgba(168, 85, 247, 0.2); color: #a855f7; }
+        .history-item .item-emotion.celebrate { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .history-item .item-emotion.proud { background: rgba(255, 215, 0, 0.2); color: #ffd700; }
+        .history-item .item-emotion.encourage { background: rgba(52, 211, 153, 0.2); color: #34d399; }
+        .history-item .item-emotion.shy { background: rgba(251, 146, 60, 0.2); color: #fb923c; }
+        .history-item .item-emotion.surprise { background: rgba(6, 182, 212, 0.2); color: #06b6d4; }
+        
+        .history-item .item-time {
+            margin-left: auto;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .history-item .item-message {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+        
+        .notification-history-empty {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+        
+        .notification-history-empty .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        /* 粒子庆祝特效容器 */
+        .celebration-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10002;
+        }
+        
+        .celebration-particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: celebrationFall 2s ease-out forwards;
+        }
+        
+        @keyframes celebrationFall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(720deg) scale(0);
+            }
+        }
+        
+        /* 遮罩层 */
+        .notification-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .notification-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
         .emotion-toast-icon {
             font-size: 1.5rem;
             animation: emotionBounce 0.6s ease;
@@ -4598,6 +4885,32 @@
             <button class="surprise-btn" onclick="closeSurprisePopup()">收下惊喜</button>
         </div>
     </div>
+    
+    <!-- 通知历史按钮 -->
+    <div class="notification-history-btn" id="notificationHistoryBtn" onclick="toggleNotificationHistory()">
+        <span class="icon">🔔</span>
+        <span class="badge" id="historyBadge">0</span>
+    </div>
+    
+    <!-- 遮罩层 -->
+    <div class="notification-overlay" id="notificationOverlay" onclick="closeNotificationHistory()"></div>
+    
+    <!-- 通知历史面板 -->
+    <div class="notification-history-panel" id="notificationHistoryPanel">
+        <div class="header">
+            <h3>📬 通知记录</h3>
+            <div style="display: flex; gap: 0.5rem;">
+                <button class="clear-all-btn" onclick="clearNotificationHistory()">清空全部</button>
+                <button class="close-btn" onclick="closeNotificationHistory()">✕</button>
+            </div>
+        </div>
+        <div class="notification-history-list" id="notificationHistoryList">
+            <!-- 通知历史项会动态插入 -->
+        </div>
+    </div>
+    
+    <!-- 粒子庆祝特效容器 -->
+    <div class="celebration-particles" id="celebrationParticles"></div>
     
     <!-- 导航 -->
     <nav>
@@ -7955,30 +8268,334 @@
         
         // ==================== 情绪化通知系统 ====================
         
-        /** 情绪配置 */
+        /** 情绪配置 - 增强版 */
         const EMOTIONS = {
             happy: { icon: '😊', messages: ['太棒了！', '干得漂亮！', '继续保持！', '你真厉害！'] },
             excited: { icon: '🤩', messages: ['哇塞！', '超激动！', '太酷了！', '绝绝子！'] },
             love: { icon: '🥰', messages: ['好感人！', '暖暖的~', '真美好！', '被治愈了~'] },
             cool: { icon: '😎', messages: ['帅到我了！', '气场全开！', '绝绝子！', '这很可以！'] },
-            wow: { icon: '😲', messages: ['没想到吧！', '还有这种操作？', '惊了！', '太秀了！'] }
+            wow: { icon: '😲', messages: ['没想到吧！', '还有这种操作？', '惊了！', '太秀了！'] },
+            celebrate: { icon: '🎉', messages: ['普天同庆！', '太值得庆祝了！', '欢呼吧！', '撒花庆祝！'] },
+            proud: { icon: '😤', messages: ['骄傲！', '自豪感爆棚！', '就是这么牛！', '值得骄傲！'] },
+            encourage: { icon: '💪', messages: ['加油！', '你行的！', '再接再厉！', '不要放弃！'] },
+            shy: { icon: '😳', messages: ['害羞了~', '有点不好意思~', '脸红了~', '羞涩~'] },
+            surprise: { icon: '🙀', messages: ['什么！？', '惊呆了！', '不敢相信！', '太意外了！'] }
         };
         
-        /** 显示情绪化Toast */
-        function showEmotionToast(emotion = 'happy', customMessage = null) {
+        /** 通知历史记录 - localStorage管理 */
+        const NOTIFICATION_HISTORY_KEY = 'notificationHistory';
+        const MAX_HISTORY_ITEMS = 50; // 最多保存50条
+        
+        /** 加载通知历史 */
+        function loadNotificationHistory() {
+            try {
+                const data = localStorage.getItem(NOTIFICATION_HISTORY_KEY);
+                return data ? JSON.parse(data) : [];
+            } catch (e) {
+                return [];
+            }
+        }
+        
+        /** 保存通知历史 */
+        function saveNotificationHistory(history) {
+            try {
+                localStorage.setItem(NOTIFICATION_HISTORY_KEY, JSON.stringify(history));
+            } catch (e) {
+                console.warn('保存通知历史失败', e);
+            }
+        }
+        
+        /** 添加通知到历史 */
+        function addToNotificationHistory(emotion, message) {
+            const history = loadNotificationHistory();
+            const item = {
+                id: Date.now(),
+                emotion: emotion,
+                message: message,
+                time: new Date().toISOString()
+            };
+            
+            history.unshift(item); // 添加到最前面
+            
+            // 限制最大数量
+            if (history.length > MAX_HISTORY_ITEMS) {
+                history.pop();
+            }
+            
+            saveNotificationHistory(history);
+            updateHistoryBadge();
+            renderNotificationHistory();
+        }
+        
+        /** 清空通知历史 */
+        function clearNotificationHistory() {
+            localStorage.removeItem(NOTIFICATION_HISTORY_KEY);
+            updateHistoryBadge();
+            renderNotificationHistory();
+        }
+        
+        /** 更新历史徽章 */
+        function updateHistoryBadge() {
+            const badge = document.getElementById('historyBadge');
+            const history = loadNotificationHistory();
+            badge.textContent = history.length;
+            badge.style.display = history.length > 0 ? 'flex' : 'none';
+        }
+        
+        /** 渲染通知历史列表 */
+        function renderNotificationHistory() {
+            const list = document.getElementById('notificationHistoryList');
+            const history = loadNotificationHistory();
+            
+            if (history.length === 0) {
+                list.innerHTML = `
+                    <div class="notification-history-empty">
+                        <div class="empty-icon">📭</div>
+                        <div>暂无通知记录</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.85rem; opacity: 0.7;">
+                            你的互动记录会显示在这里
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            list.innerHTML = history.map(item => {
+                const config = EMOTIONS[item.emotion] || EMOTIONS.happy;
+                const time = new Date(item.time);
+                const timeStr = formatNotificationTime(time);
+                
+                return `
+                    <div class="history-item">
+                        <div class="item-header">
+                            <span class="item-icon">${config.icon}</span>
+                            <span class="item-emotion ${item.emotion}">${item.emotion}</span>
+                            <span class="item-time">${timeStr}</span>
+                        </div>
+                        <div class="item-message">${escapeHtml(item.message)}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        /** 格式化通知时间 */
+        function formatNotificationTime(date) {
+            const now = new Date();
+            const diff = now - date;
+            
+            if (diff < 60000) { // 1分钟内
+                return '刚刚';
+            } else if (diff < 3600000) { // 1小时内
+                const mins = Math.floor(diff / 60000);
+                return `${mins}分钟前`;
+            } else if (diff < 86400000) { // 24小时内
+                const hours = Math.floor(diff / 3600000);
+                return `${hours}小时前`;
+            } else {
+                return `${date.getMonth() + 1}/${date.getDate()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+            }
+        }
+        
+        /** 切换通知历史面板 */
+        function toggleNotificationHistory() {
+            const panel = document.getElementById('notificationHistoryPanel');
+            const overlay = document.getElementById('notificationOverlay');
+            
+            if (panel.classList.contains('show')) {
+                closeNotificationHistory();
+            } else {
+                panel.classList.add('show');
+                overlay.classList.add('show');
+                renderNotificationHistory();
+            }
+        }
+        
+        /** 关闭通知历史面板 */
+        function closeNotificationHistory() {
+            document.getElementById('notificationHistoryPanel').classList.remove('show');
+            document.getElementById('notificationOverlay').classList.remove('show');
+        }
+        
+        /** 显示情绪化Toast - 增强版 */
+        function showEmotionToast(emotion = 'happy', customMessage = null, options = {}) {
+            const { saveToHistory = true, showParticles = false, particleIntensity = 'normal' } = options;
+            
             const toast = document.getElementById('emotionToast');
             const icon = document.getElementById('emotionToastIcon');
             const text = document.getElementById('emotionToastText');
             
             const config = EMOTIONS[emotion] || EMOTIONS.happy;
             icon.textContent = config.icon;
-            text.textContent = customMessage || config.messages[Math.floor(Math.random() * config.messages.length)];
+            const message = customMessage || config.messages[Math.floor(Math.random() * config.messages.length)];
+            text.textContent = message;
             
             toast.className = `emotion-toast ${emotion} show`;
+            
+            // 保存到历史记录
+            if (saveToHistory) {
+                addToNotificationHistory(emotion, message);
+            }
+            
+            // 显示粒子庆祝特效
+            if (showParticles) {
+                triggerCelebrationParticles(particleIntensity);
+            }
             
             setTimeout(() => {
                 toast.classList.remove('show');
             }, 3000);
+        }
+        
+        /** 触发粒子庆祝特效 */
+        function triggerCelebrationParticles(intensity = 'normal') {
+            const container = document.getElementById('celebrationParticles');
+            const colors = ['#f59e0b', '#00ff88', '#ff006e', '#00d4ff', '#a855f7', '#ffd700'];
+            
+            let particleCount;
+            switch (intensity) {
+                case 'light': particleCount = 20; break;
+                case 'normal': particleCount = 40; break;
+                case 'heavy': particleCount = 80; break;
+                case 'legendary': particleCount = 120; break;
+                default: particleCount = 40;
+            }
+            
+            for (let i = 0; i < particleCount; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'celebration-particle';
+                    particle.style.left = Math.random() * 100 + 'vw';
+                    particle.style.top = '-10px';
+                    particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    particle.style.width = (Math.random() * 8 + 4) + 'px';
+                    particle.style.height = particle.style.width;
+                    particle.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
+                    particle.style.animationDelay = (Math.random() * 0.5) + 's';
+                    
+                    container.appendChild(particle);
+                    
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 3000);
+                }, i * 20);
+            }
+        }
+        
+        /** 增强版情绪反馈 - 支持更多场景和特效 */
+        function triggerEmotionFeedback(action) {
+            const feedbackRules = {
+                // 收藏相关
+                'collect': () => {
+                    const messages = ['收藏成功！眼光不错~', '这件宝贝逃不出你的手心了！', '收藏+1，品味+1！'];
+                    return { emotion: 'love', message: messages[Math.floor(Math.random() * messages.length)] };
+                },
+                'uncollect': () => {
+                    return { emotion: 'cool', message: '忍痛割爱了？没关系~' };
+                },
+                // 购买相关
+                'purchase': () => {
+                    const messages = ['购买成功！恭喜恭喜~', '新装备到手！帅到没朋友！', '买它买它！'];
+                    return { emotion: 'excited', message: messages[Math.floor(Math.random() * messages.length)], showParticles: true };
+                },
+                // 连续活跃
+                'streak': (data) => {
+                    return { 
+                        emotion: 'excited', 
+                        message: `🔥 连续活跃${data.days}天！你是最棒的！` 
+                    };
+                },
+                // 等级提升
+                'levelup': (data) => {
+                    const levelUpMessages = [
+                        `恭喜升级到 ${data.level} 级！${data.rank}！`,
+                        `新等级解锁！${data.rank} 称号获得！`,
+                        `${data.level} 级达成！离潮流教父又近了一步！`
+                    ];
+                    return { 
+                        emotion: 'celebrate', 
+                        message: levelUpMessages[Math.floor(Math.random() * levelUpMessages.length)],
+                        showParticles: true,
+                        particleIntensity: data.level >= 10 ? 'heavy' : 'normal'
+                    };
+                },
+                // 成就解锁
+                'achievement': (data) => {
+                    return { 
+                        emotion: 'proud', 
+                        message: `🏆 成就解锁：${data.name}！太厉害了！`,
+                        showParticles: true,
+                        particleIntensity: data.rarity === 'legendary' ? 'legendary' : 'normal'
+                    };
+                },
+                // 浏览
+                'browse': (data) => {
+                    if (data.count === 10) {
+                        return { emotion: 'cool', message: '浏览小达人了！' };
+                    }
+                    return null;
+                },
+                // 搜索
+                'search': () => {
+                    const messages = ['找到想要的了？', '搜索小能手~', '在找什么好东西呢？'];
+                    return { emotion: 'happy', message: messages[Math.floor(Math.random() * messages.length)] };
+                },
+                // 空搜索结果
+                'no-result': () => {
+                    return { emotion: 'surprise', message: '没找到？换个关键词试试~' };
+                },
+                // 签到相关
+                'checkin': (data) => {
+                    if (data.streak >= 7) {
+                        return { 
+                            emotion: 'celebrate', 
+                            message: `🔥 连续签到${data.streak}天！王者风范！`,
+                            showParticles: true,
+                            particleIntensity: 'heavy'
+                        };
+                    } else if (data.streak >= 3) {
+                        return { 
+                            emotion: 'love', 
+                            message: `✨ 连续签到${data.streak}天！越来越有范了！` 
+                        };
+                    }
+                    return { 
+                        emotion: 'happy', 
+                        message: '🌟 签到成功！今日份努力已打卡~' 
+                    };
+                },
+                // 挑战胜利
+                'challenge_win': (data) => {
+                    return {
+                        emotion: 'celebrate',
+                        message: `⚔️ 挑战胜利！${data.score}分！太厉害了！`,
+                        showParticles: true,
+                        particleIntensity: 'normal'
+                    };
+                },
+                // 限时活动完成
+                'event_complete': (data) => {
+                    return {
+                        emotion: 'proud',
+                        message: `🎯 活动完成：${data.name}！奖励已发放！`,
+                        showParticles: true,
+                        particleIntensity: data.rarity === 'legendary' ? 'legendary' : 'normal'
+                    };
+                },
+                // 默认
+                'default': () => {
+                    return { emotion: 'happy', message: '你好呀！' };
+                }
+            };
+            
+            const rule = feedbackRules[action.type] || feedbackRules['default'];
+            const result = rule(action.data);
+            
+            if (result) {
+                showEmotionToast(result.emotion, result.message, {
+                    showParticles: result.showParticles || false,
+                    particleIntensity: result.particleIntensity || 'normal'
+                });
+            }
         }
         
         /** 获取时间段的问候配置 */
@@ -10178,6 +10795,12 @@
             }
         }
         
+        /** 初始化通知历史记录 */
+        function initNotificationHistory() {
+            updateHistoryBadge();
+            renderNotificationHistory();
+        }
+        
         /** 初始化动态系统 */
         function initPostSystem() {
             // 监听textarea输入
@@ -10204,6 +10827,9 @@
             renderPosts();
             updatePostBadge();
         }
+        
+        // 启动通知历史系统
+        initNotificationHistory();
         
         // 启动动态系统
         initPostSystem();
