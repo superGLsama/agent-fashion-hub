@@ -4862,6 +4862,389 @@
             font-size: 0.75rem;
             color: var(--text-secondary);
         }
+        
+        /* ==================== 移动端底部导航系统 ==================== */
+        
+        /* 移动端底部导航栏 */
+        .mobile-bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0.5rem 0;
+            padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
+            z-index: 1000;
+        }
+        
+        .mobile-nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.2rem;
+            padding: 0.5rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-radius: 12px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .mobile-nav-item:active {
+            transform: scale(0.9);
+        }
+        
+        .mobile-nav-item.active {
+            color: var(--accent-cyan);
+        }
+        
+        .mobile-nav-item.active::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 3px;
+            background: var(--accent-cyan);
+            border-radius: 0 0 3px 3px;
+        }
+        
+        .mobile-nav-icon {
+            font-size: 1.5rem;
+            position: relative;
+        }
+        
+        .mobile-nav-badge {
+            position: absolute;
+            top: -4px;
+            right: -8px;
+            background: var(--accent-pink);
+            color: #fff;
+            font-size: 0.6rem;
+            padding: 0.1rem 0.35rem;
+            border-radius: 10px;
+            font-weight: 700;
+            min-width: 16px;
+            text-align: center;
+        }
+        
+        .mobile-nav-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        
+        /* 移动端触摸反馈 */
+        .mobile-touch-ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(0, 212, 255, 0.3);
+            pointer-events: none;
+            animation: touchRipple 0.6s ease-out forwards;
+        }
+        
+        @keyframes touchRipple {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 0.6;
+            }
+            100% {
+                width: 150px;
+                height: 150px;
+                opacity: 0;
+                margin-left: -75px;
+                margin-top: -75px;
+            }
+        }
+        
+        /* 移动端滑动删除效果 */
+        .swipe-delete-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .swipe-delete-bg {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 80px;
+            background: linear-gradient(90deg, transparent, var(--accent-pink));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        /* 移动端卡片滑动 */
+        .mobile-card-swipe {
+            touch-action: pan-y;
+            user-select: none;
+        }
+        
+        .mobile-card-swipe.animate-left {
+            animation: swipeOutLeft 0.3s ease forwards;
+        }
+        
+        .mobile-card-swipe.animate-right {
+            animation: swipeOutRight 0.3s ease forwards;
+        }
+        
+        @keyframes swipeOutLeft {
+            to {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes swipeOutRight {
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        /* 移动端面板手势 */
+        .panel-gesture-hint {
+            display: none;
+        }
+        
+        .mobile-panel-handle {
+            display: none;
+        }
+        
+        /* 移动端底部导航显示条件 */
+        @media (max-width: 768px) {
+            .mobile-bottom-nav {
+                display: block;
+            }
+            
+            main {
+                padding-bottom: 100px;
+            }
+            
+            nav {
+                padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+            }
+            
+            /* 隐藏部分顶部按钮 */
+            .user-panel > button:not(.mobile-visible) {
+                display: none;
+            }
+            
+            /* 移动端顶部导航保留核心功能 */
+            .user-panel .mobile-visible {
+                display: flex !important;
+            }
+            
+            /* 移动端专属卡片样式 */
+            .product-card {
+                border-radius: 16px;
+            }
+            
+            .product-image {
+                height: 160px;
+                font-size: 4rem;
+            }
+            
+            /* 移动端手势提示 */
+            .panel-gesture-hint {
+                display: flex;
+                justify-content: center;
+                padding: 0.5rem;
+                color: var(--text-secondary);
+                font-size: 0.75rem;
+                opacity: 0.6;
+            }
+            
+            /* 移动端面板手柄 */
+            .mobile-panel-handle {
+                display: block;
+                width: 40px;
+                height: 4px;
+                background: rgba(255, 255, 255, 0.2);
+                border-radius: 2px;
+                margin: 0.5rem auto 0;
+            }
+            
+            /* 移动端底部导航时面板调整 */
+            .leaderboard-panel,
+            .achievement-panel,
+            .favorites-panel,
+            .challenge-panel,
+            .event-panel,
+            .post-panel,
+            .notification-history-panel {
+                bottom: 70px;
+                top: auto;
+                height: 70vh;
+                border-radius: 20px 20px 0 0;
+            }
+            
+            .leaderboard-panel::before,
+            .achievement-panel::before,
+            .favorites-panel::before,
+            .challenge-panel::before,
+            .event-panel::before,
+            .post-panel::before,
+            .notification-history-panel::before {
+                content: '';
+                display: block;
+            }
+            
+            /* 移动端详情弹窗调整 */
+            .detail-modal {
+                align-items: flex-end;
+                padding: 0;
+            }
+            
+            .detail-modal-content {
+                max-height: 85vh;
+                border-radius: 20px 20px 0 0;
+                width: 100%;
+            }
+            
+            /* 移动端触摸波纹效果增强 */
+            .product-card:active::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 100px;
+                height: 100px;
+                background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
+                border-radius: 50%;
+                transform: translate(-50%, -50%) scale(0);
+                animation: touchPulse 0.4s ease-out;
+            }
+            
+            @keyframes touchPulse {
+                to {
+                    transform: translate(-50%, -50%) scale(3);
+                    opacity: 0;
+                }
+            }
+            
+            /* 移动端滚动优化 */
+            .product-grid {
+                gap: 0.8rem;
+            }
+            
+            /* 移动端搜索框优化 */
+            .search-container {
+                padding: 0 1rem;
+            }
+            
+            .search-input {
+                font-size: 1rem;
+                padding: 0.8rem 1rem 0.8rem 2.8rem;
+            }
+        }
+        
+        /* 超小屏幕适配 */
+        @media (max-width: 375px) {
+            .mobile-nav-icon {
+                font-size: 1.3rem;
+            }
+            
+            .mobile-nav-label {
+                font-size: 0.65rem;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+        
+        /* 移动端导航栏图标按钮 */
+        .mobile-nav-icon-btn {
+            position: relative;
+        }
+        
+        /* 移动端快速操作浮层 */
+        .mobile-quick-actions {
+            display: none;
+            position: fixed;
+            bottom: 80px;
+            right: 1rem;
+            flex-direction: column;
+            gap: 0.8rem;
+            z-index: 999;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-quick-actions {
+                display: flex;
+            }
+        }
+        
+        .mobile-quick-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--epic), var(--accent-cyan));
+            border: none;
+            color: #fff;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(168, 85, 247, 0.4);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .mobile-quick-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .mobile-quick-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .mobile-quick-btn.main {
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+        }
+        
+        /* 移动端摇一摇反馈 */
+        @keyframes shakeFeedback {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .shake-feedback {
+            animation: shakeFeedback 0.3s ease;
+        }
+        
+        /* 移动端滑动吸附效果 */
+        .snap-scroll-container {
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .snap-scroll-item {
+            scroll-snap-align: start;
+        }
     </style>
 </head>
 <body>
@@ -4974,6 +5357,45 @@
             </div>
         </div>
     </nav>
+    
+    <!-- 移动端底部导航栏 -->
+    <div class="mobile-bottom-nav" id="mobileBottomNav">
+        <div class="mobile-panel-handle"></div>
+        <div class="mobile-nav-items">
+            <button class="mobile-nav-item active" data-page="home" onclick="switchMobilePage('home')">
+                <span class="mobile-nav-icon">🏠</span>
+                <span class="mobile-nav-label">首页</span>
+            </button>
+            <button class="mobile-nav-item" data-page="shop" onclick="switchMobilePage('shop')">
+                <span class="mobile-nav-icon">🛍️</span>
+                <span class="mobile-nav-label">商城</span>
+            </button>
+            <button class="mobile-nav-item mobile-nav-icon-btn" data-page="outfit" onclick="switchMobilePage('outfit')">
+                <span class="mobile-nav-icon">👔</span>
+                <span class="mobile-nav-label">装扮</span>
+            </button>
+            <button class="mobile-nav-item mobile-nav-icon-btn" data-page="social" onclick="switchMobilePage('social')">
+                <span class="mobile-nav-icon">
+                    🏆
+                    <span class="mobile-nav-badge" id="mobileNotifBadge" style="display: none;">0</span>
+                </span>
+                <span class="mobile-nav-label">社交</span>
+            </button>
+            <button class="mobile-nav-item mobile-nav-icon-btn" data-page="profile" onclick="switchMobilePage('profile')">
+                <span class="mobile-nav-icon">
+                    ⭐
+                    <span class="mobile-nav-badge" id="mobileAchBadge" style="display: none;">0</span>
+                </span>
+                <span class="mobile-nav-label">我的</span>
+            </button>
+        </div>
+    </div>
+    
+    <!-- 移动端快速操作按钮 -->
+    <div class="mobile-quick-actions">
+        <button class="mobile-quick-btn" onclick="toggleFavoritesPanel()" title="收藏">❤️</button>
+        <button class="mobile-quick-btn main" onclick="togglePostPanel()" title="发动态">✨</button>
+    </div>
     
     <!-- 排行榜面板遮罩 -->
     <div class="panel-overlay" id="leaderboardOverlay" onclick="closeLeaderboardPanel()"></div>
@@ -10833,6 +11255,384 @@
         
         // 启动动态系统
         initPostSystem();
+        
+        // 启动移动端体验增强
+        initMobileExperience();
+        
+        // ==================== 移动端体验增强系统 ====================
+        
+        // 移动端当前页面状态
+        let currentMobilePage = 'home';
+        
+        // 触摸手势状态
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchEndX = 0;
+        let touchEndY = 0;
+        let isSwiping = false;
+        let swipeElement = null;
+        
+        // 初始化移动端体验
+        function initMobileExperience() {
+            // 检测是否为移动设备
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                // 初始化触摸手势
+                initTouchGestures();
+                
+                // 初始化移动端导航徽章
+                updateMobileNavBadges();
+                
+                // 初始化触摸反馈
+                initTouchFeedback();
+                
+                // 监听视口变化
+                window.addEventListener('resize', handleViewportChange);
+            }
+            
+            // 初始化面板手势拖拽
+            initPanelGestures();
+        }
+        
+        // 切换移动端页面
+        function switchMobilePage(page) {
+            // 更新导航状态
+            document.querySelectorAll('.mobile-nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.page === page) {
+                    item.classList.add('active');
+                }
+            });
+            
+            currentMobilePage = page;
+            
+            // 根据页面类型滚动到对应区域
+            const main = document.querySelector('main');
+            const sections = {
+                'home': () => window.scrollTo({ top: 0, behavior: 'smooth' }),
+                'shop': () => {
+                    const products = document.getElementById('products');
+                    if (products) {
+                        products.scrollIntoView({ behavior: 'smooth' });
+                    }
+                },
+                'outfit': () => {
+                    const outfit = document.getElementById('outfit');
+                    if (outfit) {
+                        outfit.scrollIntoView({ behavior: 'smooth' });
+                    }
+                },
+                'social': () => {
+                    toggleLeaderboardPanel();
+                },
+                'profile': () => {
+                    toggleAchievementPanel();
+                }
+            };
+            
+            if (sections[page]) {
+                sections[page]();
+            }
+            
+            // 触觉反馈（如果支持）
+            if ('vibrate' in navigator) {
+                navigator.vibrate(10);
+            }
+            
+            // 触发情绪反馈
+            triggerEmotionFeedback({ type: 'navigate', data: { page } });
+        }
+        
+        // 初始化触摸手势
+        function initTouchGestures() {
+            const productGrid = document.getElementById('products');
+            if (!productGrid) return;
+            
+            // 卡片触摸开始
+            productGrid.addEventListener('touchstart', function(e) {
+                const card = e.target.closest('.product-card');
+                if (card) {
+                    touchStartX = e.touches[0].clientX;
+                    touchStartY = e.touches[0].clientY;
+                    swipeElement = card;
+                    isSwiping = false;
+                }
+            }, { passive: true });
+            
+            // 卡片触摸移动
+            productGrid.addEventListener('touchmove', function(e) {
+                if (!swipeElement) return;
+                
+                touchEndX = e.touches[0].clientX;
+                touchEndY = e.touches[0].clientY;
+                
+                const deltaX = touchEndX - touchStartX;
+                const deltaY = touchEndY - touchStartY;
+                
+                // 判断是否为水平滑动
+                if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 30) {
+                    isSwiping = true;
+                }
+            }, { passive: true });
+            
+            // 卡片触摸结束
+            productGrid.addEventListener('touchend', function(e) {
+                if (!swipeElement || !isSwiping) {
+                    swipeElement = null;
+                    return;
+                }
+                
+                const deltaX = touchEndX - touchStartX;
+                
+                if (deltaX < -50) {
+                    // 左滑 - 收藏
+                    const card = swipeElement;
+                    const cardId = card.dataset.id;
+                    if (cardId) {
+                        toggleFavorite('product', cardId);
+                        showEmotionToast('love', '收藏成功！眼光不错~');
+                    }
+                    card.classList.add('animate-left');
+                    setTimeout(() => card.classList.remove('animate-left'), 300);
+                } else if (deltaX > 50) {
+                    // 右滑 - 快速查看详情
+                    const card = swipeElement;
+                    const cardId = card.dataset.id;
+                    if (cardId) {
+                        showProductDetail(cardId);
+                    }
+                    card.classList.add('animate-right');
+                    setTimeout(() => card.classList.remove('animate-right'), 300);
+                }
+                
+                swipeElement = null;
+                isSwiping = false;
+            });
+        }
+        
+        // 初始化触摸反馈
+        function initTouchFeedback() {
+            // 为可点击元素添加触摸反馈
+            const clickableElements = document.querySelectorAll('.product-card, .style-card, .challenge-item, button');
+            
+            clickableElements.forEach(el => {
+                el.addEventListener('touchstart', function(e) {
+                    // 添加触摸反馈动画
+                    this.style.transform = 'scale(0.98)';
+                    this.style.transition = 'transform 0.1s';
+                }, { passive: true });
+                
+                el.addEventListener('touchend', function(e) {
+                    // 恢复原状
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 100);
+                }, { passive: true });
+            });
+        }
+        
+        // 初始化面板手势拖拽
+        function initPanelGestures() {
+            const panels = document.querySelectorAll('.leaderboard-panel, .achievement-panel, .favorites-panel, .challenge-panel, .event-panel, .post-panel');
+            
+            panels.forEach(panel => {
+                let startY = 0;
+                let startX = 0;
+                let isDragging = false;
+                
+                panel.addEventListener('touchstart', function(e) {
+                    // 只在顶部区域开始拖拽
+                    if (e.target.closest('.panel-header') || e.target.closest('.mobile-panel-handle')) {
+                        startY = e.touches[0].clientY;
+                        startX = e.touches[0].clientX;
+                        isDragging = true;
+                    }
+                }, { passive: true });
+                
+                panel.addEventListener('touchmove', function(e) {
+                    if (!isDragging) return;
+                    
+                    const currentY = e.touches[0].clientY;
+                    const deltaY = currentY - startY;
+                    
+                    // 向下拖拽超过100px，关闭面板
+                    if (deltaY > 100) {
+                        const closeHandler = panel.id.replace('Panel', '').replace('leaderboard', 'Leaderboard').replace('achievement', 'Achievement').replace('favorites', 'Favorites').replace('challenge', 'Challenge').replace('event', 'Event').replace('post', 'Post');
+                        
+                        // 查找对应的关闭函数
+                        const closeFunctions = {
+                            'LeaderboardPanel': closeLeaderboardPanel,
+                            'AchievementPanel': closeAchievementPanel,
+                            'FavoritesPanel': closeFavoritesPanel,
+                            'ChallengePanel': closeChallengePanel,
+                            'EventPanel': closeEventPanel,
+                            'PostPanel': closePostPanel
+                        };
+                        
+                        if (closeFunctions[panel.id]) {
+                            closeFunctions[panel.id]();
+                        }
+                        
+                        isDragging = false;
+                    }
+                }, { passive: true });
+                
+                panel.addEventListener('touchend', function() {
+                    isDragging = false;
+                });
+            });
+        }
+        
+        // 更新移动端导航徽章
+        function updateMobileNavBadges() {
+            const notifBadge = document.getElementById('mobileNotifBadge');
+            const achBadge = document.getElementById('mobileAchBadge');
+            
+            if (notifBadge) {
+                const notifCount = getNotificationCount();
+                if (notifCount > 0) {
+                    notifBadge.textContent = notifCount > 99 ? '99+' : notifCount;
+                    notifBadge.style.display = 'block';
+                } else {
+                    notifBadge.style.display = 'none';
+                }
+            }
+            
+            if (achBadge) {
+                const achCount = getPendingAchievements();
+                if (achCount > 0) {
+                    achBadge.textContent = achCount > 99 ? '99+' : achCount;
+                    achBadge.style.display = 'block';
+                } else {
+                    achBadge.style.display = 'none';
+                }
+            }
+        }
+        
+        // 获取通知数量
+        function getNotificationCount() {
+            const history = JSON.parse(localStorage.getItem('notificationHistory') || '[]');
+            const unread = history.filter(n => !n.read).length;
+            return unread;
+        }
+        
+        // 获取待完成成就数
+        function getPendingAchievements() {
+            if (typeof ACHIEVEMENTS === 'undefined') return 0;
+            const completed = JSON.parse(localStorage.getItem('achievements') || '[]');
+            return ACHIEVEMENTS.filter(a => !completed.includes(a.id) && a.condition(state)).length;
+        }
+        
+        // 处理视口变化
+        function handleViewportChange() {
+            const isMobile = window.innerWidth <= 768;
+            const mobileNav = document.getElementById('mobileBottomNav');
+            
+            if (mobileNav) {
+                mobileNav.style.display = isMobile ? 'block' : 'none';
+            }
+            
+            if (!isMobile) {
+                // 关闭所有面板的移动端样式
+                document.querySelectorAll('.leaderboard-panel, .achievement-panel, .favorites-panel, .challenge-panel, .event-panel, .post-panel').forEach(panel => {
+                    panel.style.bottom = '';
+                    panel.style.height = '';
+                    panel.style.borderRadius = '';
+                });
+            }
+        }
+        
+        // 添加长按功能（用于移动端）
+        function initLongPress() {
+            const cards = document.querySelectorAll('.product-card');
+            
+            cards.forEach(card => {
+                let longPressTimer = null;
+                
+                card.addEventListener('touchstart', function(e) {
+                    longPressTimer = setTimeout(() => {
+                        // 长按触发的操作
+                        const cardId = this.dataset.id;
+                        if (cardId) {
+                            toggleFavorite('product', cardId);
+                            showEmotionToast('love', '长按收藏成功！');
+                            
+                            // 触觉反馈
+                            if ('vibrate' in navigator) {
+                                navigator.vibrate(30);
+                            }
+                        }
+                    }, 500);
+                }, { passive: true });
+                
+                card.addEventListener('touchend', function() {
+                    if (longPressTimer) {
+                        clearTimeout(longPressTimer);
+                    }
+                });
+                
+                card.addEventListener('touchmove', function() {
+                    if (longPressTimer) {
+                        clearTimeout(longPressTimer);
+                    }
+                });
+            });
+        }
+        
+        // 移动端列表刷新下拉
+        function initPullToRefresh() {
+            const main = document.querySelector('main');
+            if (!main) return;
+            
+            let startY = 0;
+            let currentY = 0;
+            let isPulling = false;
+            
+            main.addEventListener('touchstart', function(e) {
+                if (window.scrollY === 0) {
+                    startY = e.touches[0].clientY;
+                    isPulling = true;
+                }
+            }, { passive: true });
+            
+            main.addEventListener('touchmove', function(e) {
+                if (!isPulling) return;
+                
+                currentY = e.touches[0].clientY;
+                const deltaY = currentY - startY;
+                
+                if (deltaY > 0 && deltaY < 100) {
+                    // 显示下拉刷新指示器
+                    this.style.transform = `translateY(${deltaY * 0.5}px)`;
+                }
+            }, { passive: true });
+            
+            main.addEventListener('touchend', function() {
+                if (!isPulling) return;
+                
+                const deltaY = currentY - startY;
+                
+                if (deltaY > 80) {
+                    // 触发刷新
+                    showEmotionToast('excited', '正在刷新~');
+                    setTimeout(() => {
+                        renderProducts();
+                        showEmotionToast('happy', '刷新完成！');
+                    }, 1000);
+                }
+                
+                this.style.transform = '';
+                isPulling = false;
+            });
+        }
+        
+        // 页面可见性变化时更新移动端状态
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                updateMobileNavBadges();
+            }
+        });
     </script>
 </body>
 </html>
