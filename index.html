@@ -4399,6 +4399,388 @@
             animation: rankUp 0.5s ease;
         }
         
+        /* ==================== 排行榜赛季系统 ==================== */
+        
+        /* 赛季导航栏 */
+        .season-nav {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.8rem 1rem;
+            background: rgba(245, 158, 11, 0.05);
+            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+        }
+        
+        .season-nav-btn {
+            flex: 1;
+            padding: 0.6rem 0.8rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .season-nav-btn:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-primary);
+        }
+        
+        .season-nav-btn.active {
+            background: rgba(245, 158, 11, 0.15);
+            border-color: var(--legendary);
+            color: var(--legendary);
+        }
+        
+        .season-nav-btn-icon {
+            font-size: 1.2rem;
+        }
+        
+        .season-nav-btn-label {
+            font-weight: 600;
+        }
+        
+        /* 赛季信息卡片 */
+        .season-info-card {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(255, 0, 110, 0.08));
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 16px;
+            padding: 1.2rem;
+            margin: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .season-info-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, transparent 50%);
+            animation: seasonGlow 4s ease-in-out infinite;
+        }
+        
+        @keyframes seasonGlow {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+        
+        .season-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .season-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .season-icon {
+            font-size: 2rem;
+            animation: seasonIconPulse 2s ease infinite;
+        }
+        
+        @keyframes seasonIconPulse {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.1); filter: brightness(1.2); }
+        }
+        
+        .season-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--legendary);
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+        }
+        
+        .season-tag {
+            padding: 0.2rem 0.6rem;
+            background: var(--legendary);
+            color: #000;
+            font-size: 0.65rem;
+            font-weight: 700;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+        
+        .season-countdown {
+            text-align: right;
+        }
+        
+        .countdown-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.3rem;
+        }
+        
+        .countdown-time {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        
+        .countdown-unit {
+            background: rgba(0, 212, 255, 0.15);
+            padding: 0.2rem 0.4rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .countdown-sep {
+            color: var(--text-secondary);
+        }
+        
+        /* 赛季进度 */
+        .season-progress {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .progress-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+        
+        .season-progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .season-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--legendary));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+        
+        .season-progress-fill::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: var(--legendary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--legendary);
+        }
+        
+        /* 赛季排行榜徽章 */
+        .season-rank-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.3rem 0.8rem;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(255, 107, 107, 0.15));
+            border: 1px solid var(--legendary);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--legendary);
+            margin-top: 0.8rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .season-rank-badge-icon {
+            font-size: 1rem;
+        }
+        
+        /* 赛季切换动画 */
+        @keyframes seasonTabSlide {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .season-content {
+            animation: seasonTabSlide 0.3s ease;
+        }
+        
+        /* 赛季奖励卡片 */
+        .season-rewards-section {
+            padding: 1rem;
+        }
+        
+        .season-rewards-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .season-rewards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.6rem;
+        }
+        
+        .season-reward-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 0.8rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .season-reward-item:hover {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: rgba(245, 158, 11, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .season-reward-rank {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.3rem;
+        }
+        
+        .season-reward-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        .season-reward-desc {
+            font-size: 0.75rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        
+        /* 历史赛季标签 */
+        .history-season-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 0.8rem 1rem;
+        }
+        
+        .history-season-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+        
+        .history-season-name {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .history-season-badge {
+            padding: 0.15rem 0.5rem;
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--accent-cyan);
+            font-size: 0.65rem;
+            border-radius: 4px;
+        }
+        
+        .history-my-rank {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--legendary);
+        }
+        
+        .history-rewards {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .history-reward-tag {
+            padding: 0.2rem 0.6rem;
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: var(--legendary);
+        }
+        
+        /* 赛季段位显示 */
+        .season-tier-display {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 10;
+        }
+        
+        .season-tier-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.8rem;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(255, 107, 107, 0.15));
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .season-tier-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+        
+        .season-tier-icon {
+            font-size: 1.2rem;
+        }
+        
+        .season-tier-info {
+            text-align: left;
+        }
+        
+        .season-tier-label {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+        }
+        
+        .season-tier-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--legendary);
+        }
+        
         /* ==================== 每日签到系统 ==================== */
         
         /* 签到按钮 */
@@ -5406,45 +5788,170 @@
             <h3>🏆 潮流排行榜</h3>
             <button class="panel-close" onclick="closeLeaderboardPanel()">✕</button>
         </div>
-        <!-- 排行榜类型切换 -->
-        <div class="leaderboard-tabs">
-            <button class="leaderboard-tab active" data-type="xp" onclick="switchLeaderboardTab('xp')">
-                <span class="leaderboard-tab-icon">⭐</span>
-                潮流指数
+        
+        <!-- 赛季导航 -->
+        <div class="season-nav">
+            <button class="season-nav-btn active" data-season="current" onclick="switchSeasonTab('current')">
+                <span class="season-nav-btn-icon">🏅</span>
+                <span class="season-nav-btn-label">当前赛季</span>
             </button>
-            <button class="leaderboard-tab" data-type="favorites" onclick="switchLeaderboardTab('favorites')">
-                <span class="leaderboard-tab-icon">❤️</span>
-                收藏达人
+            <button class="season-nav-btn" data-season="history" onclick="switchSeasonTab('history')">
+                <span class="season-nav-btn-icon">📜</span>
+                <span class="season-nav-btn-label">历史赛季</span>
             </button>
-            <button class="leaderboard-tab" data-type="spending" onclick="switchLeaderboardTab('spending')">
-                <span class="leaderboard-tab-icon">💎</span>
-                消费榜
+            <button class="season-nav-btn" data-season="rewards" onclick="switchSeasonTab('rewards')">
+                <span class="season-nav-btn-icon">🎁</span>
+                <span class="season-nav-btn-label">赛季奖励</span>
             </button>
         </div>
         
-        <!-- 我的排名卡片 -->
-        <div class="my-rank-card" id="myRankCard">
-            <div class="my-rank-position" id="myRankPosition">--</div>
-            <div class="my-rank-info">
-                <div class="my-rank-name">
-                    <span>🤖</span>
-                    <span>我的潮流</span>
-                    <span class="my-rank-badge" id="myRankBadge">潮流新人</span>
+        <!-- 赛季内容区 -->
+        <div class="season-content" id="seasonContent">
+            <!-- 当前赛季 -->
+            <div id="currentSeasonView">
+                <!-- 赛季信息卡片 -->
+                <div class="season-info-card" id="seasonInfoCard">
+                    <div class="season-header">
+                        <div class="season-title">
+                            <span class="season-icon" id="seasonIcon">⚡</span>
+                            <div>
+                                <div class="season-name" id="seasonName">S1 巅峰赛季</div>
+                                <span class="season-tag" id="seasonTag">进行中</span>
+                            </div>
+                        </div>
+                        <div class="season-countdown">
+                            <div class="countdown-label">赛季结束倒计时</div>
+                            <div class="countdown-time" id="seasonCountdown">
+                                <span class="countdown-unit" id="countdownDays">00</span>天
+                                <span class="countdown-unit" id="countdownHours">00</span>时
+                                <span class="countdown-unit" id="countdownMins">00</span>分
+                            </div>
+                        </div>
+                    </div>
+                    <div class="season-progress">
+                        <div class="progress-header">
+                            <span class="progress-label">赛季进度</span>
+                            <span class="progress-value" id="seasonProgressText">0 / 5000 积分</span>
+                        </div>
+                        <div class="season-progress-bar">
+                            <div class="season-progress-fill" id="seasonProgressFill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="season-rank-badge">
+                        <span class="season-rank-badge-icon">🏆</span>
+                        <span id="seasonMyRank">我的赛季排名: --</span>
+                    </div>
                 </div>
-                <div class="my-rank-stats">
-                    <span class="my-rank-score" id="myRankScore">0 XP</span>
-                    <span class="my-rank-change" id="myRankChange"></span>
+                
+                <!-- 排行榜类型切换 -->
+                <div class="leaderboard-tabs">
+                    <button class="leaderboard-tab active" data-type="xp" onclick="switchLeaderboardTab('xp')">
+                        <span class="leaderboard-tab-icon">⭐</span>
+                        潮流指数
+                    </button>
+                    <button class="leaderboard-tab" data-type="favorites" onclick="switchLeaderboardTab('favorites')">
+                        <span class="leaderboard-tab-icon">❤️</span>
+                        收藏达人
+                    </button>
+                    <button class="leaderboard-tab" data-type="spending" onclick="switchLeaderboardTab('spending')">
+                        <span class="leaderboard-tab-icon">💎</span>
+                        消费榜
+                    </button>
+                </div>
+                
+                <!-- 我的排名卡片 -->
+                <div class="my-rank-card" id="myRankCard">
+                    <div class="my-rank-position" id="myRankPosition">--</div>
+                    <div class="my-rank-info">
+                        <div class="my-rank-name">
+                            <span>🤖</span>
+                            <span>我的潮流</span>
+                            <span class="my-rank-badge" id="myRankBadge">潮流新人</span>
+                        </div>
+                        <div class="my-rank-stats">
+                            <span class="my-rank-score" id="myRankScore">0 XP</span>
+                            <span class="my-rank-change" id="myRankChange"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 排行榜列表 -->
+                <div class="leaderboard-list" id="leaderboardList"></div>
+                
+                <!-- 刷新提示 -->
+                <div class="leaderboard-refresh">
+                    <span class="refresh-icon">🔄</span>
+                    <span>每10分钟更新一次 · 赛季数据独立计算</span>
                 </div>
             </div>
-        </div>
-        
-        <!-- 排行榜列表 -->
-        <div class="leaderboard-list" id="leaderboardList"></div>
-        
-        <!-- 刷新提示 -->
-        <div class="leaderboard-refresh">
-            <span class="refresh-icon">🔄</span>
-            <span>每10分钟更新一次</span>
+            
+            <!-- 历史赛季 -->
+            <div id="historySeasonView" style="display: none;">
+                <div class="history-season-card" id="historySeasonCard1">
+                    <div class="history-season-header">
+                        <div class="history-season-name">
+                            <span>🌸</span>
+                            <span>S0 新星赛季</span>
+                            <span class="history-season-badge">已结束</span>
+                        </div>
+                        <div class="history-my-rank" id="historyRank1">#8</div>
+                    </div>
+                    <div class="history-rewards">
+                        <span class="history-reward-tag">🎨 专属头像框</span>
+                        <span class="history-reward-tag">⭐ 300 XP</span>
+                        <span class="history-reward-tag">💎 500 积分</span>
+                    </div>
+                </div>
+                <p style="text-align: center; color: var(--text-secondary); padding: 2rem; font-size: 0.9rem;">
+                    更多历史赛季数据加载中...
+                </p>
+            </div>
+            
+            <!-- 赛季奖励 -->
+            <div id="rewardsSeasonView" style="display: none;">
+                <div class="season-rewards-section">
+                    <div class="season-rewards-title">
+                        <span>🎁</span>
+                        <span>S1 巅峰赛季专属奖励</span>
+                    </div>
+                    <div class="season-rewards-grid">
+                        <div class="season-reward-item">
+                            <div class="season-reward-rank">第1名</div>
+                            <div class="season-reward-icon">👑</div>
+                            <div class="season-reward-desc">传奇称号<br>+2000 XP</div>
+                        </div>
+                        <div class="season-reward-item">
+                            <div class="season-reward-rank">第2-3名</div>
+                            <div class="season-reward-icon">⭐</div>
+                            <div class="season-reward-desc">大师称号<br>+1000 XP</div>
+                        </div>
+                        <div class="season-reward-item">
+                            <div class="season-reward-rank">第4-10名</div>
+                            <div class="season-reward-icon">🎖️</div>
+                            <div class="season-reward-desc">高手称号<br>+500 XP</div>
+                        </div>
+                        <div class="season-reward-item">
+                            <div class="season-reward-rank">前50%</div>
+                            <div class="season-reward-icon">🎨</div>
+                            <div class="season-reward-desc">专属头像框<br>+200 XP</div>
+                        </div>
+                        <div class="season-reward-item">
+                            <div class="season-reward-rank">前80%</div>
+                            <div class="season-reward-icon">✨</div>
+                            <div class="season-reward-desc">赛季徽章<br>+100 XP</div>
+                        </div>
+                        <div class="season-reward-item">
+                            <div class="season-reward-rank">参与者</div>
+                            <div class="season-reward-icon">🏅</div>
+                            <div class="season-reward-desc">参与证书<br>+50 XP</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 1rem; text-align: center; color: var(--text-secondary); font-size: 0.85rem;">
+                    <p>💡 赛季结束时，根据排名发放对应奖励</p>
+                    <p style="margin-top: 0.5rem;">排名越靠前，奖励越丰厚！</p>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -7174,6 +7681,234 @@
             likedUsers: new Set(JSON.parse(localStorage.getItem('leaderboardLikes') || '[]'))
         };
         
+        // ==================== 排行榜赛季系统 ====================
+        
+        // 赛季配置
+        const SEASONS = [
+            {
+                id: 's1',
+                name: 'S1 巅峰赛季',
+                icon: '⚡',
+                startDate: '2026-05-01',
+                endDate: '2026-05-31',
+                status: 'current', // current, upcoming, ended
+                theme: 'legendary'
+            },
+            {
+                id: 's0',
+                name: 'S0 新星赛季',
+                icon: '🌸',
+                startDate: '2026-04-01',
+                endDate: '2026-04-30',
+                status: 'ended',
+                theme: 'epic'
+            }
+        ];
+        
+        // 赛季排行榜数据（模拟）
+        const SEASON_LEADERBOARD = {
+            s1: [...LEADERBOARD_USERS].map(u => ({...u, seasonXp: Math.floor(u.xp * 1.2)})),
+            s0: [...LEADERBOARD_USERS].map((u, i) => ({...u, seasonXp: Math.floor(u.xp * 0.8), rank: i + 3}))
+        };
+        
+        // 赛季状态
+        let seasonState = {
+            currentSeason: 's1',
+            currentSeasonTab: 'current',
+            seasonScore: 0,
+            seasonRank: null,
+            historySeasons: ['s0'],
+            lastUpdate: Date.now()
+        };
+        
+        // 赛季奖励配置
+        const SEASON_REWARDS = [
+            { rank: 1, title: '传奇', xp: 2000, icon: '👑', rewards: ['专属称号', '2000 XP', '限量头像框'] },
+            { rank: '2-3', title: '大师', xp: 1000, icon: '⭐', rewards: ['大师称号', '1000 XP', '专属徽章'] },
+            { rank: '4-10', title: '高手', xp: 500, icon: '🎖️', rewards: ['高手称号', '500 XP', '头像装饰'] },
+            { rank: 'top50%', title: '精英', xp: 200, icon: '🎨', rewards: ['专属头像框', '200 XP'] },
+            { rank: 'top80%', title: '参与者', xp: 100, icon: '✨', rewards: ['赛季徽章', '100 XP'] },
+            { rank: 'all', title: '参与奖', xp: 50, icon: '🏅', rewards: ['参与证书', '50 XP'] }
+        ];
+        
+        /** 加载赛季状态 */
+        function loadSeasonState() {
+            const saved = localStorage.getItem('seasonState');
+            if (saved) {
+                seasonState = { ...seasonState, ...JSON.parse(saved) };
+            }
+            
+            // 初始化赛季积分（基于当前用户状态）
+            updateSeasonScore();
+            
+            // 启动倒计时
+            startSeasonCountdown();
+        }
+        
+        /** 保存赛季状态 */
+        function saveSeasonState() {
+            localStorage.setItem('seasonState', JSON.stringify(seasonState));
+        }
+        
+        /** 更新赛季积分 */
+        function updateSeasonScore() {
+            const currentSeason = SEASONS.find(s => s.id === seasonState.currentSeason);
+            if (!currentSeason) return;
+            
+            // 根据当前分数计算赛季积分
+            const userXp = state.totalXp || 0;
+            const userSpending = state.totalSpent || 0;
+            const userFavorites = (state.favorites?.items?.length || 0) + 
+                                  (state.favorites?.agents?.length || 0) + 
+                                  (state.favorites?.outfits?.length || 0);
+            
+            // 赛季积分 = XP * 2 + 消费积分 * 0.5 + 收藏数 * 10
+            seasonState.seasonScore = Math.floor(userXp * 2 + userSpending * 0.5 + userFavorites * 10);
+            
+            // 计算赛季排名
+            const seasonData = SEASON_LEADERBOARD[seasonState.currentSeason] || [];
+            let rank = seasonData.length + 1;
+            for (let i = 0; i < seasonData.length; i++) {
+                if (seasonState.seasonScore > seasonData[i].seasonXp) {
+                    rank = i + 1;
+                    break;
+                }
+            }
+            seasonState.seasonRank = rank;
+            
+            saveSeasonState();
+            updateSeasonUI();
+        }
+        
+        /** 更新赛季UI */
+        function updateSeasonUI() {
+            const currentSeason = SEASONS.find(s => s.id === seasonState.currentSeason);
+            if (!currentSeason) return;
+            
+            // 更新赛季名称和图标
+            document.getElementById('seasonName').textContent = currentSeason.name;
+            document.getElementById('seasonIcon').textContent = currentSeason.icon;
+            
+            // 更新赛季标签
+            const tag = document.getElementById('seasonTag');
+            tag.textContent = currentSeason.status === 'current' ? '进行中' : '已结束';
+            tag.style.background = currentSeason.status === 'current' ? 'var(--legendary)' : 'var(--text-secondary)';
+            
+            // 更新赛季进度
+            const maxScore = 5000;
+            const progress = Math.min((seasonState.seasonScore / maxScore) * 100, 100);
+            document.getElementById('seasonProgressFill').style.width = progress + '%';
+            document.getElementById('seasonProgressText').textContent = 
+                `${seasonState.seasonScore} / ${maxScore} 积分`;
+            
+            // 更新我的赛季排名
+            document.getElementById('seasonMyRank').textContent = 
+                `我的赛季排名: #${seasonState.seasonRank || '--'}`;
+        }
+        
+        /** 启动赛季倒计时 */
+        function startSeasonCountdown() {
+            const currentSeason = SEASONS.find(s => s.id === seasonState.currentSeason);
+            if (!currentSeason) return;
+            
+            const updateCountdown = () => {
+                const now = new Date();
+                const end = new Date(currentSeason.endDate + 'T23:59:59');
+                const diff = end - now;
+                
+                if (diff <= 0) {
+                    document.getElementById('countdownDays').textContent = '00';
+                    document.getElementById('countdownHours').textContent = '00';
+                    document.getElementById('countdownMins').textContent = '00';
+                    return;
+                }
+                
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                
+                document.getElementById('countdownDays').textContent = days.toString().padStart(2, '0');
+                document.getElementById('countdownHours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('countdownMins').textContent = mins.toString().padStart(2, '0');
+            };
+            
+            updateCountdown();
+            setInterval(updateCountdown, 60000); // 每分钟更新
+        }
+        
+        /** 切换赛季标签页 */
+        function switchSeasonTab(tab) {
+            seasonState.currentSeasonTab = tab;
+            
+            // 更新导航按钮状态
+            document.querySelectorAll('.season-nav-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.season === tab);
+            });
+            
+            // 显示/隐藏内容
+            const views = ['currentSeasonView', 'historySeasonView', 'rewardsSeasonView'];
+            views.forEach(viewId => {
+                const view = document.getElementById(viewId);
+                if (view) {
+                    view.style.display = viewId === tab + 'SeasonView' ? 'block' : 'none';
+                }
+            });
+            
+            // 添加动画效果
+            const content = document.getElementById('seasonContent');
+            if (content) {
+                content.style.animation = 'none';
+                content.offsetHeight; // 触发重绘
+                content.style.animation = 'seasonTabSlide 0.3s ease';
+            }
+        }
+        
+        /** 获取赛季对应的排行榜数据 */
+        function getSeasonLeaderboardData() {
+            const seasonId = seasonState.currentSeason;
+            const seasonData = SEASON_LEADERBOARD[seasonId];
+            if (!seasonData) return [];
+            
+            // 根据当前标签返回对应类型的数据
+            switch (leaderboardState.currentTab) {
+                case 'favorites':
+                    return [...seasonData].sort((a, b) => b.favorites - a.favorites)
+                        .map((u, i) => ({...u, seasonScore: u.favorites, rank: i + 1}));
+                case 'spending':
+                    return [...seasonData].sort((a, b) => b.spent - a.spent)
+                        .map((u, i) => ({...u, seasonScore: u.spent, rank: i + 1}));
+                default:
+                    return [...seasonData].sort((a, b) => b.seasonXp - a.seasonXp)
+                        .map((u, i) => ({...u, seasonScore: u.seasonXp, rank: i + 1}));
+            }
+        }
+        
+        /** 获取用户在赛季中的分数 */
+        function getSeasonUserScore() {
+            switch (leaderboardState.currentTab) {
+                case 'favorites':
+                    return (state.favorites?.items?.length || 0) + 
+                           (state.favorites?.agents?.length || 0) + 
+                           (state.favorites?.outfits?.length || 0);
+                case 'spending':
+                    return state.totalSpent || 0;
+                default:
+                    return seasonState.seasonScore;
+            }
+        }
+        
+        /** 获取赛季分数显示文本 */
+        function getSeasonScoreText(score) {
+            switch (leaderboardState.currentTab) {
+                case 'favorites':
+                    return `${score} 件收藏`;
+                case 'spending':
+                    return `${score.toLocaleString()} 积分`;
+                default:
+                    return `${score} 赛季积分`;
+            }
+        }
+        
         // 加载本地存储
         function loadState() {
             const saved = localStorage.getItem('agentFashionState');
@@ -7322,6 +8057,9 @@
             state.userPoints += pointsReward;
             state.checkinData.totalXpEarned += xpReward;
             state.checkinData.totalPointsEarned += pointsReward;
+            
+            // 更新赛季积分
+            updateSeasonScore();
             
             // 保存状态
             saveState();
@@ -8430,6 +9168,9 @@
                     state.newAchievements.push(ach.id);
                 });
                 
+                // 更新赛季积分
+                updateSeasonScore();
+                
                 saveState();
                 
                 // 显示成就达成动画（逐个显示）
@@ -9434,6 +10175,7 @@
         // 初始化时显示骨架屏再加载
         renderSkeletons();
         loadState();
+        loadSeasonState(); // 加载赛季系统状态
         
         // 恢复搜索框状态
         if (state.currentSearch) {
@@ -10223,15 +10965,18 @@
                 result = 'win';
                 reward = type.reward.win;
                 state.totalXp += reward;
+                updateSeasonScore(); // 更新赛季积分
                 showLevelUpCheck();
                 showEmotionToast('excited', `🏆 恭喜获胜！获得 ${reward} XP！`);
             } else if (userScore < challenge.opponentScore) {
                 result = 'lose';
                 reward = type.reward.lose;
                 state.totalXp += reward;
+                updateSeasonScore(); // 更新赛季积分
                 showEmotionToast('cool', `💔 挑战失败，获得 ${reward} XP安慰奖`);
             } else {
                 state.totalXp += reward;
+                updateSeasonScore(); // 更新赛季积分
                 showEmotionToast('happy', `🤝 平局！获得 ${reward} XP`);
             }
             
@@ -10333,13 +11078,21 @@
         /** 渲染排行榜 */
         function renderLeaderboard() {
             const list = document.getElementById('leaderboardList');
-            const data = getCurrentLeaderboard();
-            const userScore = getUserScore();
+            
+            // 根据赛季标签页决定使用哪种数据
+            let data, userScore;
+            if (seasonState.currentSeasonTab === 'current') {
+                data = getSeasonLeaderboardData();
+                userScore = getSeasonUserScore();
+            } else {
+                data = getCurrentLeaderboard();
+                userScore = getUserScore();
+            }
             
             // 计算用户排名（将用户插入到正确位置）
             let userRank = data.length + 1;
             for (let i = 0; i < data.length; i++) {
-                const itemScore = data[i][leaderboardState.currentTab === 'spending' ? 'spent' : (leaderboardState.currentTab === 'favorites' ? 'favorites' : 'xp')];
+                const itemScore = data[i].seasonScore || data[i][leaderboardState.currentTab === 'spending' ? 'spent' : (leaderboardState.currentTab === 'favorites' ? 'favorites' : 'xp')];
                 if (userScore > itemScore) {
                     userRank = i + 1;
                     break;
@@ -10351,7 +11104,7 @@
             
             list.innerHTML = showData.map((user, index) => {
                 const rank = index + 1;
-                const score = user[leaderboardState.currentTab === 'spending' ? 'spent' : (leaderboardState.currentTab === 'favorites' ? 'favorites' : 'xp')];
+                const score = user.seasonScore || user[leaderboardState.currentTab === 'spending' ? 'spent' : (leaderboardState.currentTab === 'favorites' ? 'favorites' : 'xp')];
                 const isLiked = leaderboardState.likedUsers.has(user.id);
                 
                 let rankClass = '';
@@ -10380,6 +11133,10 @@
                     badgeHtml = `<span class="rank-user-badge hot">热门</span>`;
                 }
                 
+                // 赛季标签显示
+                const seasonBadge = seasonState.currentSeasonTab === 'current' ? 
+                    `<span class="rank-user-badge" style="background: rgba(245, 158, 11, 0.2); color: var(--legendary);">🏅</span>` : '';
+                
                 return `
                     <div class="rank-item ${rank <= 3 ? 'top-three' : ''}" onclick="showRankDetail('${user.id}')">
                         <div class="rank-position ${positionClass}">${rank <= 3 ? ['🥇', '🥈', '🥉'][rank-1] : rank}</div>
@@ -10388,6 +11145,7 @@
                             <div class="rank-name">
                                 ${escapeHtml(user.name)}
                                 ${badgeHtml}
+                                ${seasonBadge}
                             </div>
                             <div class="rank-meta">
                                 <span class="rank-level">⭐ Lv.${user.level}</span>
@@ -10395,8 +11153,8 @@
                             </div>
                         </div>
                         <div class="rank-data">
-                            <div class="rank-score">${leaderboardState.currentTab === 'spending' ? score.toLocaleString() : score}</div>
-                            <div class="rank-score-label">${leaderboardState.currentTab === 'spending' ? '积分' : (leaderboardState.currentTab === 'favorites' ? '收藏' : 'XP')}</div>
+                            <div class="rank-score">${getSeasonScoreText(score)}</div>
+                            <div class="rank-score-label">${seasonState.currentSeasonTab === 'current' ? '赛季' : ''}${leaderboardState.currentTab === 'spending' ? '积分' : (leaderboardState.currentTab === 'favorites' ? '收藏' : 'XP')}</div>
                             ${changeHtml}
                         </div>
                         <button class="rank-like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation(); toggleLike('${user.id}', this)">
@@ -10410,7 +11168,6 @@
             if (userRank > data.length) {
                 const userLevel = getCurrentLevel();
                 const score = userScore;
-                const isLiked = false;
                 
                 list.innerHTML += `
                     <div class="rank-item current-user">
@@ -10420,6 +11177,7 @@
                             <div class="rank-name">
                                 我的潮流
                                 <span class="rank-user-badge vip">你</span>
+                                ${seasonState.currentSeasonTab === 'current' ? '<span class="rank-user-badge" style="background: rgba(245, 158, 11, 0.2); color: var(--legendary);">🏅</span>' : ''}
                             </div>
                             <div class="rank-meta">
                                 <span class="rank-level">⭐ Lv.${userLevel.level}</span>
@@ -10427,8 +11185,8 @@
                             </div>
                         </div>
                         <div class="rank-data">
-                            <div class="rank-score">${leaderboardState.currentTab === 'spending' ? score.toLocaleString() : score}</div>
-                            <div class="rank-score-label">${leaderboardState.currentTab === 'spending' ? '积分' : (leaderboardState.currentTab === 'favorites' ? '收藏' : 'XP')}</div>
+                            <div class="rank-score">${getSeasonScoreText(score)}</div>
+                            <div class="rank-score-label">${seasonState.currentSeasonTab === 'current' ? '赛季' : ''}${leaderboardState.currentTab === 'spending' ? '积分' : (leaderboardState.currentTab === 'favorites' ? '收藏' : 'XP')}</div>
                         </div>
                     </div>
                 `;
@@ -10437,14 +11195,22 @@
         
         /** 更新我的排名卡片 */
         function updateMyRank() {
-            const data = getCurrentLeaderboard();
-            const userScore = getUserScore();
+            // 根据赛季标签页决定使用哪种数据
+            let data, userScore;
+            if (seasonState.currentSeasonTab === 'current') {
+                data = getSeasonLeaderboardData();
+                userScore = getSeasonUserScore();
+            } else {
+                data = getCurrentLeaderboard();
+                userScore = getUserScore();
+            }
+            
             const userLevel = getCurrentLevel();
             
             // 计算用户排名
             let userRank = data.length + 1;
             for (let i = 0; i < data.length; i++) {
-                const itemScore = data[i][leaderboardState.currentTab === 'spending' ? 'spent' : (leaderboardState.currentTab === 'favorites' ? 'favorites' : 'xp')];
+                const itemScore = data[i].seasonScore || data[i][leaderboardState.currentTab === 'spending' ? 'spent' : (leaderboardState.currentTab === 'favorites' ? 'favorites' : 'xp')];
                 if (userScore > itemScore) {
                     userRank = i + 1;
                     break;
@@ -10463,8 +11229,8 @@
             // 等级徽章
             badgeEl.textContent = userLevel.name;
             
-            // 分数
-            scoreEl.textContent = getScoreText(userScore);
+            // 分数（使用赛季分数或普通分数）
+            scoreEl.textContent = getSeasonScoreText(userScore);
             
             // 排名变化（模拟）
             const simulatedChange = Math.floor(Math.random() * 5) - 2; // -2 到 2
@@ -10821,6 +11587,7 @@
             // 发放奖励
             if (event.rewards.xp) {
                 state.totalXp += event.rewards.xp;
+                updateSeasonScore(); // 更新赛季积分
             }
             if (event.rewards.points) {
                 state.userPoints += event.rewards.points;
