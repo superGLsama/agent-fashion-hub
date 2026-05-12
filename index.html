@@ -1879,6 +1879,563 @@
             transition: width 0.5s ease;
         }
         
+        /* ==================== 个人主页资料卡2.0 ==================== */
+        
+        /* 个人主页面板 */
+        .profile-card-panel {
+            position: fixed;
+            top: 0;
+            right: -520px;
+            width: 500px;
+            max-width: 95vw;
+            height: 100vh;
+            background: linear-gradient(180deg, rgba(18, 18, 26, 0.98) 0%, rgba(10, 10, 15, 0.99) 100%);
+            z-index: 160;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+        
+        .profile-card-panel.show {
+            right: 0;
+        }
+        
+        /* 个人主页头部背景 */
+        .profile-card-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 280px;
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--epic) 50%, var(--accent-pink) 100%);
+            opacity: 0.15;
+            pointer-events: none;
+        }
+        
+        .profile-card-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: gridMove 20s linear infinite;
+        }
+        
+        /* 个人主页头部 */
+        .profile-card-header {
+            position: relative;
+            padding: 2rem 1.5rem 1.5rem;
+            text-align: center;
+            z-index: 1;
+        }
+        
+        .profile-card-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .profile-card-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+        
+        /* 角色头像区域 */
+        .profile-avatar-section {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--epic));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.4);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .profile-avatar::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            animation: rotate 15s linear infinite;
+        }
+        
+        .profile-avatar-ring {
+            position: absolute;
+            inset: -15px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: var(--legendary);
+            border-right-color: var(--accent-cyan);
+            animation: rotate 3s linear infinite;
+            opacity: 0.6;
+        }
+        
+        .profile-level-badge {
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--legendary), var(--accent-pink));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 900;
+            border: 3px solid var(--bg-dark);
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+            z-index: 3;
+        }
+        
+        .profile-user-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .profile-user-title {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-user-alliance {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .profile-user-alliance.tech {
+            background: rgba(0, 212, 255, 0.15);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+        
+        .profile-user-alliance.nature {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+        
+        .profile-user-alliance.chaos {
+            background: rgba(255, 0, 110, 0.15);
+            color: var(--accent-pink);
+            border: 1px solid rgba(255, 0, 110, 0.3);
+        }
+        
+        /* 等级进度条 */
+        .profile-level-progress {
+            padding: 0 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .profile-level-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-level-current {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        
+        .profile-level-next {
+            color: var(--text-secondary);
+        }
+        
+        .profile-level-bar {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .profile-level-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--epic));
+            border-radius: 5px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+        
+        .profile-level-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        /* 个人主页内容区 */
+        .profile-card-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 统计卡片网格 */
+        .profile-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .profile-stat-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .profile-stat-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.2rem;
+        }
+        
+        .profile-stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        /* 赛季数据卡片 */
+        .profile-season-card {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(255, 0, 110, 0.08));
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 16px;
+            padding: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-season-card::before {
+            content: '⚡';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 5rem;
+            opacity: 0.1;
+        }
+        
+        .profile-season-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .profile-season-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--legendary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .profile-season-status {
+            padding: 0.3rem 0.8rem;
+            background: rgba(245, 158, 11, 0.2);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--legendary);
+            font-weight: 600;
+        }
+        
+        .profile-season-stats {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+        
+        .profile-season-stat {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+        
+        .profile-season-stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .profile-season-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        /* 装备展示区 */
+        .profile-outfit-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .profile-outfit-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.6rem;
+        }
+        
+        .profile-outfit-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 0.8rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .profile-outfit-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: scale(1.05);
+        }
+        
+        .profile-outfit-item.empty {
+            opacity: 0.4;
+        }
+        
+        .profile-outfit-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        .profile-outfit-name {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* 成就徽章墙 */
+        .profile-achievements-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+        }
+        
+        .profile-achievement-badge {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .profile-achievement-badge:hover {
+            transform: scale(1.15);
+            background: rgba(255, 255, 255, 0.08);
+            z-index: 2;
+        }
+        
+        .profile-achievement-badge.locked {
+            opacity: 0.3;
+            filter: grayscale(1);
+        }
+        
+        .profile-achievement-badge.locked::after {
+            content: '🔒';
+            position: absolute;
+            font-size: 0.8rem;
+        }
+        
+        .profile-achievement-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 0.5rem 0.8rem;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+        
+        .profile-achievement-badge:hover .profile-achievement-tooltip {
+            opacity: 1;
+            visibility: visible;
+            bottom: calc(100% + 5px);
+        }
+        
+        /* 详细数据区 */
+        .profile-detail-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+        
+        .profile-detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .profile-detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        .profile-detail-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .profile-detail-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        /* 个人主页分享按钮 */
+        .profile-share-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--epic));
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+        
+        .profile-share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+        }
+        
+        /* 个人主页动画 */
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        @keyframes profileCardIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .profile-card-panel.show .profile-avatar-section {
+            animation: profileCardIn 0.5s ease 0.1s both;
+        }
+        
+        .profile-card-panel.show .profile-stat-card {
+            animation: profileCardIn 0.5s ease calc(0.2s + var(--i, 0) * 0.1s) both;
+        }
+        
+        .profile-stat-card:nth-child(1) { --i: 0; }
+        .profile-stat-card:nth-child(2) { --i: 1; }
+        .profile-stat-card:nth-child(3) { --i: 2; }
+        .profile-stat-card:nth-child(4) { --i: 3; }
+        
+        /* ==================== 成就面板 ==================== */
+        
         /* 成就面板 */
         .achievement-panel {
             position: fixed;
@@ -4830,6 +5387,35 @@
             display: block;
         }
         
+        /* 个人主页资料卡按钮 */
+        .profile-card-btn {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(0, 212, 255, 0.2));
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            color: #fff;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.2);
+        }
+        
+        .profile-card-btn:hover {
+            transform: translateY(-2px) scale(1.05) rotate(5deg);
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.35), rgba(0, 212, 255, 0.35));
+            border-color: rgba(168, 85, 247, 0.5);
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.35);
+        }
+        
+        .profile-card-btn .profile-card-btn-icon {
+            font-size: 1.6rem;
+        }
+        
         /* 签到面板 */
         .checkin-panel {
             position: fixed;
@@ -5720,6 +6306,10 @@
                     ✨
                     <span class="post-badge" id="postBadge">0</span>
                 </button>
+                <!-- 个人主页资料卡按钮 -->
+                <button class="profile-card-btn" id="profileCardBtn" onclick="toggleProfileCardPanel()" title="个人主页">
+                    <span class="profile-card-btn-icon">🎴</span>
+                </button>
                 <!-- 用户等级显示 -->
                 <div class="user-level-display" id="userLevelDisplay" onclick="toggleAchievementPanel()">
                     <span class="level-icon">⭐</span>
@@ -6041,6 +6631,133 @@
                 </div>
             </div>
             <button class="checkin-success-btn" onclick="closeCheckinSuccess()">太棒了!</button>
+        </div>
+    </div>
+    
+    <!-- 个人主页资料卡2.0 -->
+    <div class="panel-overlay" id="profileCardOverlay" onclick="closeProfileCardPanel()"></div>
+    
+    <div class="profile-card-panel" id="profileCardPanel">
+        <div class="profile-card-bg"></div>
+        
+        <div class="profile-card-header">
+            <button class="profile-card-close" onclick="closeProfileCardPanel()">✕</button>
+            
+            <div class="profile-avatar-section">
+                <div class="profile-avatar-ring"></div>
+                <div class="profile-avatar" id="profileCardAvatar">🤖</div>
+                <div class="profile-level-badge" id="profileCardLevel">1</div>
+            </div>
+            
+            <div class="profile-user-name" id="profileCardName">潮流新星</div>
+            <div class="profile-user-title" id="profileCardTitle">Lv.1 潮流新人</div>
+            <div class="profile-user-alliance tech" id="profileCardAlliance">
+                <span>💻</span>
+                <span>科技联盟</span>
+            </div>
+            
+            <div class="profile-level-progress">
+                <div class="profile-level-info">
+                    <span class="profile-level-current" id="profileCardXpCurrent">0 XP</span>
+                    <span class="profile-level-next" id="profileCardXpNext">100 XP</span>
+                </div>
+                <div class="profile-level-bar">
+                    <div class="profile-level-fill" id="profileCardLevelFill" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="profile-card-content">
+            <!-- 统计卡片 -->
+            <div class="profile-stats-grid">
+                <div class="profile-stat-card">
+                    <div class="profile-stat-icon">💎</div>
+                    <div class="profile-stat-value" id="profileCardPoints">1000</div>
+                    <div class="profile-stat-label">潮流积分</div>
+                </div>
+                <div class="profile-stat-card">
+                    <div class="profile-stat-icon">❤️</div>
+                    <div class="profile-stat-value" id="profileCardFavorites">0</div>
+                    <div class="profile-stat-label">收藏数</div>
+                </div>
+                <div class="profile-stat-card">
+                    <div class="profile-stat-icon">🏆</div>
+                    <div class="profile-stat-value" id="profileCardAchievements">0</div>
+                    <div class="profile-stat-label">成就数</div>
+                </div>
+                <div class="profile-stat-card">
+                    <div class="profile-stat-icon">🔥</div>
+                    <div class="profile-stat-value" id="profileCardStreak">0</div>
+                    <div class="profile-stat-label">连续签到</div>
+                </div>
+            </div>
+            
+            <!-- 赛季数据 -->
+            <div class="profile-season-card">
+                <div class="profile-season-header">
+                    <div class="profile-season-name" id="profileSeasonName">
+                        <span>⚡</span>
+                        <span>S1 巅峰赛季</span>
+                    </div>
+                    <div class="profile-season-status">进行中</div>
+                </div>
+                <div class="profile-season-stats">
+                    <div class="profile-season-stat">
+                        <div class="profile-season-stat-value" id="profileSeasonScore">0</div>
+                        <div class="profile-season-stat-label">赛季积分</div>
+                    </div>
+                    <div class="profile-season-stat">
+                        <div class="profile-season-stat-value" id="profileSeasonRank">#99</div>
+                        <div class="profile-season-stat-label">赛季排名</div>
+                    </div>
+                    <div class="profile-season-stat">
+                        <div class="profile-season-stat-value" id="profileSeasonProgress">0%</div>
+                        <div class="profile-season-stat-label">赛季进度</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 当前装扮 -->
+            <div class="profile-outfit-section">
+                <div class="profile-section-title">👔 当前装扮</div>
+                <div class="profile-outfit-grid" id="profileOutfitGrid">
+                    <!-- 装扮项会动态生成 -->
+                </div>
+            </div>
+            
+            <!-- 成就徽章墙 -->
+            <div class="profile-achievements-section">
+                <div class="profile-section-title">🏅 成就徽章</div>
+                <div class="profile-achievements-grid" id="profileAchievementsGrid">
+                    <!-- 成就徽章会动态生成 -->
+                </div>
+            </div>
+            
+            <!-- 详细数据 -->
+            <div class="profile-detail-section">
+                <div class="profile-detail-item">
+                    <span class="profile-detail-label">📦 累计购买</span>
+                    <span class="profile-detail-value" id="profileDetailPurchases">0 件</span>
+                </div>
+                <div class="profile-detail-item">
+                    <span class="profile-detail-label">💰 累计消费</span>
+                    <span class="profile-detail-value" id="profileDetailSpent">0 积分</span>
+                </div>
+                <div class="profile-detail-item">
+                    <span class="profile-detail-label">📅 注册天数</span>
+                    <span class="profile-detail-value" id="profileDetailDays">1 天</span>
+                </div>
+                <div class="profile-detail-item">
+                    <span class="profile-detail-label">✨ 潮流指数</span>
+                    <span class="profile-detail-value" id="profileDetailTrend">0</span>
+                </div>
+            </div>
+            
+            <!-- 分享按钮 -->
+            <button class="profile-share-btn" onclick="shareProfileCard()">
+                <span>🔗</span>
+                <span>分享我的资料卡</span>
+            </button>
         </div>
     </div>
     
@@ -9252,6 +9969,293 @@
         /** 关闭等级提升动画 */
         function dismissLevelUp() {
             document.getElementById('levelUpOverlay').classList.remove('show');
+        }
+        
+        // ==================== 个人主页资料卡2.0 ====================
+        
+        /** 切换个人主页资料卡面板 */
+        function toggleProfileCardPanel() {
+            const panel = document.getElementById('profileCardPanel');
+            const overlay = document.getElementById('profileCardOverlay');
+            
+            if (panel.classList.contains('show')) {
+                closeProfileCardPanel();
+            } else {
+                // 关闭其他面板
+                closeAchievementPanel();
+                closeFavoritesPanel();
+                
+                panel.classList.add('show');
+                overlay.classList.add('show');
+                
+                // 渲染个人主页数据
+                renderProfileCard();
+            }
+        }
+        
+        /** 关闭个人主页资料卡面板 */
+        function closeProfileCardPanel() {
+            const panel = document.getElementById('profileCardPanel');
+            const overlay = document.getElementById('profileCardOverlay');
+            
+            panel.classList.remove('show');
+            overlay.classList.remove('show');
+        }
+        
+        /** 渲染个人主页资料卡 */
+        function renderProfileCard() {
+            const level = getCurrentLevel();
+            const levelProgress = getLevelProgress();
+            
+            // 头像和等级
+            document.getElementById('profileCardAvatar').textContent = state.avatar || '🤖';
+            document.getElementById('profileCardLevel').textContent = level.level <= 6 ? level.level : '👑';
+            
+            // 昵称和称号
+            document.getElementById('profileCardName').textContent = state.nickname || '潮流新星';
+            document.getElementById('profileCardTitle').textContent = `Lv.${level.level} ${level.name}`;
+            
+            // 联盟
+            const allianceMap = {
+                tech: { icon: '💻', name: '科技联盟' },
+                nature: { icon: '🌿', name: '自然联盟' },
+                chaos: { icon: '🔥', name: '混沌联盟' }
+            };
+            const alliance = allianceMap[state.alliance] || allianceMap.tech;
+            const allianceEl = document.getElementById('profileCardAlliance');
+            allianceEl.className = `profile-user-alliance ${state.alliance || 'tech'}`;
+            allianceEl.innerHTML = `<span>${alliance.icon}</span><span>${alliance.name}</span>`;
+            
+            // XP进度
+            document.getElementById('profileCardXpCurrent').textContent = `${state.totalXp} XP`;
+            document.getElementById('profileCardXpNext').textContent = `${level.maxXp} XP`;
+            document.getElementById('profileCardLevelFill').style.width = `${levelProgress}%`;
+            
+            // 统计卡片
+            document.getElementById('profileCardPoints').textContent = formatNumber(state.userPoints);
+            document.getElementById('profileCardFavorites').textContent = state.favorites.length;
+            document.getElementById('profileCardAchievements').textContent = state.completedAchievements.length;
+            document.getElementById('profileCardStreak').textContent = state.checkinData.currentStreak;
+            
+            // 赛季数据
+            const currentSeason = getCurrentSeason();
+            const seasonScore = getSeasonUserScore();
+            const seasonRank = getUserSeasonRank();
+            const seasonProgress = Math.min((seasonScore / 5000) * 100, 100);
+            
+            if (currentSeason) {
+                document.getElementById('profileSeasonName').innerHTML = `<span>${currentSeason.icon}</span><span>${currentSeason.name}</span>`;
+            }
+            document.getElementById('profileSeasonScore').textContent = formatNumber(seasonScore);
+            document.getElementById('profileSeasonRank').textContent = `#${seasonRank}`;
+            document.getElementById('profileSeasonProgress').textContent = `${Math.round(seasonProgress)}%`;
+            
+            // 当前装扮
+            renderProfileOutfit();
+            
+            // 成就徽章墙
+            renderProfileAchievements();
+            
+            // 详细数据
+            document.getElementById('profileDetailPurchases').textContent = `${state.totalPurchases} 件`;
+            document.getElementById('profileDetailSpent').textContent = `${formatNumber(state.totalSpent)} 积分`;
+            document.getElementById('profileDetailDays').textContent = `${getDaysSinceFirstVisit()} 天`;
+            document.getElementById('profileDetailTrend').textContent = calculateTotalTrend();
+        }
+        
+        /** 渲染个人主页装扮展示 */
+        function renderProfileOutfit() {
+            const grid = document.getElementById('profileOutfitGrid');
+            const slots = [
+                { key: 'hair', name: '发型', icon: '💇' },
+                { key: 'top', name: '上衣', icon: '👕' },
+                { key: 'bottom', name: '下装', icon: '👖' },
+                { key: 'shoes', name: '鞋子', icon: '👟' },
+                { key: 'accessory', name: '配饰', icon: '💍' },
+                { key: 'expression', name: '表情', icon: '😊' }
+            ];
+            
+            let html = '';
+            slots.forEach(slot => {
+                const equippedId = state.equipped[slot.key];
+                if (equippedId) {
+                    const item = outfitItems.find(i => i.id === equippedId);
+                    if (item) {
+                        html += `<div class="profile-outfit-item">
+                            <div class="profile-outfit-icon">${item.icon}</div>
+                            <div class="profile-outfit-name">${item.name}</div>
+                        </div>`;
+                    }
+                } else {
+                    html += `<div class="profile-outfit-item empty">
+                        <div class="profile-outfit-icon">${slot.icon}</div>
+                        <div class="profile-outfit-name">未装备</div>
+                    </div>`;
+                }
+            });
+            
+            grid.innerHTML = html;
+        }
+        
+        /** 渲染个人主页成就徽章墙 */
+        function renderProfileAchievements() {
+            const grid = document.getElementById('profileAchievementsGrid');
+            
+            // 获取前10个成就
+            const displayAchievements = ACHIEVEMENTS.slice(0, 10);
+            
+            let html = '';
+            displayAchievements.forEach(ach => {
+                const isCompleted = state.completedAchievements.includes(ach.id);
+                html += `<div class="profile-achievement-badge ${isCompleted ? '' : 'locked'}" onclick="showAchievementDetail('${ach.id}')">
+                    <span>${ach.icon}</span>
+                    <div class="profile-achievement-tooltip">
+                        <div>${ach.name}</div>
+                        <div style="color: var(--text-secondary); font-size: 0.7rem;">${isCompleted ? '✅ 已达成' : '🔒 未达成'}</div>
+                    </div>
+                </div>`;
+            });
+            
+            grid.innerHTML = html;
+        }
+        
+        /** 显示成就详情 */
+        function showAchievementDetail(achId) {
+            const ach = ACHIEVEMENTS.find(a => a.id === achId);
+            if (!ach) return;
+            
+            const isCompleted = state.completedAchievements.includes(achId);
+            const progress = ach.getProgress(state);
+            const target = ach.getTarget();
+            
+            showEmotionToast(
+                isCompleted ? 'celebrate' : 'encourage',
+                `${ach.icon} ${ach.name}\n${isCompleted ? '已达成！' : `${progress}/${target}`}`
+            );
+        }
+        
+        /** 分享个人主页资料卡 */
+        function shareProfileCard() {
+            const level = getCurrentLevel();
+            const shareText = `🎮 AI Agent 潮流联盟资料卡\n\n` +
+                `👤 ${state.nickname || '潮流新星'}\n` +
+                `⭐ Lv.${level.level} ${level.name}\n` +
+                `💎 积分: ${formatNumber(state.userPoints)}\n` +
+                `🏆 成就: ${state.completedAchievements.length} 个\n` +
+                `🔥 连续签到: ${state.checkinData.currentStreak} 天\n\n` +
+                `✨ 我的潮流指数: ${calculateTotalTrend()}\n` +
+                `⚡ 赛季积分: ${formatNumber(getSeasonUserScore())}\n\n` +
+                `#AIAgent #潮流联盟`;
+            
+            // 尝试复制到剪贴板
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    showEmotionToast('cool', '资料卡内容已复制到剪贴板！');
+                }).catch(() => {
+                    showEmotionToast('wow', '分享内容已生成，长按复制~');
+                });
+            } else {
+                // 降级处理：显示提示
+                showEmotionToast('cool', '资料卡分享功能准备中~');
+            }
+        }
+        
+        /** 获取用户赛季排名 */
+        function getUserSeasonRank() {
+            const seasonScore = getSeasonUserScore();
+            let rank = 15; // 基础排名（假设有14个模拟用户）
+            
+            // 根据赛季积分计算排名
+            if (seasonScore > 10000) rank = 1;
+            else if (seasonScore > 8000) rank = 2;
+            else if (seasonScore > 6000) rank = 3;
+            else if (seasonScore > 4000) rank = 5;
+            else if (seasonScore > 2000) rank = 8;
+            else if (seasonScore > 1000) rank = 12;
+            
+            return rank;
+        }
+        
+        /** 获取距离首次访问的天数 */
+        function getDaysSinceFirstVisit() {
+            const firstVisit = localStorage.getItem('firstVisit');
+            if (!firstVisit) {
+                localStorage.setItem('firstVisit', Date.now().toString());
+                return 1;
+            }
+            
+            const daysDiff = Math.floor((Date.now() - parseInt(firstVisit)) / (1000 * 60 * 60 * 24));
+            return Math.max(1, daysDiff + 1);
+        }
+        
+        /** 格式化数字（添加千位分隔符） */
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+        
+        /** 获取当前赛季 */
+        function getCurrentSeason() {
+            const now = new Date();
+            return SEASONS.find(s => {
+                const start = new Date(s.startDate);
+                const end = new Date(s.endDate);
+                return now >= start && now <= end;
+            });
+        }
+        
+        /** 获取用户在当前赛季的分数 */
+        function getSeasonUserScore() {
+            return Math.floor(state.totalXp * 2 + state.totalSpent * 0.5 + state.favorites.length * 10);
+        }
+        
+        /** 获取用户当前等级信息 */
+        function getCurrentLevel() {
+            const levels = [
+                { level: 1, name: '潮流新人', maxXp: 100, rank: '🌱' },
+                { level: 2, name: '潮流达人', maxXp: 300, rank: '⭐' },
+                { level: 3, name: '潮流高手', maxXp: 600, rank: '🌟' },
+                { level: 4, name: '潮流大师', maxXp: 1000, rank: '✨' },
+                { level: 5, name: '潮流教父', maxXp: 1500, rank: '💫' },
+                { level: 6, name: '潮流传奇', maxXp: 999999, rank: '👑' }
+            ];
+            
+            let currentLevel = levels[0];
+            for (const level of levels) {
+                if (state.totalXp >= level.maxXp) {
+                    currentLevel = level;
+                }
+            }
+            
+            // 如果超过6级，保持在6级
+            if (state.totalXp >= 1500) {
+                return { ...levels[5], name: '潮流传奇+' };
+            }
+            
+            return currentLevel;
+        }
+        
+        /** 获取等级进度百分比 */
+        function getLevelProgress() {
+            const levels = [0, 100, 300, 600, 1000, 1500];
+            const currentXp = state.totalXp;
+            
+            let currentThreshold = 0;
+            let nextThreshold = 100;
+            
+            for (let i = 0; i < levels.length - 1; i++) {
+                if (currentXp >= levels[i] && currentXp < levels[i + 1]) {
+                    currentThreshold = levels[i];
+                    nextThreshold = levels[i + 1];
+                    break;
+                }
+            }
+            
+            if (currentXp >= 1500) {
+                return 100;
+            }
+            
+            const progress = ((currentXp - currentThreshold) / (nextThreshold - currentThreshold)) * 100;
+            return Math.min(Math.max(progress, 0), 100);
         }
         
         /** 切换成就面板 */
