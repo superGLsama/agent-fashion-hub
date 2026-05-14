@@ -1380,6 +1380,305 @@
         .empty-state h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--text-primary); }
         .empty-state p { font-size: 0.9rem; }
         
+        /* ==================== 商品卡片3.0交互增强 ==================== */
+        
+        /* 3D翻转卡片容器 */
+        .product-card-3d {
+            perspective: 1200px;
+            cursor: pointer;
+        }
+        
+        .product-card-3d .product-card {
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+        
+        .product-card-3d:hover .product-card {
+            transform: rotateY(8deg) rotateX(3deg) translateY(-10px);
+        }
+        
+        /* 卡片背面 */
+        .product-card-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(18, 18, 26, 0.98), rgba(10, 10, 15, 0.99));
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            transform: rotateY(180deg) rotateX(-5deg);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            backface-visibility: hidden;
+        }
+        
+        .product-card-3d:hover .product-card-back {
+            opacity: 1;
+        }
+        
+        .product-card-back-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .product-card-back-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex: 1;
+        }
+        
+        .product-card-back-close {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .product-card-back-close:hover {
+            background: rgba(255, 0, 110, 0.2);
+            color: var(--accent-pink);
+            transform: rotate(90deg);
+        }
+        
+        .product-card-back-specs {
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        .product-card-back-spec {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.85rem;
+        }
+        
+        .product-card-back-spec-label {
+            color: var(--text-secondary);
+        }
+        
+        .product-card-back-spec-value {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .product-card-back-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .product-card-back-btn {
+            flex: 1;
+            padding: 0.6rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+        
+        .product-card-back-btn:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+        
+        .product-card-back-btn.primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
+            border: none;
+            color: #fff;
+            font-weight: 600;
+        }
+        
+        .product-card-back-btn.primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+        }
+        
+        /* 收藏粒子效果 */
+        .heart-particle {
+            position: fixed;
+            pointer-events: none;
+            font-size: 1.2rem;
+            z-index: 9999;
+            animation: heartParticleFloat 1s ease-out forwards;
+        }
+        
+        @keyframes heartParticleFloat {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-80px) scale(0.3) rotate(20deg);
+            }
+        }
+        
+        /* 价格动画效果 */
+        .price-value {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+        }
+        
+        .price-value.animating {
+            animation: priceShake 0.3s ease;
+        }
+        
+        @keyframes priceShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-3px); }
+            75% { transform: translateX(3px); }
+        }
+        
+        .price-old {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-decoration: line-through;
+            margin-left: 0.5rem;
+            opacity: 0.7;
+        }
+        
+        .price-discount {
+            position: absolute;
+            top: -8px;
+            right: -30px;
+            background: var(--accent-pink);
+            color: #fff;
+            font-size: 0.65rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 8px;
+            font-weight: 700;
+            transform: rotate(12deg);
+        }
+        
+        /* 快速操作按钮组 */
+        .product-quick-actions {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+            display: flex;
+            justify-content: space-between;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .product-card:hover .product-quick-actions {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        
+        .quick-action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        
+        .quick-action-btn:hover {
+            transform: scale(1.2) translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .quick-action-btn.compare:hover {
+            background: rgba(59, 130, 246, 0.3);
+            border-color: var(--rare);
+            color: var(--rare);
+        }
+        
+        .quick-action-btn.share:hover {
+            background: rgba(168, 85, 247, 0.3);
+            border-color: var(--epic);
+            color: var(--epic);
+        }
+        
+        .quick-action-btn.buy:hover {
+            background: rgba(0, 212, 255, 0.3);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+        
+        /* 稀有度角标动画 */
+        .rarity-badge {
+            animation: rarityBadgePulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes rarityBadgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .product-card:hover .rarity-badge {
+            animation: rarityBadgePulseFast 0.8s ease-in-out infinite;
+        }
+        
+        @keyframes rarityBadgePulseFast {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+        
+        /* 点赞飘心效果 */
+        .floating-heart {
+            position: fixed;
+            pointer-events: none;
+            font-size: 1.5rem;
+            z-index: 9999;
+            animation: floatingHeartRise 1.5s ease-out forwards;
+        }
+        
+        @keyframes floatingHeartRise {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-40px) scale(1.2);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-80px) scale(0.8);
+            }
+        }
+        
         /* 穿搭展示区 */
         .outfit-showcase {
             background: var(--bg-card);
@@ -9615,6 +9914,119 @@
         // ==================== 收藏功能 ====================
         
         /** 切换收藏状态 */
+        // ==================== 商品卡片3.0交互功能 ====================
+        
+        /** 增强版收藏 - 带粒子动效 */
+        function toggleFavoriteWithEffect(event, type, id) {
+            // 创建飘心效果
+            createFloatingHeart(event.clientX, event.clientY);
+            
+            // 调用原有的收藏逻辑
+            toggleFavorite(type, id);
+        }
+        
+        /** 创建飘心效果 */
+        function createFloatingHeart(x, y) {
+            const hearts = ['❤️', '💖', '💗', '💕', '💓'];
+            const numHearts = Math.floor(Math.random() * 3) + 3; // 3-5个心
+            
+            for (let i = 0; i < numHearts; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'floating-heart';
+                    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                    heart.style.left = `${x + (Math.random() - 0.5) * 40}px`;
+                    heart.style.top = `${y + (Math.random() - 0.5) * 20}px`;
+                    document.body.appendChild(heart);
+                    
+                    // 动画结束后移除
+                    setTimeout(() => heart.remove(), 1500);
+                }, i * 100);
+            }
+        }
+        
+        /** 对比商品 */
+        function compareItem(type, id) {
+            const item = (type === 'items' ? products : agents).find(i => i.id === id);
+            if (!item) return;
+            
+            showNotification(`📋 已加入对比清单: ${item.name}`, 'info');
+            
+            // 简单的对比提示，实际项目中可以扩展为对比面板
+            triggerEmotionFeedback({ type: 'info' });
+        }
+        
+        /** 分享商品 */
+        function shareItem(event, name, rarity) {
+            const shareText = `🎮 AI Agent 潮流联盟\n\n✨ 发现稀有装备: ${name}\n🏷️ 稀有度: ${getRarityText(rarity)}\n\n快来和我一起探索潮流联盟吧! 💎`;
+            
+            // 尝试复制到剪贴板
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    showNotification('📋 分享内容已复制到剪贴板!', 'success');
+                    triggerEmotionFeedback({ type: 'success' });
+                }).catch(() => {
+                    // 复制失败时显示文本
+                    showNotification(`📤 分享: ${name}`, 'info');
+                });
+            } else {
+                showNotification(`📤 分享: ${name}`, 'info');
+            }
+        }
+        
+        /** 快速购买 */
+        function quickClaim(id, type) {
+            const item = (type === 'items' ? products : agents).find(i => i.id === id);
+            if (!item) return;
+            
+            // 如果已拥有，提示用户
+            if (isOwned(id)) {
+                showNotification('⚠️ 您已拥有此物品', 'warning');
+                return;
+            }
+            
+            // 检查积分是否足够
+            if (state.userPoints < item.price) {
+                showNotification(`💎 积分不足! 需要 ${item.price}，您只有 ${state.userPoints}`, 'error');
+                triggerEmotionFeedback({ type: 'error' });
+                return;
+            }
+            
+            // 确认购买
+            claimItem(id, type);
+            
+            // 增强反馈
+            createPurchaseCelebration(item);
+        }
+        
+        /** 购买成功庆祝动效 */
+        function createPurchaseCelebration(item) {
+            // 创建金币飞入动画
+            const priceEl = document.getElementById(`price-${item.id}`);
+            if (priceEl) {
+                priceEl.classList.add('animating');
+                setTimeout(() => priceEl.classList.remove('animating'), 300);
+            }
+            
+            // 创建庆祝粒子
+            triggerEmotionFeedback({ type: 'celebrate' });
+        }
+        
+        /** 价格变化动画 */
+        function animatePriceChange(itemId, oldPrice, newPrice) {
+            const priceEl = document.getElementById(`price-${itemId}`);
+            if (!priceEl) return;
+            
+            // 添加价格震动动画
+            priceEl.classList.add('animating');
+            
+            // 更新价格文本
+            setTimeout(() => {
+                priceEl.textContent = newPrice;
+                priceEl.classList.remove('animating');
+            }, 150);
+        }
+        
         function toggleFavorite(type, id) {
             const favList = state.favorites[type];
             const index = favList.indexOf(id);
@@ -9910,45 +10322,111 @@
             
             const type = state.currentTab === 'items' ? 'items' : 'agents';
             
-            grid.innerHTML = filtered.map((item, i) => `
-                <div class="product-card ${item.rarity}" 
-                     style="animation: cardIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 80}ms both;"
-                     onmousemove="handleCardTilt(event, this)"
-                     onmouseleave="resetCardTilt(this)"
-                     onclick="createParticles(event, '${item.rarity}')">
-                    <div class="product-card-inner">
-                        <button class="card-fav-btn ${isFavorited(type, item.id) ? 'favorited' : ''}" 
-                                onclick="event.stopPropagation(); toggleFavorite('${type}', ${item.id})" title="${isFavorited(type, item.id) ? '取消收藏' : '收藏'}">
-                            ${isFavorited(type, item.id) ? '❤️' : '🤍'}
-                        </button>
-                        <div class="product-image" style="background: ${getRarityBg(item.rarity)}">
-                            ${item.icon}
-                            <span class="rarity-badge ${item.rarity}">${getRarityText(item.rarity)}</span>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-name">${highlightText(item.name, state.currentSearch)}</h3>
-                            <p class="product-desc">${item.desc}</p>
-                            <div class="product-tags">
-                                ${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-                            </div>
-                            <div class="product-footer">
-                                <div class="price">
-                                    <span class="price-icon">💎</span>
-                                    <span class="price-value">${item.price}</span>
+            grid.innerHTML = filtered.map((item, i) => {
+                // 生成规格数据
+                const specs = generateProductSpecs(item);
+                
+                return `
+                <div class="product-card-3d" style="animation: cardIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 80}ms both;">
+                    <div class="product-card ${item.rarity}" 
+                         onmousemove="handleCardTilt(event, this)"
+                         onmouseleave="resetCardTilt(this)"
+                         onclick="createParticles(event, '${item.rarity}')">
+                        <div class="product-card-inner">
+                            <button class="card-fav-btn ${isFavorited(type, item.id) ? 'favorited' : ''}" 
+                                    onclick="event.stopPropagation(); toggleFavoriteWithEffect(event, '${type}', ${item.id})" title="${isFavorited(type, item.id) ? '取消收藏' : '收藏'}">
+                                ${isFavorited(type, item.id) ? '❤️' : '🤍'}
+                            </button>
+                            <div class="product-image" style="background: ${getRarityBg(item.rarity)}">
+                                ${item.icon}
+                                <span class="rarity-badge ${item.rarity}">${getRarityText(item.rarity)}</span>
+                                
+                                <!-- 快速操作按钮 -->
+                                <div class="product-quick-actions">
+                                    <button class="quick-action-btn compare" onclick="event.stopPropagation(); compareItem('${type}', ${item.id})" title="对比">
+                                        ⚖️
+                                    </button>
+                                    <button class="quick-action-btn share" onclick="event.stopPropagation(); shareItem(event, '${item.name}', '${item.rarity}')" title="分享">
+                                        📤
+                                    </button>
+                                    <button class="quick-action-btn buy" onclick="event.stopPropagation(); quickClaim(${item.id}, '${state.currentTab}')" title="立即领取">
+                                        🛒
+                                    </button>
                                 </div>
-                                <button class="claim-btn" 
-                                    onclick="event.stopPropagation(); claimItem(${item.id}, '${state.currentTab}')"
-                                    ${state.userPoints < item.price || isOwned(item.id) ? 'disabled' : ''}>
-                                    ${isOwned(item.id) ? '已拥有' : '领取'}
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-name">${highlightText(item.name, state.currentSearch)}</h3>
+                                <p class="product-desc">${item.desc}</p>
+                                <div class="product-tags">
+                                    ${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                                </div>
+                                <div class="product-footer">
+                                    <div class="price">
+                                        <span class="price-icon">💎</span>
+                                        <span class="price-value" id="price-${item.id}">${item.price}</span>
+                                    </div>
+                                    <button class="claim-btn" 
+                                        onclick="event.stopPropagation(); claimItem(${item.id}, '${state.currentTab}')"
+                                        ${state.userPoints < item.price || isOwned(item.id) ? 'disabled' : ''}>
+                                        ${isOwned(item.id) ? '已拥有' : '领取'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 卡片背面 - 详细信息 -->
+                        <div class="product-card-back">
+                            <div class="product-card-back-header">
+                                <div class="product-card-back-title">${item.name}</div>
+                                <button class="product-card-back-close" onclick="event.stopPropagation()">✕</button>
+                            </div>
+                            <div class="product-card-back-specs">
+                                ${specs.map(spec => `
+                                    <div class="product-card-back-spec">
+                                        <span class="product-card-back-spec-label">${spec.label}</span>
+                                        <span class="product-card-back-spec-value">${spec.value}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="product-card-back-actions">
+                                <button class="product-card-back-btn" onclick="event.stopPropagation(); compareItem('${type}', ${item.id})">
+                                    ⚖️ 对比
+                                </button>
+                                <button class="product-card-back-btn" onclick="event.stopPropagation(); toggleFavoriteWithEffect(event, '${type}', ${item.id})">
+                                    ${isFavorited(type, item.id) ? '❤️ 已收藏' : '🤍 收藏'}
+                                </button>
+                                <button class="product-card-back-btn primary" onclick="event.stopPropagation(); claimItem(${item.id}, '${state.currentTab}')">
+                                    🛒 购买
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
             
             // 初始化粒子容器
             initParticleContainer();
+        }
+        
+        // 生成产品规格数据
+        function generateProductSpecs(item) {
+            const specs = [
+                { label: '稀有度', value: getRarityText(item.rarity) },
+                { label: '所属联盟', value: item.alliance === 'tech' ? '⚡ 科技联盟' : item.alliance === 'nature' ? '🌿 自然联盟' : '✨ 混沌联盟' },
+                { label: '价格', value: `${item.price} 💎` },
+                { label: '风格标签', value: item.tags.slice(0, 2).join(', ') }
+            ];
+            
+            // 根据类型添加不同规格
+            if (state.currentTab === 'items') {
+                specs.push({ label: '类型', value: '装备' });
+                specs.push({ label: '获取方式', value: '商城购买' });
+            } else {
+                specs.push({ label: '类型', value: 'AI Agent' });
+                specs.push({ label: '状态', value: '可用' });
+            }
+            
+            return specs;
         }
         
         // ==================== 3D倾斜效果 ====================
