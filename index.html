@@ -572,6 +572,379 @@
             opacity: 0;
         }
         
+        /* ==================== 沉浸式首页2.0增强 ==================== */
+        
+        /* 动态标语轮播 */
+        .hero-tagline-container {
+            position: relative;
+            height: 40px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+        
+        .hero-tagline {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+        
+        .hero-tagline.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 欢迎语区域 */
+        .hero-welcome {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .welcome-greeting {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+        
+        .welcome-user {
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+        
+        .welcome-level {
+            padding: 0.2rem 0.6rem;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(255, 107, 107, 0.3));
+            border-radius: 15px;
+            font-size: 0.75rem;
+            color: var(--legendary);
+        }
+        
+        /* 联盟动态主题 */
+        .hero.theme-tech {
+            --theme-primary: var(--accent-cyan);
+            --theme-glow: rgba(0, 212, 255, 0.3);
+        }
+        
+        .hero.theme-nature {
+            --theme-primary: var(--accent-green);
+            --theme-glow: rgba(0, 255, 136, 0.3);
+        }
+        
+        .hero.theme-chaos {
+            --theme-primary: var(--accent-pink);
+            --theme-glow: rgba(255, 0, 110, 0.3);
+        }
+        
+        .hero.theme-all {
+            --theme-primary: var(--legendary);
+            --theme-glow: rgba(245, 158, 11, 0.3);
+        }
+        
+        /* 联盟切换动画 */
+        .alliance-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .alliance-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--theme-primary);
+            border-radius: 50%;
+            opacity: 0.3;
+            transform: translate(-50%, -50%);
+            transition: all 0.5s ease;
+        }
+        
+        .alliance-btn:hover::before {
+            width: 200%;
+            height: 200%;
+        }
+        
+        .alliance-btn.active {
+            border-color: var(--theme-primary);
+            box-shadow: 0 0 20px var(--theme-glow);
+        }
+        
+        .alliance-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--theme-primary);
+            animation: allianceUnderline 0.3s ease;
+        }
+        
+        @keyframes allianceUnderline {
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
+        }
+        
+        /* 首页数据看板 */
+        .hero-stats-board {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .stat-item {
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+        }
+        
+        .stat-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-3px);
+        }
+        
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--theme-primary, var(--accent-cyan));
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.3rem;
+        }
+        
+        .stat-trend {
+            font-size: 0.7rem;
+            margin-top: 0.2rem;
+        }
+        
+        .stat-trend.up { color: var(--accent-green); }
+        .stat-trend.down { color: var(--accent-pink); }
+        
+        /* 首次访问引导 */
+        .onboarding-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 15, 0.95);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .onboarding-overlay.show {
+            display: flex;
+        }
+        
+        .onboarding-card {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 2.5rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 60px rgba(0, 212, 255, 0.2);
+        }
+        
+        .onboarding-step {
+            display: none;
+        }
+        
+        .onboarding-step.active {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .onboarding-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .onboarding-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .onboarding-desc {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .onboarding-progress {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .progress-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .progress-dot.active {
+            background: var(--accent-cyan);
+            transform: scale(1.2);
+        }
+        
+        .onboarding-btn {
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .onboarding-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+        }
+        
+        .onboarding-skip {
+            margin-top: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        
+        .onboarding-skip:hover {
+            opacity: 1;
+        }
+        
+        /* 联盟选择卡片 */
+        .alliance-choose-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .alliance-choose-card {
+            padding: 1.5rem 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid transparent;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .alliance-choose-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+        }
+        
+        .alliance-choose-card.selected {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.1);
+        }
+        
+        .alliance-choose-card[data-alliance="tech"] { --card-color: var(--accent-cyan); }
+        .alliance-choose-card[data-alliance="nature"] { --card-color: var(--accent-green); }
+        .alliance-choose-card[data-alliance="chaos"] { --card-color: var(--accent-pink); }
+        
+        .alliance-choose-card.selected {
+            border-color: var(--card-color);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+        }
+        
+        .alliance-choose-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .alliance-choose-name {
+            font-weight: 700;
+            color: var(--card-color, var(--text-primary));
+        }
+        
+        .alliance-choose-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.3rem;
+        }
+        
+        /* 搜索聚焦增强 */
+        .search-container.focused .search-bar {
+            border-color: var(--theme-primary, var(--accent-cyan));
+            box-shadow: 0 0 30px var(--theme-glow, rgba(0, 212, 255, 0.3));
+            transform: scale(1.02);
+        }
+        
+        /* 稀有度筛选动画 */
+        .rarity-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .rarity-btn::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            background: var(--btn-color);
+            opacity: 0.2;
+            transition: height 0.3s ease;
+        }
+        
+        .rarity-btn:hover::before,
+        .rarity-btn.active::before {
+            height: 100%;
+        }
+        
+        .rarity-btn.active {
+            color: white;
+            border-color: var(--btn-color);
+        }
+        
+        .rarity-btn[data-rarity="legendary"] { --btn-color: var(--legendary); }
+        .rarity-btn[data-rarity="epic"] { --btn-color: var(--epic); }
+        .rarity-btn[data-rarity="rare"] { --btn-color: var(--rare); }
+        .rarity-btn[data-rarity="common"] { --btn-color: var(--common); }
+        
         /* 导航栏 */
         nav {
             position: fixed;
@@ -7026,6 +7399,75 @@
     <!-- 背景动效 -->
     <div class="bg-particles" id="particles"></div>
     
+    <!-- 首次访问引导 -->
+    <div class="onboarding-overlay" id="onboardingOverlay">
+        <div class="onboarding-card">
+            <!-- 步骤1：欢迎 -->
+            <div class="onboarding-step active" data-step="1">
+                <div class="onboarding-icon">⚡</div>
+                <div class="onboarding-title">欢迎来到潮流联盟</div>
+                <div class="onboarding-desc">
+                    在这里，你可以收集稀有装备，打造专属的 AI Agent 形象。<br>
+                    让我们一起探索这个充满可能性的世界！
+                </div>
+                <div class="onboarding-progress">
+                    <span class="progress-dot active"></span>
+                    <span class="progress-dot"></span>
+                    <span class="progress-dot"></span>
+                </div>
+                <button class="onboarding-btn" onclick="nextOnboardingStep()">开始探索</button>
+            </div>
+            
+            <!-- 步骤2：选择联盟 -->
+            <div class="onboarding-step" data-step="2">
+                <div class="onboarding-icon">🎭</div>
+                <div class="onboarding-title">选择你的阵营</div>
+                <div class="onboarding-desc">每个联盟都有独特的风格和专属装备，你会选择加入哪一个？</div>
+                <div class="alliance-choose-grid">
+                    <div class="alliance-choose-card" data-alliance="tech" onclick="selectOnboardingAlliance('tech')">
+                        <div class="alliance-choose-icon">⚡</div>
+                        <div class="alliance-choose-name">科技派</div>
+                        <div class="alliance-choose-desc">追求极致的效率与数据</div>
+                    </div>
+                    <div class="alliance-choose-card" data-alliance="nature" onclick="selectOnboardingAlliance('nature')">
+                        <div class="alliance-choose-icon">🌿</div>
+                        <div class="alliance-choose-name">自然派</div>
+                        <div class="alliance-choose-desc">崇尚和谐与平衡之美</div>
+                    </div>
+                    <div class="alliance-choose-card" data-alliance="chaos" onclick="selectOnboardingAlliance('chaos')">
+                        <div class="alliance-choose-icon">🔥</div>
+                        <div class="alliance-choose-name">混沌派</div>
+                        <div class="alliance-choose-desc">打破常规，创造无限可能</div>
+                    </div>
+                </div>
+                <div class="onboarding-progress">
+                    <span class="progress-dot"></span>
+                    <span class="progress-dot active"></span>
+                    <span class="progress-dot"></span>
+                </div>
+                <button class="onboarding-btn" id="onboardingAllianceBtn" onclick="nextOnboardingStep()" disabled>选择阵营</button>
+                <div class="onboarding-skip" onclick="skipOnboarding()">稍后选择 →</div>
+            </div>
+            
+            <!-- 步骤3：完成 -->
+            <div class="onboarding-step" data-step="3">
+                <div class="onboarding-icon" id="onboardingFinalIcon">⚡</div>
+                <div class="onboarding-title" id="onboardingFinalTitle">准备就绪！</div>
+                <div class="onboarding-desc" id="onboardingFinalDesc">
+                    你已成功加入<span id="onboardingAllianceName">潮流联盟</span>！<br>
+                    现在开始你的潮流之旅吧！
+                </div>
+                <div class="onboarding-progress">
+                    <span class="progress-dot"></span>
+                    <span class="progress-dot"></span>
+                    <span class="progress-dot active"></span>
+                </div>
+                <button class="onboarding-btn" onclick="completeOnboarding()">进入联盟</button>
+                <div class="onboarding-skip" onclick="completeOnboarding()">直接进入 →</div>
+            </div>
+        </div>
+    </div>
+    
     <!-- 情绪化通知系统 -->
     <!-- 情绪化Toast -->
     <div class="emotion-toast" id="emotionToast">
@@ -7872,7 +8314,7 @@
     <!-- 主内容 -->
     <main>
         <!-- 英雄区 -->
-        <section class="hero">
+        <section class="hero theme-all" id="heroSection">
             <!-- 动态网格背景 -->
             <div class="hero-grid-bg"></div>
             <!-- 动态光晕 -->
@@ -7881,15 +8323,47 @@
             <div class="hero-glow hero-glow-3"></div>
             
             <div class="hero-content">
+                <!-- 用户欢迎语 -->
+                <div class="hero-welcome" id="heroWelcome">
+                    <span class="welcome-greeting" id="welcomeGreeting">你好，</span>
+                    <span class="welcome-user" id="welcomeUser">潮流探险家</span>
+                    <span class="welcome-level" id="welcomeLevel">Lv.1</span>
+                </div>
+                
                 <span class="hero-badge">🚀 2026 春季限定</span>
                 <h1>AI Agent 潮流联盟</h1>
-                <p>收集稀有装备，打造你的专属 AI Agent。加入联盟，解锁无限可能！</p>
+                
+                <!-- 动态标语轮播 -->
+                <div class="hero-tagline-container">
+                    <div class="hero-tagline active" data-index="0">收集稀有装备，打造你的专属风格</div>
+                    <div class="hero-tagline" data-index="1">加入联盟，解锁无限可能</div>
+                    <div class="hero-tagline" data-index="2">每日签到领取惊喜奖励</div>
+                    <div class="hero-tagline" data-index="3">赛季冲刺，争夺排行榜荣耀</div>
+                    <div class="hero-tagline" data-index="4">探索三大阵营，找到你的归属</div>
+                </div>
+                
+                <!-- 首页数据看板 -->
+                <div class="hero-stats-board" id="heroStatsBoard">
+                    <div class="stat-item" onclick="switchTab('equipment')">
+                        <div class="stat-value" id="totalEquipmentCount">156</div>
+                        <div class="stat-label">装备总数</div>
+                    </div>
+                    <div class="stat-item" onclick="showToast('🎉 今日新上架5件装备！', 'celebrate')">
+                        <div class="stat-value" id="newEquipmentCount">5</div>
+                        <div class="stat-label">今日上新</div>
+                        <div class="stat-trend up">↑ 热度飙升</div>
+                    </div>
+                    <div class="stat-item" onclick="toggleLeaderboardPanel()">
+                        <div class="stat-value" id="onlineUserCount">888</div>
+                        <div class="stat-label">在线探索者</div>
+                    </div>
+                </div>
                 
                 <div class="alliances">
-                    <button class="alliance-btn active" data-alliance="all">🌟 全部联盟</button>
-                    <button class="alliance-btn" data-alliance="tech">⚡ 科技派</button>
-                    <button class="alliance-btn" data-alliance="nature">🌿 自然派</button>
-                    <button class="alliance-btn" data-alliance="chaos">🔥 混沌派</button>
+                    <button class="alliance-btn active" data-alliance="all" onclick="switchAlliance('all')">🌟 全部联盟</button>
+                    <button class="alliance-btn" data-alliance="tech" onclick="switchAlliance('tech')">⚡ 科技派</button>
+                    <button class="alliance-btn" data-alliance="nature" onclick="switchAlliance('nature')">🌿 自然派</button>
+                    <button class="alliance-btn" data-alliance="chaos" onclick="switchAlliance('chaos')">🔥 混沌派</button>
                 </div>
             </div>
             
@@ -8244,6 +8718,220 @@
     </div>
     
     <script>
+        // ==================== 沉浸式首页2.0系统 ====================
+        
+        // 首次访问引导状态
+        let onboardingState = {
+            completed: false,
+            step: 1,
+            selectedAlliance: null
+        };
+        
+        // 初始化首次访问引导
+        function initOnboarding() {
+            const saved = localStorage.getItem('onboarding_completed');
+            if (!saved) {
+                document.getElementById('onboardingOverlay').classList.add('show');
+            } else {
+                onboardingState.completed = true;
+            }
+        }
+        
+        // 下一步引导
+        function nextOnboardingStep() {
+            const steps = document.querySelectorAll('.onboarding-step');
+            steps[onboardingState.step - 1].classList.remove('active');
+            onboardingState.step++;
+            if (onboardingState.step <= steps.length) {
+                steps[onboardingState.step - 1].classList.add('active');
+                
+                // 如果是第三步且选择了联盟，更新内容
+                if (onboardingState.step === 3 && onboardingState.selectedAlliance) {
+                    updateOnboardingFinal();
+                }
+            }
+        }
+        
+        // 选择引导联盟
+        function selectOnboardingAlliance(alliance) {
+            onboardingState.selectedAlliance = alliance;
+            
+            // 更新UI
+            document.querySelectorAll('.alliance-choose-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.querySelector(`.alliance-choose-card[data-alliance="${alliance}"]`).classList.add('selected');
+            
+            // 启用确认按钮
+            const btn = document.getElementById('onboardingAllianceBtn');
+            btn.disabled = false;
+            btn.textContent = '确认加入';
+        }
+        
+        // 更新引导完成页
+        function updateOnboardingFinal() {
+            const icons = { tech: '⚡', nature: '🌿', chaos: '🔥' };
+            const names = { tech: '科技派', nature: '自然派', chaos: '混沌派' };
+            
+            document.getElementById('onboardingFinalIcon').textContent = icons[onboardingState.selectedAlliance];
+            document.getElementById('onboardingFinalTitle').textContent = '欢迎加入' + names[onboardingState.selectedAlliance] + '！';
+            document.getElementById('onboardingAllianceName').textContent = names[onboardingState.selectedAlliance];
+        }
+        
+        // 完成引导
+        function completeOnboarding() {
+            // 保存联盟选择
+            if (onboardingState.selectedAlliance) {
+                localStorage.setItem('user_alliance', onboardingState.selectedAlliance);
+                switchAlliance(onboardingState.selectedAlliance);
+            }
+            
+            // 标记引导完成
+            localStorage.setItem('onboarding_completed', 'true');
+            onboardingState.completed = true;
+            
+            // 关闭引导
+            document.getElementById('onboardingOverlay').classList.remove('show');
+            
+            // 显示欢迎通知
+            setTimeout(() => {
+                showToast('🎉 欢迎来到潮流联盟！', 'celebrate');
+            }, 500);
+        }
+        
+        // 跳过引导
+        function skipOnboarding() {
+            if (onboardingState.step === 2 && !onboardingState.selectedAlliance) {
+                // 如果在联盟选择页，跳过联盟选择直接下一步
+                nextOnboardingStep();
+            } else {
+                completeOnboarding();
+            }
+        }
+        
+        // ==================== 动态标语轮播系统 ====================
+        
+        let currentTaglineIndex = 0;
+        const taglines = document.querySelectorAll('.hero-tagline');
+        
+        function startTaglineRotation() {
+            if (taglines.length === 0) return;
+            
+            setInterval(() => {
+                taglines[currentTaglineIndex].classList.remove('active');
+                currentTaglineIndex = (currentTaglineIndex + 1) % taglines.length;
+                taglines[currentTaglineIndex].classList.add('active');
+            }, 4000);
+        }
+        
+        // ==================== 用户欢迎语系统 ====================
+        
+        function initWelcomeMessage() {
+            const hour = new Date().getHours();
+            let greeting = '你好';
+            
+            if (hour >= 5 && hour < 9) greeting = '早安';
+            else if (hour >= 9 && hour < 12) greeting = '上午好';
+            else if (hour >= 12 && hour < 14) greeting = '中午好';
+            else if (hour >= 14 && hour < 18) greeting = '下午好';
+            else if (hour >= 18 && hour < 22) greeting = '傍晚好';
+            else greeting = '夜深了';
+            
+            document.getElementById('welcomeGreeting').textContent = greeting + '，';
+            
+            // 从localStorage获取昵称
+            const savedName = localStorage.getItem('user_nickname');
+            if (savedName) {
+                document.getElementById('welcomeUser').textContent = savedName;
+            }
+            
+            // 更新等级显示
+            updateWelcomeLevel();
+        }
+        
+        function updateWelcomeLevel() {
+            const level = getCurrentLevel();
+            document.getElementById('welcomeLevel').textContent = 'Lv.' + level.num + ' ' + level.name;
+        }
+        
+        // ==================== 联盟主题切换系统 ====================
+        
+        function switchAlliance(alliance) {
+            // 更新按钮状态
+            document.querySelectorAll('.alliance-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.alliance === alliance) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // 更新Hero主题
+            const hero = document.getElementById('heroSection');
+            hero.className = 'hero theme-' + alliance;
+            
+            // 保存选择
+            localStorage.setItem('user_alliance', alliance);
+            
+            // 触发筛选更新
+            if (typeof filterByAlliance === 'function') {
+                filterByAlliance(alliance);
+            }
+        }
+        
+        // ==================== 首页数据看板 ====================
+        
+        function initHeroStats() {
+            // 计算装备总数
+            const totalEquipment = [...EQUIPMENT, ...AGENTS].length;
+            document.getElementById('totalEquipmentCount').textContent = totalEquipment;
+            
+            // 模拟今日上新（随机1-10）
+            const newCount = Math.floor(Math.random() * 10) + 1;
+            document.getElementById('newEquipmentCount').textContent = newCount;
+            
+            // 模拟在线人数（随机800-1200）
+            const onlineCount = Math.floor(Math.random() * 400) + 800;
+            document.getElementById('onlineUserCount').textContent = onlineCount;
+            
+            // 定时刷新在线人数
+            setInterval(() => {
+                const delta = Math.floor(Math.random() * 50) - 25;
+                const current = parseInt(document.getElementById('onlineUserCount').textContent);
+                document.getElementById('onlineUserCount').textContent = Math.max(600, current + delta);
+            }, 10000);
+        }
+        
+        // ==================== 搜索框聚焦增强 ====================
+        
+        function initSearchFocus() {
+            const searchContainer = document.querySelector('.search-container');
+            const searchInput = document.getElementById('searchInput');
+            
+            searchInput.addEventListener('focus', () => {
+                searchContainer.classList.add('focused');
+            });
+            
+            searchInput.addEventListener('blur', () => {
+                searchContainer.classList.remove('focused');
+            });
+        }
+        
+        // ==================== 初始化所有首页2.0功能 ====================
+        
+        function initHomepageV2() {
+            initOnboarding();
+            initWelcomeMessage();
+            startTaglineRotation();
+            initHeroStats();
+            initSearchFocus();
+            
+            // 从localStorage恢复联盟选择
+            const savedAlliance = localStorage.getItem('user_alliance');
+            if (savedAlliance && savedAlliance !== 'all') {
+                switchAlliance(savedAlliance);
+            }
+        }
+        
         // ==================== 数据模型 ====================
         
         // ==================== 动态/说说系统数据 ====================
@@ -12393,6 +13081,7 @@
         renderSkeletons();
         loadState();
         loadSeasonState(); // 加载赛季系统状态
+        initHomepageV2(); // 初始化首页2.0功能
         
         // 恢复搜索框状态
         if (state.currentSearch) {
