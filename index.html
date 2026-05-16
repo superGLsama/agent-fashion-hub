@@ -7393,6 +7393,522 @@
         .snap-scroll-item {
             scroll-snap-align: start;
         }
+        
+        /* ==================== 情绪化通知系统2.0增强版 ==================== */
+        
+        /* 通知优先级样式 */
+        .notification-priority-high {
+            border-left: 3px solid var(--legendary) !important;
+            background: linear-gradient(90deg, rgba(245, 158, 11, 0.15), transparent) !important;
+        }
+        
+        .notification-priority-system {
+            border-left: 3px solid var(--accent-cyan) !important;
+            background: linear-gradient(90deg, rgba(0, 212, 255, 0.1), transparent) !important;
+        }
+        
+        .notification-priority-quiet {
+            opacity: 0.7;
+        }
+        
+        /* 通知设置按钮 */
+        .notification-settings-btn {
+            position: absolute;
+            top: 1rem;
+            right: 3.5rem;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .notification-settings-btn:hover {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--accent-cyan);
+            transform: rotate(30deg);
+        }
+        
+        /* 通知设置面板 */
+        .notification-settings-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 420px;
+            max-width: 90vw;
+            max-height: 80vh;
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .notification-settings-panel.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        .settings-header {
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.05));
+        }
+        
+        .settings-header h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .settings-close-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .settings-close-btn:hover {
+            background: rgba(255, 0, 110, 0.2);
+            color: var(--accent-pink);
+        }
+        
+        .settings-content {
+            padding: 1.2rem 1.5rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+        
+        .settings-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .settings-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .settings-section-title {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* 免打扰模式开关 */
+        .dnd-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            margin-bottom: 0.8rem;
+        }
+        
+        .dnd-toggle-label {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .dnd-toggle-icon {
+            font-size: 1.3rem;
+        }
+        
+        .dnd-toggle-text {
+            font-size: 0.9rem;
+        }
+        
+        .dnd-toggle-sub {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 26px;
+            cursor: pointer;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 26px;
+            transition: all 0.3s;
+        }
+        
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            left: 3px;
+            top: 3px;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        
+        .toggle-switch input:checked + .toggle-slider {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
+        }
+        
+        .toggle-switch input:checked + .toggle-slider::before {
+            transform: translateX(22px);
+        }
+        
+        /* 免打扰时间设置 */
+        .dnd-time-settings {
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            margin-bottom: 0.8rem;
+        }
+        
+        .dnd-time-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .dnd-time-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .dnd-time-input {
+            width: 70px;
+            padding: 0.4rem 0.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            text-align: center;
+        }
+        
+        .dnd-time-input:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+        
+        .dnd-time-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        /* 通知类型开关 */
+        .notif-type-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.7rem 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .notif-type-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .notif-type-label {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        
+        .notif-type-icon {
+            font-size: 1.1rem;
+        }
+        
+        .notif-type-name {
+            font-size: 0.85rem;
+        }
+        
+        /* 通知偏好预设 */
+        .notif-presets {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .notif-preset-btn {
+            padding: 0.6rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .notif-preset-btn:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+        
+        .notif-preset-btn.active {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+        
+        .notif-preset-icon {
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        
+        /* 弹跳通知动画 */
+        @keyframes bounceIn {
+            0% { transform: translateY(-100px); opacity: 0; }
+            50% { transform: translateY(10px); }
+            70% { transform: translateY(-5px); }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes bounceOut {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
+        
+        .emotion-toast.bounce {
+            animation: bounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .emotion-toast.bounce.hiding {
+            animation: bounceOut 0.3s ease forwards;
+        }
+        
+        /* 闪烁通知效果 */
+        @keyframes flashNotif {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .notification-history-btn.flash {
+            animation: flashNotif 0.3s ease 3;
+        }
+        
+        /* 角标脉冲动画增强 */
+        @keyframes badgePulseExcite {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        .notification-history-btn .badge.exciting {
+            animation: badgePulseExcite 0.4s ease;
+        }
+        
+        /* 智能提醒气泡 */
+        .smart-reminder-bubble {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            padding: 1rem 1.2rem;
+            background: linear-gradient(135deg, var(--bg-card), rgba(0, 212, 255, 0.1));
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            z-index: 200;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            max-width: 280px;
+        }
+        
+        .smart-reminder-bubble.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .smart-reminder-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .smart-reminder-icon {
+            font-size: 1.2rem;
+        }
+        
+        .smart-reminder-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+        
+        .smart-reminder-content {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .smart-reminder-action {
+            margin-top: 0.8rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .smart-reminder-btn {
+            flex: 1;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .smart-reminder-btn.primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
+            color: #fff;
+        }
+        
+        .smart-reminder-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+        }
+        
+        .smart-reminder-btn:hover {
+            transform: scale(1.02);
+        }
+        
+        /* 通知密度控制 */
+        .notif-density-selector {
+            display: flex;
+            gap: 0.3rem;
+        }
+        
+        .density-option {
+            flex: 1;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .density-option:hover {
+            background: rgba(0, 212, 255, 0.1);
+        }
+        
+        .density-option.active {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+        
+        /* 设置遮罩 */
+        .settings-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .settings-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* 通知预览 */
+        .notif-preview {
+            padding: 0.8rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            margin-top: 0.8rem;
+        }
+        
+        .notif-preview-title {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .notif-preview-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0;
+        }
+        
+        .notif-preview-icon {
+            font-size: 1rem;
+        }
+        
+        .notif-preview-text {
+            font-size: 0.8rem;
+            color: var(--text-primary);
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .notification-settings-panel {
+                width: 100%;
+                max-width: 100%;
+                height: 100%;
+                max-height: 100%;
+                border-radius: 0;
+            }
+            
+            .smart-reminder-bubble {
+                left: 15px;
+                right: 15px;
+                bottom: 80px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -7500,12 +8016,153 @@
         <div class="header">
             <h3>📬 通知记录</h3>
             <div style="display: flex; gap: 0.5rem;">
+                <button class="notification-settings-btn" onclick="toggleNotificationSettings()" title="通知设置">⚙️</button>
                 <button class="clear-all-btn" onclick="clearNotificationHistory()">清空全部</button>
                 <button class="close-btn" onclick="closeNotificationHistory()">✕</button>
             </div>
         </div>
         <div class="notification-history-list" id="notificationHistoryList">
             <!-- 通知历史项会动态插入 -->
+        </div>
+    </div>
+    
+    <!-- 设置遮罩 -->
+    <div class="settings-overlay" id="settingsOverlay" onclick="closeNotificationSettings()"></div>
+    
+    <!-- 通知设置面板 -->
+    <div class="notification-settings-panel" id="notificationSettingsPanel">
+        <div class="settings-header">
+            <h3>🔔 通知设置</h3>
+            <button class="settings-close-btn" onclick="closeNotificationSettings()">✕</button>
+        </div>
+        <div class="settings-content">
+            <!-- 快速预设 -->
+            <div class="settings-section">
+                <div class="settings-section-title">🎯 通知预设</div>
+                <div class="notif-presets">
+                    <button class="notif-preset-btn active" data-preset="all" onclick="setNotifPreset('all')">
+                        <span class="notif-preset-icon">🔔</span>
+                        全部开启
+                    </button>
+                    <button class="notif-preset-btn" data-preset="important" onclick="setNotifPreset('important')">
+                        <span class="notif-preset-icon">⭐</span>
+                        仅重要
+                    </button>
+                    <button class="notif-preset-btn" data-preset="quiet" onclick="setNotifPreset('quiet')">
+                        <span class="notif-preset-icon">🤫</span>
+                        免打扰
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 免打扰模式 -->
+            <div class="settings-section">
+                <div class="settings-section-title">🌙 免打扰模式</div>
+                <div class="dnd-toggle">
+                    <div class="dnd-toggle-label">
+                        <span class="dnd-toggle-icon">🔕</span>
+                        <div>
+                            <div class="dnd-toggle-text">开启免打扰</div>
+                            <div class="dnd-toggle-sub">安静时段不接收通知</div>
+                        </div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="dndToggle" onchange="toggleDndMode()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="dnd-time-settings" id="dndTimeSettings">
+                    <div class="dnd-time-row">
+                        <span class="dnd-time-label">开始时间</span>
+                        <input type="time" class="dnd-time-input" id="dndStartTime" value="23:00" onchange="saveDndSettings()">
+                        <span class="dnd-time-label">结束时间</span>
+                        <input type="time" class="dnd-time-input" id="dndEndTime" value="08:00" onchange="saveDndSettings()">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 通知类型 -->
+            <div class="settings-section">
+                <div class="settings-section-title">📋 通知类型</div>
+                <div class="notif-type-item">
+                    <div class="notif-type-label">
+                        <span class="notif-type-icon">🏆</span>
+                        <span class="notif-type-name">成就 & 升级</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="notifAchievement" checked onchange="saveNotifPreferences()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="notif-type-item">
+                    <div class="notif-type-label">
+                        <span class="notif-type-icon">❤️</span>
+                        <span class="notif-type-name">收藏 & 购买</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="notifCollect" checked onchange="saveNotifPreferences()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="notif-type-item">
+                    <div class="notif-type-label">
+                        <span class="notif-type-icon">📅</span>
+                        <span class="notif-type-name">签到 & 活动</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="notifActivity" checked onchange="saveNotifPreferences()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="notif-type-item">
+                    <div class="notif-type-label">
+                        <span class="notif-type-icon">💡</span>
+                        <span class="notif-type-name">智能提醒</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="notifSmart" checked onchange="saveNotifPreferences()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- 通知密度 -->
+            <div class="settings-section">
+                <div class="settings-section-title">📊 通知密度</div>
+                <div class="notif-density-selector">
+                    <button class="density-option" data-density="low" onclick="setNotifDensity('low')">低</button>
+                    <button class="density-option active" data-density="normal" onclick="setNotifDensity('normal')">中</button>
+                    <button class="density-option" data-density="high" onclick="setNotifDensity('high')">高</button>
+                </div>
+            </div>
+            
+            <!-- 通知预览 -->
+            <div class="notif-preview">
+                <div class="notif-preview-title">📱 预览效果</div>
+                <div class="notif-preview-item">
+                    <span class="notif-preview-icon">🎉</span>
+                    <span class="notif-preview-text">恭喜升级到 Lv.5！</span>
+                </div>
+                <div class="notif-preview-item">
+                    <span class="notif-preview-icon">🏆</span>
+                    <span class="notif-preview-text">成就解锁：收藏达人</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 智能提醒气泡 -->
+    <div class="smart-reminder-bubble" id="smartReminderBubble">
+        <div class="smart-reminder-header">
+            <span class="smart-reminder-icon" id="smartReminderIcon">💡</span>
+            <span class="smart-reminder-title" id="smartReminderTitle">智能提醒</span>
+        </div>
+        <div class="smart-reminder-content" id="smartReminderContent">
+            你已经浏览了10件装备，要不要收藏几件？
+        </div>
+        <div class="smart-reminder-action">
+            <button class="smart-reminder-btn primary" id="smartReminderAction1" onclick="handleSmartReminder(true)">去看看</button>
+            <button class="smart-reminder-btn secondary" onclick="dismissSmartReminder()">稍后</button>
         </div>
     </div>
     
@@ -12778,27 +13435,440 @@
             document.getElementById('surprisePopup').classList.remove('show');
         }
         
-        /** 行为驱动的情绪反馈 */
+        // ==================== 情绪化通知系统2.0增强版 ====================
+        
+        /** 通知偏好配置 */
+        const NOTIF_PREFERENCES_KEY = 'notificationPreferences';
+        
+        /** 默认通知偏好设置 */
+        const DEFAULT_NOTIF_PREFERENCES = {
+            dndEnabled: false,
+            dndStart: '23:00',
+            dndEnd: '08:00',
+            types: {
+                achievement: true,
+                collect: true,
+                activity: true,
+                smart: true
+            },
+            density: 'normal', // low, normal, high
+            preset: 'all' // all, important, quiet
+        };
+        
+        /** 加载通知偏好设置 */
+        function loadNotifPreferences() {
+            try {
+                const data = localStorage.getItem(NOTIF_PREFERENCES_KEY);
+                return data ? { ...DEFAULT_NOTIF_PREFERENCES, ...JSON.parse(data) } : { ...DEFAULT_NOTIF_PREFERENCES };
+            } catch (e) {
+                return { ...DEFAULT_NOTIF_PREFERENCES };
+            }
+        }
+        
+        /** 保存通知偏好设置 */
+        function saveNotifPreferencesToStorage(prefs) {
+            try {
+                localStorage.setItem(NOTIF_PREFERENCES_KEY, JSON.stringify(prefs));
+            } catch (e) {
+                console.warn('保存通知偏好失败', e);
+            }
+        }
+        
+        /** 初始化通知偏好UI */
+        function initNotifPreferences() {
+            const prefs = loadNotifPreferences();
+            
+            // 设置DND开关
+            document.getElementById('dndToggle').checked = prefs.dndEnabled;
+            document.getElementById('dndStartTime').value = prefs.dndStart;
+            document.getElementById('dndEndTime').value = prefs.dndEnd;
+            
+            // 设置类型开关
+            document.getElementById('notifAchievement').checked = prefs.types.achievement;
+            document.getElementById('notifCollect').checked = prefs.types.collect;
+            document.getElementById('notifActivity').checked = prefs.types.activity;
+            document.getElementById('notifSmart').checked = prefs.types.smart;
+            
+            // 设置密度
+            setNotifDensityUI(prefs.density);
+            
+            // 设置预设
+            setNotifPresetUI(prefs.preset);
+        }
+        
+        /** 切换通知设置面板 */
+        function toggleNotificationSettings() {
+            const panel = document.getElementById('notificationSettingsPanel');
+            const overlay = document.getElementById('settingsOverlay');
+            
+            if (panel.classList.contains('show')) {
+                closeNotificationSettings();
+            } else {
+                initNotifPreferences();
+                panel.classList.add('show');
+                overlay.classList.add('show');
+            }
+        }
+        
+        /** 关闭通知设置面板 */
+        function closeNotificationSettings() {
+            document.getElementById('notificationSettingsPanel').classList.remove('show');
+            document.getElementById('settingsOverlay').classList.remove('show');
+        }
+        
+        /** 切换免打扰模式 */
+        function toggleDndMode() {
+            const prefs = loadNotifPreferences();
+            prefs.dndEnabled = document.getElementById('dndToggle').checked;
+            saveNotifPreferencesToStorage(prefs);
+        }
+        
+        /** 保存免打扰时间设置 */
+        function saveDndSettings() {
+            const prefs = loadNotifPreferences();
+            prefs.dndStart = document.getElementById('dndStartTime').value;
+            prefs.dndEnd = document.getElementById('dndEndTime').value;
+            saveNotifPreferencesToStorage(prefs);
+        }
+        
+        /** 保存通知偏好（类型开关） */
+        function saveNotifPreferences() {
+            const prefs = loadNotifPreferences();
+            prefs.types.achievement = document.getElementById('notifAchievement').checked;
+            prefs.types.collect = document.getElementById('notifCollect').checked;
+            prefs.types.activity = document.getElementById('notifActivity').checked;
+            prefs.types.smart = document.getElementById('notifSmart').checked;
+            saveNotifPreferencesToStorage(prefs);
+        }
+        
+        /** 设置通知密度 */
+        function setNotifDensity(density) {
+            const prefs = loadNotifPreferences();
+            prefs.density = density;
+            prefs.preset = 'custom';
+            saveNotifPreferencesToStorage(prefs);
+            setNotifDensityUI(density);
+        }
+        
+        /** 更新密度UI */
+        function setNotifDensityUI(density) {
+            document.querySelectorAll('.density-option').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.density === density);
+            });
+        }
+        
+        /** 设置通知预设 */
+        function setNotifPreset(preset) {
+            const prefs = loadNotifPreferences();
+            prefs.preset = preset;
+            
+            // 根据预设配置
+            switch (preset) {
+                case 'all':
+                    prefs.types.achievement = true;
+                    prefs.types.collect = true;
+                    prefs.types.activity = true;
+                    prefs.types.smart = true;
+                    prefs.density = 'normal';
+                    break;
+                case 'important':
+                    prefs.types.achievement = true;
+                    prefs.types.collect = true;
+                    prefs.types.activity = false;
+                    prefs.types.smart = false;
+                    prefs.density = 'low';
+                    break;
+                case 'quiet':
+                    prefs.dndEnabled = true;
+                    prefs.types.achievement = true;
+                    prefs.types.collect = false;
+                    prefs.types.activity = false;
+                    prefs.types.smart = false;
+                    prefs.density = 'low';
+                    break;
+            }
+            
+            saveNotifPreferencesToStorage(prefs);
+            initNotifPreferences();
+            setNotifPresetUI(preset);
+        }
+        
+        /** 更新预设UI */
+        function setNotifPresetUI(preset) {
+            document.querySelectorAll('.notif-preset-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.preset === preset);
+            });
+        }
+        
+        /** 检查是否应该显示通知 */
+        function shouldShowNotification(type = 'normal') {
+            const prefs = loadNotifPreferences();
+            
+            // 检查免打扰时间
+            if (prefs.dndEnabled && isInDndTime(prefs.dndStart, prefs.dndEnd)) {
+                // 重要通知仍然显示
+                if (type === 'achievement' || type === 'levelup') {
+                    return true;
+                }
+                return false;
+            }
+            
+            // 检查通知类型
+            if (type === 'achievement' && !prefs.types.achievement) return false;
+            if (type === 'collect' && !prefs.types.collect) return false;
+            if (type === 'activity' && !prefs.types.activity) return false;
+            if (type === 'smart' && !prefs.types.smart) return false;
+            
+            return true;
+        }
+        
+        /** 检查当前时间是否在免打扰时段 */
+        function isInDndTime(start, end) {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            const currentTime = currentHour * 60 + currentMinute;
+            
+            const [startHour, startMinute] = start.split(':').map(Number);
+            const [endHour, endMinute] = end.split(':').map(Number);
+            const startTime = startHour * 60 + startMinute;
+            const endTime = endHour * 60 + endMinute;
+            
+            if (startTime <= endTime) {
+                // 同一天内
+                return currentTime >= startTime && currentTime < endTime;
+            } else {
+                // 跨天（如23:00 - 08:00）
+                return currentTime >= startTime || currentTime < endTime;
+            }
+        }
+        
+        /** 智能提醒配置 */
+        const SMART_REMINDERS = {
+            browseMilestone: {
+                thresholds: [5, 10, 20, 50],
+                messages: [
+                    { icon: '👀', title: '浏览提醒', content: '已经看了5件装备了~' },
+                    { icon: '🌟', title: '收藏提醒', content: '10件装备浏览完成，要收藏几件吗？' },
+                    { icon: '💎', title: '品味时刻', content: '20件装备浏览完毕，发现心仪的了吗？' },
+                    { icon: '🔥', title: '潮流达人', content: '50件装备已浏览！快收藏喜欢的吧~' }
+                ]
+            },
+            favoriteReminder: {
+                icon: '❤️',
+                title: '收藏夹提醒',
+                content: '你的收藏夹里有{count}件宝贝了，要不要去看看？'
+            },
+            streakReminder: {
+                icon: '🔥',
+                title: '连续活跃',
+                content: '连续签到{streak}天了！不要中断哦~'
+            }
+        };
+        
+        /** 浏览计数追踪 */
+        let browseCount = parseInt(localStorage.getItem('browseCount') || '0');
+        let lastBrowseDate = localStorage.getItem('lastBrowseDate') || '';
+        let smartReminderDismissed = false;
+        let currentSmartReminder = null;
+        
+        /** 增加浏览计数并检查智能提醒 */
+        function incrementBrowseCount() {
+            const today = new Date().toDateString();
+            
+            // 新的一天重置计数
+            if (lastBrowseDate !== today) {
+                browseCount = 0;
+                lastBrowseDate = today;
+                smartReminderDismissed = false;
+            }
+            
+            browseCount++;
+            localStorage.setItem('browseCount', browseCount.toString());
+            localStorage.setItem('lastBrowseDate', lastBrowseDate);
+            
+            // 检查里程碑
+            checkBrowseMilestone();
+        }
+        
+        /** 检查浏览里程碑 */
+        function checkBrowseMilestone() {
+            const prefs = loadNotifPreferences();
+            if (!prefs.types.smart || smartReminderDismissed) return;
+            
+            const config = SMART_REMINDERS.browseMilestone;
+            const index = config.thresholds.indexOf(browseCount);
+            
+            if (index !== -1 && browseCount === config.thresholds[index]) {
+                const reminder = config.messages[index];
+                showSmartReminder(reminder);
+            }
+        }
+        
+        /** 显示智能提醒气泡 */
+        function showSmartReminder(reminder) {
+            const bubble = document.getElementById('smartReminderBubble');
+            currentSmartReminder = reminder;
+            
+            document.getElementById('smartReminderIcon').textContent = reminder.icon;
+            document.getElementById('smartReminderTitle').textContent = reminder.title;
+            document.getElementById('smartReminderContent').textContent = reminder.content;
+            
+            bubble.classList.add('show');
+            
+            // 10秒后自动隐藏
+            setTimeout(() => {
+                if (bubble.classList.contains('show')) {
+                    dismissSmartReminder();
+                }
+            }, 10000);
+        }
+        
+        /** 处理智能提醒操作 */
+        function handleSmartReminder(action) {
+            dismissSmartReminder();
+            
+            if (action && currentSmartReminder) {
+                // 执行相应操作
+                if (currentSmartReminder.title === '收藏提醒' || currentSmartReminder.title === '潮流达人') {
+                    toggleFavoritesPanel();
+                } else if (currentSmartReminder.title === '连续活跃') {
+                    toggleCheckinPanel();
+                }
+            }
+        }
+        
+        /** 关闭智能提醒 */
+        function dismissSmartReminder() {
+            document.getElementById('smartReminderBubble').classList.remove('show');
+            smartReminderDismissed = true;
+            currentSmartReminder = null;
+        }
+        
+        /** 增强版显示情绪Toast - 支持优先级 */
+        function showEmotionToastEnhanced(emotion = 'happy', customMessage = null, options = {}) {
+            const { 
+                priority = 'normal', // normal, high, system
+                saveToHistory = true, 
+                showParticles = false, 
+                particleIntensity = 'normal',
+                bounce = false
+            } = options;
+            
+            // 检查是否应该显示
+            if (!shouldShowNotification(priority === 'system' ? 'achievement' : 'normal')) {
+                // 即使静音也保存到历史
+                if (saveToHistory) {
+                    const config = EMOTIONS[emotion] || EMOTIONS.happy;
+                    const message = customMessage || config.messages[0];
+                    addToNotificationHistorySilent(emotion, message, priority);
+                }
+                return;
+            }
+            
+            const toast = document.getElementById('emotionToast');
+            const icon = document.getElementById('emotionToastIcon');
+            const text = document.getElementById('emotionToastText');
+            
+            const config = EMOTIONS[emotion] || EMOTIONS.happy;
+            icon.textContent = config.icon;
+            const message = customMessage || config.messages[Math.floor(Math.random() * config.messages.length)];
+            text.textContent = message;
+            
+            // 优先级样式
+            let priorityClass = '';
+            if (priority === 'high') priorityClass = 'notification-priority-high';
+            if (priority === 'system') priorityClass = 'notification-priority-system';
+            
+            // 弹跳动画
+            if (bounce) {
+                toast.className = `emotion-toast ${emotion} show bounce`;
+            } else {
+                toast.className = `emotion-toast ${emotion} show ${priorityClass}`;
+            }
+            
+            // 保存到历史记录
+            if (saveToHistory) {
+                addToNotificationHistory(emotion, message, priority);
+            }
+            
+            // 显示粒子庆祝特效
+            if (showParticles) {
+                triggerCelebrationParticles(particleIntensity);
+            }
+            
+            // 角标动画
+            triggerBadgeAnimation();
+            
+            const duration = priority === 'high' ? 4000 : (bounce ? 3500 : 3000);
+            setTimeout(() => {
+                if (bounce) {
+                    toast.classList.add('hiding');
+                    setTimeout(() => {
+                        toast.classList.remove('show', 'bounce', 'hiding');
+                    }, 300);
+                } else {
+                    toast.classList.remove('show');
+                }
+            }, duration);
+        }
+        
+        /** 静默添加到通知历史 */
+        function addToNotificationHistorySilent(emotion, message, priority = 'normal') {
+            const history = loadNotificationHistory();
+            const item = {
+                id: Date.now(),
+                emotion: emotion,
+                message: message,
+                time: new Date().toISOString(),
+                priority: priority
+            };
+            
+            history.unshift(item);
+            if (history.length > MAX_HISTORY_ITEMS) {
+                history.pop();
+            }
+            saveNotificationHistory(history);
+            updateHistoryBadge();
+        }
+        
+        /** 触发角标动画 */
+        function triggerBadgeAnimation() {
+            const btn = document.getElementById('notificationHistoryBtn');
+            const badge = btn.querySelector('.badge');
+            
+            btn.classList.add('flash');
+            badge.classList.add('exciting');
+            
+            setTimeout(() => {
+                btn.classList.remove('flash');
+                badge.classList.remove('exciting');
+            }, 1200);
+        }
+        
+        /** 行为驱动的情绪反馈 - 增强版 */
         function triggerEmotionFeedback(action) {
             const feedbackRules = {
                 // 收藏相关
                 'collect': () => {
                     const messages = ['收藏成功！眼光不错~', '这件宝贝逃不出你的手心了！', '收藏+1，品味+1！'];
-                    return { emotion: 'love', message: messages[Math.floor(Math.random() * messages.length)] };
+                    return { emotion: 'love', message: messages[Math.floor(Math.random() * messages.length)], type: 'collect' };
                 },
                 'uncollect': () => {
-                    return { emotion: 'cool', message: '忍痛割爱了？没关系~' };
+                    return { emotion: 'cool', message: '忍痛割爱了？没关系~', type: 'collect' };
                 },
                 // 购买相关
                 'purchase': () => {
                     const messages = ['购买成功！恭喜恭喜~', '新装备到手！帅到没朋友！', '买它买它！'];
-                    return { emotion: 'excited', message: messages[Math.floor(Math.random() * messages.length)] };
+                    return { emotion: 'excited', message: messages[Math.floor(Math.random() * messages.length)], type: 'collect', priority: 'high', bounce: true };
                 },
                 // 连续活跃
                 'streak': (data) => {
                     return { 
                         emotion: 'excited', 
-                        message: `🔥 连续活跃${data.days}天！你是最棒的！` 
+                        message: `🔥 连续活跃${data.days}天！你是最棒的！`,
+                        type: 'activity',
+                        priority: 'high'
                     };
                 },
                 // 等级提升
@@ -12810,53 +13880,66 @@
                     ];
                     return { 
                         emotion: 'wow', 
-                        message: levelUpMessages[Math.floor(Math.random() * levelUpMessages.length)] 
+                        message: levelUpMessages[Math.floor(Math.random() * levelUpMessages.length)],
+                        type: 'achievement',
+                        priority: 'high',
+                        showParticles: true,
+                        particleIntensity: data.level >= 10 ? 'heavy' : 'normal'
                     };
                 },
                 // 成就解锁
                 'achievement': (data) => {
                     return { 
                         emotion: 'excited', 
-                        message: `🏆 成就解锁：${data.name}！太厉害了！` 
+                        message: `🏆 成就解锁：${data.name}！太厉害了！`,
+                        type: 'achievement',
+                        priority: 'system',
+                        showParticles: true,
+                        particleIntensity: data.rarity === 'legendary' ? 'legendary' : 'normal'
                     };
                 },
                 // 浏览
                 'browse': (data) => {
                     if (data.count === 10) {
-                        return { emotion: 'cool', message: '浏览小达人了！' };
+                        return { emotion: 'cool', message: '浏览小达人了！', type: 'smart' };
                     }
                     return null;
                 },
                 // 搜索
                 'search': () => {
                     const messages = ['找到想要的了？', '搜索小能手~', '在找什么好东西呢？'];
-                    return { emotion: 'happy', message: messages[Math.floor(Math.random() * messages.length)] };
+                    return { emotion: 'happy', message: messages[Math.floor(Math.random() * messages.length)], type: 'activity' };
                 },
                 // 空搜索结果
                 'no-result': () => {
-                    return { emotion: 'wow', message: '没找到？换个关键词试试~' };
+                    return { emotion: 'wow', message: '没找到？换个关键词试试~', type: 'activity' };
                 },
                 // 签到相关
                 'checkin': (data) => {
                     if (data.streak >= 7) {
                         return { 
                             emotion: 'excited', 
-                            message: `🔥 连续签到${data.streak}天！王者风范！` 
+                            message: `🔥 连续签到${data.streak}天！王者风范！`,
+                            type: 'activity',
+                            priority: 'high',
+                            showParticles: true
                         };
                     } else if (data.streak >= 3) {
                         return { 
                             emotion: 'love', 
-                            message: `✨ 连续签到${data.streak}天！越来越有范了！` 
+                            message: `✨ 连续签到${data.streak}天！越来越有范了！`,
+                            type: 'activity'
                         };
                     }
                     return { 
                         emotion: 'happy', 
-                        message: '🌟 签到成功！今日份努力已打卡~' 
+                        message: '🌟 签到成功！今日份努力已打卡~',
+                        type: 'activity'
                     };
                 },
                 // 默认
                 'default': () => {
-                    return { emotion: 'happy', message: '你好呀！' };
+                    return { emotion: 'happy', message: '你好呀！', type: 'normal' };
                 }
             };
             
@@ -12864,7 +13947,19 @@
             const result = rule(action.data);
             
             if (result) {
-                showEmotionToast(result.emotion, result.message);
+                // 增加浏览计数
+                if (action.type === 'browse') {
+                    incrementBrowseCount();
+                }
+                
+                // 调用增强版通知
+                showEmotionToastEnhanced(result.emotion, result.message, {
+                    priority: result.priority || 'normal',
+                    type: result.type || 'normal',
+                    showParticles: result.showParticles || false,
+                    particleIntensity: result.particleIntensity || 'normal',
+                    bounce: result.bounce || false
+                });
             }
         }
         
