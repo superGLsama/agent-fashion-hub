@@ -6487,6 +6487,584 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.4rem 0.8rem;
+        }
+        
+        /* ==================== 社交排行榜2.0增强系统 ==================== */
+        
+        /* 排行榜段位系统 */
+        .rank-division-system {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(168, 85, 247, 0.08));
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 16px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .division-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .division-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .division-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+        
+        .division-name.bronze { color: #cd7f32; }
+        .division-name.silver { color: #c0c0c0; }
+        .division-name.gold { color: #ffd700; }
+        .division-name.platinum { color: #00d4aa; }
+        .division-name.diamond { color: #b9f2ff; }
+        .division-name.master { color: #a855f7; }
+        .division-name.challenger { color: #ff006e; }
+        
+        .division-progress {
+            margin-top: 0.8rem;
+        }
+        
+        .division-progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.4rem;
+        }
+        
+        .division-progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .division-progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .division-progress-fill.bronze { background: linear-gradient(90deg, #8b4513, #cd7f32); }
+        .division-progress-fill.silver { background: linear-gradient(90deg, #808080, #c0c0c0); }
+        .division-progress-fill.gold { background: linear-gradient(90deg, #b8860b, #ffd700); }
+        .division-progress-fill.platinum { background: linear-gradient(90deg, #008b8b, #00d4aa); }
+        .division-progress-fill.diamond { background: linear-gradient(90deg, #4169e1, #b9f2ff); }
+        .division-progress-fill.master { background: linear-gradient(90deg, #7b68ee, #a855f7); }
+        .division-progress-fill.challenger { background: linear-gradient(90deg, #ff1493, #ff006e); }
+        
+        /* 段位徽章展示 */
+        .division-badge-showcase {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 1rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .division-badge-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+            opacity: 0.4;
+            transition: all 0.3s;
+        }
+        
+        .division-badge-item.earned {
+            opacity: 1;
+        }
+        
+        .division-badge-item.earned:hover {
+            transform: scale(1.1);
+        }
+        
+        .division-badge-icon {
+            font-size: 2.5rem;
+            filter: grayscale(100%);
+            transition: filter 0.3s;
+        }
+        
+        .division-badge-item.earned .division-badge-icon {
+            filter: grayscale(0%);
+            animation: badgeGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes badgeGlow {
+            0%, 100% { filter: drop-shadow(0 0 5px currentColor); }
+            50% { filter: drop-shadow(0 0 15px currentColor); }
+        }
+        
+        .division-badge-name {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+        
+        .division-badge-item.earned .division-badge-name {
+            color: var(--text-primary);
+        }
+        
+        /* 荣耀时刻展示 */
+        .glory-moments {
+            background: linear-gradient(135deg, rgba(255, 0, 110, 0.08), rgba(168, 85, 247, 0.08));
+            border: 1px solid rgba(255, 0, 110, 0.2);
+            border-radius: 16px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .glory-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .glory-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .glory-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+        }
+        
+        .glory-stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .glory-stat-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 0, 110, 0.3);
+            box-shadow: 0 5px 20px rgba(255, 0, 110, 0.2);
+        }
+        
+        .glory-stat-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .glory-stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--legendary);
+            margin-bottom: 0.3rem;
+        }
+        
+        .glory-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        /* 荣耀时刻时间线 */
+        .glory-timeline {
+            margin-top: 1rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .glory-event {
+            display: flex;
+            gap: 0.8rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            animation: gloryEventSlide 0.5s ease forwards;
+            opacity: 0;
+        }
+        
+        .glory-event:last-child {
+            border-bottom: none;
+        }
+        
+        @keyframes gloryEventSlide {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .glory-event-time {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            min-width: 60px;
+        }
+        
+        .glory-event-icon {
+            font-size: 1.2rem;
+        }
+        
+        .glory-event-content {
+            flex: 1;
+        }
+        
+        .glory-event-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.2rem;
+        }
+        
+        .glory-event-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        /* 赛季战报 */
+        .season-report {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(0, 255, 136, 0.08));
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 16px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .report-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .report-btn {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
+            border: none;
+            color: #000;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .report-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+        }
+        
+        .report-summary {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .report-season-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(255, 107, 107, 0.2));
+            border: 1px solid var(--legendary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .report-grade {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        
+        .report-grade.s { background: linear-gradient(135deg, #ffd700, #ff006e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .report-grade.a { background: linear-gradient(135deg, #c0c0c0, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .report-grade.b { background: linear-gradient(135deg, #cd7f32, #c0c0c0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .report-grade.c { background: linear-gradient(135deg, #808080, #cd7f32); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .report-stats-row {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1rem;
+        }
+        
+        .report-stat-item {
+            text-align: center;
+        }
+        
+        .report-stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+        
+        .report-stat-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+        
+        /* 排行榜徽章墙 */
+        .rank-badge-wall {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(245, 158, 11, 0.08));
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: 16px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .badge-wall-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .badge-wall-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .badge-count {
+            background: var(--epic);
+            color: #fff;
+            padding: 0.2rem 0.6rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.8rem;
+        }
+        
+        .badge-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            transition: all 0.3s;
+            opacity: 0.5;
+        }
+        
+        .badge-item.earned {
+            opacity: 1;
+            border-color: rgba(168, 85, 247, 0.3);
+        }
+        
+        .badge-item.earned:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3);
+        }
+        
+        .badge-icon {
+            font-size: 2rem;
+        }
+        
+        .badge-name {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        
+        .badge-item.earned .badge-name {
+            color: var(--text-primary);
+        }
+        
+        /* 赛季战报弹窗 */
+        .season-report-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .season-report-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .report-modal-content {
+            background: var(--bg-card);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 24px;
+            padding: 2rem;
+            max-width: 450px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .season-report-modal.show .report-modal-content {
+            transform: scale(1);
+        }
+        
+        .report-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text-secondary);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .report-modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+            transform: rotate(90deg);
+        }
+        
+        .report-modal-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .report-modal-season {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .report-modal-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--legendary), var(--accent-pink), var(--epic));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .report-modal-grade {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            text-align: center;
+            margin: 1rem 0;
+            animation: gradeAppear 1s ease forwards;
+        }
+        
+        @keyframes gradeAppear {
+            0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(5deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        
+        .report-modal-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .report-modal-stat {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+        }
+        
+        .report-modal-stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+        
+        .report-modal-stat-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 0.3rem;
+        }
+        
+        .report-modal-highlight {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(255, 0, 110, 0.1));
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        
+        .report-modal-highlight-title {
+            font-size: 0.8rem;
+            color: var(--legendary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .report-modal-highlight-text {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+        
+        .report-modal-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        
+        .report-share-btn {
+            background: linear-gradient(135deg, var(--epic), var(--accent-pink));
+            border: none;
+            color: #fff;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .report-share-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(168, 85, 247, 0.4);
+        }
             background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(255, 107, 107, 0.15));
             border: 1px solid rgba(245, 158, 11, 0.4);
             border-radius: 20px;
@@ -8367,6 +8945,136 @@
                         <div class="my-rank-stats">
                             <span class="my-rank-score" id="myRankScore">0 XP</span>
                             <span class="my-rank-change" id="myRankChange"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 排行榜段位系统 -->
+                <div class="rank-division-system" id="rankDivisionSystem">
+                    <div class="division-header">
+                        <div class="division-title">
+                            <span>⚔️</span>
+                            <span>段位</span>
+                        </div>
+                        <div class="division-name bronze" id="divisionName">青铜 III</div>
+                    </div>
+                    <div class="division-progress">
+                        <div class="division-progress-label">
+                            <span id="divisionCurrent">0 积分</span>
+                            <span id="divisionNext">晋级黄金 I</span>
+                        </div>
+                        <div class="division-progress-bar">
+                            <div class="division-progress-fill bronze" id="divisionProgressFill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 荣耀时刻展示 -->
+                <div class="glory-moments" id="gloryMoments">
+                    <div class="glory-header">
+                        <div class="glory-title">
+                            <span>✨</span>
+                            <span>荣耀时刻</span>
+                        </div>
+                        <span style="font-size: 0.75rem; color: var(--text-secondary);">里程碑成就</span>
+                    </div>
+                    <div class="glory-stats-grid">
+                        <div class="glory-stat-card">
+                            <div class="glory-stat-icon">🏆</div>
+                            <div class="glory-stat-value" id="gloryBestRank">#8</div>
+                            <div class="glory-stat-label">最高排名</div>
+                        </div>
+                        <div class="glory-stat-card">
+                            <div class="glory-stat-icon">⭐</div>
+                            <div class="glory-stat-value" id="gloryTotalScore">0</div>
+                            <div class="glory-stat-label">累计积分</div>
+                        </div>
+                        <div class="glory-stat-card">
+                            <div class="glory-stat-icon">📈</div>
+                            <div class="glory-stat-value" id="gloryRankUp">0</div>
+                            <div class="glory-stat-label">排名上升</div>
+                        </div>
+                        <div class="glory-stat-card">
+                            <div class="glory-stat-icon">🎖️</div>
+                            <div class="glory-stat-value" id="gloryBadges">0</div>
+                            <div class="glory-stat-label">获得徽章</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 赛季战报 -->
+                <div class="season-report" id="seasonReport">
+                    <div class="report-header">
+                        <div class="report-title">
+                            <span>📊</span>
+                            <span>赛季战报</span>
+                        </div>
+                        <button class="report-btn" onclick="showSeasonReportModal()">📋 查看详情</button>
+                    </div>
+                    <div class="report-summary">
+                        <div class="report-season-badge">
+                            <span>⚡</span>
+                            <span>S1 巅峰赛季</span>
+                        </div>
+                        <div class="report-grade s" id="reportGrade">A</div>
+                        <div class="report-stats-row">
+                            <div class="report-stat-item">
+                                <div class="report-stat-value" id="reportRank">#8</div>
+                                <div class="report-stat-label">当前排名</div>
+                            </div>
+                            <div class="report-stat-item">
+                                <div class="report-stat-value" id="reportScore">0</div>
+                                <div class="report-stat-label">赛季积分</div>
+                            </div>
+                            <div class="report-stat-item">
+                                <div class="report-stat-value" id="reportChange">+0</div>
+                                <div class="report-stat-label">本周变化</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 排行榜徽章墙 -->
+                <div class="rank-badge-wall" id="rankBadgeWall">
+                    <div class="badge-wall-header">
+                        <div class="badge-wall-title">
+                            <span>🏅</span>
+                            <span>排行榜徽章</span>
+                        </div>
+                        <span class="badge-count" id="badgeEarnedCount">0/8</span>
+                    </div>
+                    <div class="badge-grid" id="badgeGrid">
+                        <div class="badge-item earned" data-badge="first">
+                            <div class="badge-icon">🎯</div>
+                            <div class="badge-name">首次上榜</div>
+                        </div>
+                        <div class="badge-item" data-badge="top10">
+                            <div class="badge-icon">🌟</div>
+                            <div class="badge-name">前十强</div>
+                        </div>
+                        <div class="badge-item" data-badge="top3">
+                            <div class="badge-icon">👑</div>
+                            <div class="badge-name">前三甲</div>
+                        </div>
+                        <div class="badge-item" data-badge="champion">
+                            <div class="badge-icon">🏆</div>
+                            <div class="badge-name">冠军</div>
+                        </div>
+                        <div class="badge-item earned" data-badge="active">
+                            <div class="badge-icon">🔥</div>
+                            <div class="badge-name">活跃选手</div>
+                        </div>
+                        <div class="badge-item" data-badge="comeback">
+                            <div class="badge-icon">💫</div>
+                            <div class="badge-name">逆袭王者</div>
+                        </div>
+                        <div class="badge-item" data-badge="steady">
+                            <div class="badge-icon">⚡</div>
+                            <div class="badge-name">稳健之星</div>
+                        </div>
+                        <div class="badge-item" data-badge="legend">
+                            <div class="badge-icon">🌈</div>
+                            <div class="badge-name">传奇选手</div>
                         </div>
                     </div>
                 </div>
@@ -14176,6 +14884,7 @@
         renderSkeletons();
         loadState();
         loadSeasonState(); // 加载赛季系统状态
+        initLeaderboardEnhancement(); // 初始化排行榜增强系统
         initHomepageV2(); // 初始化首页2.0功能
         
         // 恢复搜索框状态
@@ -15018,6 +15727,10 @@
                 overlay.classList.add('show');
                 renderLeaderboard();
                 updateMyRank();
+                updateDivisionDisplay(); // 更新段位显示
+                updateGloryMoments(); // 更新荣耀时刻
+                updateBadgeWall(); // 更新徽章墙
+                updateWeeklyRankChange(); // 更新周排名变化
             }
         }
         
@@ -15274,6 +15987,398 @@
             const user = LEADERBOARD_USERS.find(u => u.id === userId);
             if (user) {
                 showEmotionToast('happy', `查看 ${user.name} 的潮流主页~`);
+            }
+        }
+        
+        // ==================== 社交排行榜2.0增强系统 ====================
+        
+        // 段位配置
+        const DIVISIONS = [
+            { id: 'bronze', name: '青铜', stars: 3, minScore: 0, color: '#cd7f32' },
+            { id: 'silver', name: '白银', stars: 3, minScore: 500, color: '#c0c0c0' },
+            { id: 'gold', name: '黄金', stars: 3, minScore: 1200, color: '#ffd700' },
+            { id: 'platinum', name: '铂金', stars: 3, minScore: 2500, color: '#00d4aa' },
+            { id: 'diamond', name: '钻石', stars: 3, minScore: 4500, color: '#b9f2ff' },
+            { id: 'master', name: '大师', stars: 1, minScore: 7000, color: '#a855f7' },
+            { id: 'challenger', name: '王者', stars: 1, minScore: 10000, color: '#ff006e' }
+        ];
+        
+        // 排行榜荣耀状态
+        let gloryState = {
+            bestRank: null,
+            totalScore: 0,
+            rankUpCount: 0,
+            badges: ['first', 'active'], // 初始徽章
+            weeklyChange: 0,
+            lastWeekRank: null
+        };
+        
+        /** 加载荣耀状态 */
+        function loadGloryState() {
+            const saved = localStorage.getItem('gloryState');
+            if (saved) {
+                gloryState = { ...gloryState, ...JSON.parse(saved) };
+            }
+            
+            // 初始化本周变化
+            const currentSeason = SEASONS.find(s => s.id === seasonState.currentSeason);
+            if (currentSeason) {
+                const weekKey = `weekChange_${currentSeason.id}_${getWeekNumber()}`;
+                const savedWeekChange = localStorage.getItem(weekKey);
+                if (savedWeekChange) {
+                    gloryState.weeklyChange = parseInt(savedWeekChange);
+                }
+            }
+        }
+        
+        /** 保存荣耀状态 */
+        function saveGloryState() {
+            localStorage.setItem('gloryState', JSON.stringify(gloryState));
+        }
+        
+        /** 获取当前周数 */
+        function getWeekNumber() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 1);
+            const diff = now - start;
+            const oneWeek = 604800000;
+            return Math.floor(diff / oneWeek);
+        }
+        
+        /** 获取用户当前段位 */
+        function getCurrentDivision(score) {
+            let division = DIVISIONS[0];
+            for (let i = DIVISIONS.length - 1; i >= 0; i--) {
+                if (score >= DIVISIONS[i].minScore) {
+                    division = DIVISIONS[i];
+                    break;
+                }
+            }
+            return division;
+        }
+        
+        /** 获取段位进度 */
+        function getDivisionProgress(score) {
+            const currentDiv = getCurrentDivision(score);
+            const currentIndex = DIVISIONS.findIndex(d => d.id === currentDiv.id);
+            const nextDiv = DIVISIONS[currentIndex + 1];
+            
+            if (!nextDiv) {
+                return { current: score, next: currentDiv.minScore, progress: 100, stars: currentDiv.stars };
+            }
+            
+            const divScore = score - currentDiv.minScore;
+            const divRange = nextDiv.minScore - currentDiv.minScore;
+            const progress = Math.min((divScore / divRange) * 100, 100);
+            
+            return {
+                current: divScore,
+                next: divRange,
+                progress: Math.round(progress),
+                stars: currentDiv.stars
+            };
+        }
+        
+        /** 更新段位显示 */
+        function updateDivisionDisplay() {
+            const score = seasonState.seasonScore || 0;
+            const division = getCurrentDivision(score);
+            const progress = getDivisionProgress(score);
+            
+            // 更新段位名称
+            const divisionNameEl = document.getElementById('divisionName');
+            if (divisionNameEl) {
+                const starDisplay = Array(division.stars).fill('★').join('');
+                const romanNum = ['I', 'II', 'III'][Math.floor((progress / (100 / division.stars)))];
+                divisionNameEl.textContent = `${division.name} ${romanNum}`;
+                divisionNameEl.className = `division-name ${division.id}`;
+            }
+            
+            // 更新进度条
+            const progressFill = document.getElementById('divisionProgressFill');
+            const currentLabel = document.getElementById('divisionCurrent');
+            const nextLabel = document.getElementById('divisionNext');
+            
+            if (progressFill) {
+                progressFill.style.width = `${progress}%`;
+                progressFill.className = `division-progress-fill ${division.id}`;
+            }
+            
+            if (currentLabel) {
+                currentLabel.textContent = `${progress.current} 积分`;
+            }
+            
+            if (nextLabel) {
+                const currentIndex = DIVISIONS.findIndex(d => d.id === division.id);
+                const nextDiv = DIVISIONS[currentIndex + 1];
+                if (nextDiv) {
+                    nextLabel.textContent = `晋级${nextDiv.name} I`;
+                } else {
+                    nextLabel.textContent = '已满级';
+                }
+            }
+        }
+        
+        /** 更新荣耀时刻显示 */
+        function updateGloryMoments() {
+            const score = seasonState.seasonScore || 0;
+            
+            // 更新最高排名
+            const bestRankEl = document.getElementById('gloryBestRank');
+            if (bestRankEl) {
+                bestRankEl.textContent = gloryState.bestRank ? `#${gloryState.bestRank}` : '--';
+            }
+            
+            // 更新累计积分
+            const totalScoreEl = document.getElementById('gloryTotalScore');
+            if (totalScoreEl) {
+                totalScoreEl.textContent = gloryState.totalScore.toLocaleString();
+            }
+            
+            // 更新排名上升
+            const rankUpEl = document.getElementById('gloryRankUp');
+            if (rankUpEl) {
+                rankUpEl.textContent = `+${gloryState.rankUpCount}`;
+            }
+            
+            // 更新获得徽章
+            const badgesEl = document.getElementById('gloryBadges');
+            if (badgesEl) {
+                badgesEl.textContent = gloryState.badges.length;
+            }
+            
+            // 更新赛季战报
+            updateSeasonReport();
+        }
+        
+        /** 更新赛季战报 */
+        function updateSeasonReport() {
+            const score = seasonState.seasonScore || 0;
+            const rank = seasonState.seasonRank || '--';
+            
+            // 计算评级
+            let grade = 'C';
+            if (rank <= 3) grade = 'S';
+            else if (rank <= 10) grade = 'A';
+            else if (rank <= 30) grade = 'B';
+            
+            // 更新战报显示
+            const gradeEl = document.getElementById('reportGrade');
+            if (gradeEl) {
+                gradeEl.textContent = grade;
+                gradeEl.className = `report-grade ${grade.toLowerCase()}`;
+            }
+            
+            const rankEl = document.getElementById('reportRank');
+            if (rankEl) {
+                rankEl.textContent = rank === '--' ? '--' : `#${rank}`;
+            }
+            
+            const scoreEl = document.getElementById('reportScore');
+            if (scoreEl) {
+                scoreEl.textContent = score.toLocaleString();
+            }
+            
+            const changeEl = document.getElementById('reportChange');
+            if (changeEl) {
+                changeEl.textContent = gloryState.weeklyChange >= 0 ? `+${gloryState.weeklyChange}` : `${gloryState.weeklyChange}`;
+                changeEl.style.color = gloryState.weeklyChange >= 0 ? 'var(--accent-green)' : 'var(--accent-pink)';
+            }
+        }
+        
+        /** 更新徽章墙 */
+        function updateBadgeWall() {
+            const rank = seasonState.seasonRank || 100;
+            
+            // 更新徽章状态
+            if (rank <= 10) {
+                if (!gloryState.badges.includes('top10')) {
+                    gloryState.badges.push('top10');
+                }
+            }
+            if (rank <= 3) {
+                if (!gloryState.badges.includes('top3')) {
+                    gloryState.badges.push('top3');
+                }
+            }
+            if (rank === 1) {
+                if (!gloryState.badges.includes('champion')) {
+                    gloryState.badges.push('champion');
+                }
+            }
+            if (gloryState.weeklyChange >= 10) {
+                if (!gloryState.badges.includes('comeback')) {
+                    gloryState.badges.push('comeback');
+                }
+            }
+            if (gloryState.totalScore >= 5000) {
+                if (!gloryState.badges.includes('legend')) {
+                    gloryState.badges.push('legend');
+                }
+            }
+            
+            // 更新UI
+            const badgeGrid = document.getElementById('badgeGrid');
+            if (badgeGrid) {
+                const badges = badgeGrid.querySelectorAll('.badge-item');
+                badges.forEach(badge => {
+                    const badgeId = badge.dataset.badge;
+                    if (gloryState.badges.includes(badgeId)) {
+                        badge.classList.add('earned');
+                    } else {
+                        badge.classList.remove('earned');
+                    }
+                });
+            }
+            
+            // 更新徽章计数
+            const countEl = document.getElementById('badgeEarnedCount');
+            if (countEl) {
+                countEl.textContent = `${gloryState.badges.length}/8`;
+            }
+            
+            saveGloryState();
+        }
+        
+        /** 显示赛季战报弹窗 */
+        function showSeasonReportModal() {
+            const score = seasonState.seasonScore || 0;
+            const rank = seasonState.seasonRank || '--';
+            
+            // 计算评级
+            let grade = 'C';
+            if (rank <= 3) grade = 'S';
+            else if (rank <= 10) grade = 'A';
+            else if (rank <= 30) grade = 'B';
+            
+            // 生成高光时刻文本
+            const highlights = [];
+            if (gloryState.weeklyChange > 0) {
+                highlights.push(`本周排名上升${gloryState.weeklyChange}位`);
+            }
+            if (state.checkinData.currentStreak >= 7) {
+                highlights.push(`连续签到${state.checkinData.currentStreak}天`);
+            }
+            if (gloryState.badges.length > 2) {
+                highlights.push(`获得「${gloryState.badges.length - 2}个」新徽章`);
+            }
+            const highlightText = highlights.length > 0 
+                ? highlights.join('，') + '！' 
+                : '继续努力，下周表现更精彩！';
+            
+            // 更新弹窗内容
+            document.getElementById('modalReportGrade').textContent = grade;
+            document.getElementById('modalReportGrade').className = `report-modal-grade ${grade.toLowerCase()}`;
+            document.getElementById('modalReportRank').textContent = rank === '--' ? '--' : `#${rank}`;
+            document.getElementById('modalReportScore').textContent = score.toLocaleString();
+            document.getElementById('modalReportChange').textContent = gloryState.weeklyChange >= 0 ? `+${gloryState.weeklyChange}` : `${gloryState.weeklyChange}`;
+            document.getElementById('modalReportHighlight').textContent = highlightText;
+            
+            // 显示弹窗
+            document.getElementById('seasonReportModal').classList.add('show');
+        }
+        
+        /** 关闭赛季战报弹窗 */
+        function closeSeasonReportModal() {
+            document.getElementById('seasonReportModal').classList.remove('show');
+        }
+        
+        /** 分享赛季战报 */
+        function shareSeasonReport() {
+            const score = seasonState.seasonScore || 0;
+            const rank = seasonState.seasonRank || '--';
+            const division = getCurrentDivision(score);
+            
+            let grade = 'C';
+            if (rank <= 3) grade = 'S';
+            else if (rank <= 10) grade = 'A';
+            else if (rank <= 30) grade = 'B';
+            
+            const shareText = `🏆 AI Agent 潮流联盟 赛季战报 🏆
+
+⚡ S1 巅峰赛季评级: ${grade}
+📊 当前排名: #${rank}
+⭐ 赛季积分: ${score}
+⚔️ 段位: ${division.name}
+🏅 获得徽章: ${gloryState.badges.length}个
+📈 本周变化: ${gloryState.weeklyChange >= 0 ? '+' : ''}${gloryState.weeklyChange}
+
+✨ ${gloryState.badges.length > 0 ? `已解锁: ${gloryState.badges.map(b => getBadgeName(b)).join('、')}` : '快来和我一起冲榜！'}
+
+#AIAgent潮流联盟 #赛季战报`;
+
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    showEmotionToast('celebrate', '战报已复制到剪贴板~');
+                });
+            } else {
+                showEmotionToast('shy', '抱歉，无法复制到剪贴板');
+            }
+        }
+        
+        /** 获取徽章名称 */
+        function getBadgeName(badgeId) {
+            const names = {
+                first: '首次上榜',
+                top10: '前十强',
+                top3: '前三甲',
+                champion: '冠军',
+                active: '活跃选手',
+                comeback: '逆袭王者',
+                steady: '稳健之星',
+                legend: '传奇选手'
+            };
+            return names[badgeId] || badgeId;
+        }
+        
+        /** 初始化排行榜增强系统 */
+        function initLeaderboardEnhancement() {
+            loadGloryState();
+            updateDivisionDisplay();
+            updateGloryMoments();
+            updateBadgeWall();
+            
+            // 监听排名变化
+            if (gloryState.bestRank === null || seasonState.seasonRank < gloryState.bestRank) {
+                gloryState.bestRank = seasonState.seasonRank;
+                saveGloryState();
+            }
+            
+            // 监听段位变化
+            const currentDiv = getCurrentDivision(seasonState.seasonScore || 0);
+            if (gloryState.lastDivision !== currentDiv.id) {
+                const oldDiv = gloryState.lastDivision;
+                gloryState.lastDivision = currentDiv.id;
+                saveGloryState();
+                
+                if (oldDiv) {
+                    const oldIndex = DIVISIONS.findIndex(d => d.id === oldDiv);
+                    const newIndex = DIVISIONS.findIndex(d => d.id === currentDiv.id);
+                    if (newIndex > oldIndex) {
+                        showEmotionToast('proud', `🎉 恭喜晋升${currentDiv.name}！`);
+                        createAchievementParticles();
+                    }
+                }
+            }
+        }
+        
+        /** 更新周排名变化 */
+        function updateWeeklyRankChange() {
+            const currentSeason = SEASONS.find(s => s.id === seasonState.currentSeason);
+            if (!currentSeason) return;
+            
+            const weekKey = `weekStartRank_${currentSeason.id}_${getWeekNumber()}`;
+            const savedStartRank = localStorage.getItem(weekKey);
+            
+            // 如果是新的一周，记录起始排名
+            if (!savedStartRank) {
+                localStorage.setItem(weekKey, seasonState.seasonRank || 50);
+            } else {
+                const startRank = parseInt(savedStartRank);
+                const currentRank = seasonState.seasonRank || 50;
+                gloryState.weeklyChange = startRank - currentRank; // 上升为正
+                saveGloryState();
+                updateSeasonReport();
             }
         }
         
@@ -16402,6 +17507,41 @@
             }
         });
     </script>
+    
+    <!-- 赛季战报弹窗 -->
+    <div class="season-report-modal" id="seasonReportModal">
+        <div class="report-modal-content">
+            <button class="report-modal-close" onclick="closeSeasonReportModal()">✕</button>
+            <div class="report-modal-header">
+                <div class="report-modal-season">⚡ S1 巅峰赛季</div>
+                <div class="report-modal-title">赛季战报</div>
+            </div>
+            <div class="report-modal-grade s" id="modalReportGrade">S</div>
+            <div class="report-modal-stats">
+                <div class="report-modal-stat">
+                    <div class="report-modal-stat-value" id="modalReportRank">#8</div>
+                    <div class="report-modal-stat-label">当前排名</div>
+                </div>
+                <div class="report-modal-stat">
+                    <div class="report-modal-stat-value" id="modalReportScore">1250</div>
+                    <div class="report-modal-stat-label">赛季积分</div>
+                </div>
+                <div class="report-modal-stat">
+                    <div class="report-modal-stat-value" id="modalReportChange">+12</div>
+                    <div class="report-modal-stat-label">本周上升</div>
+                </div>
+            </div>
+            <div class="report-modal-highlight">
+                <div class="report-modal-highlight-title">✨ 高光时刻</div>
+                <div class="report-modal-highlight-text" id="modalReportHighlight">
+                    本周排名上升12位，连续活跃7天，获得「逆袭王者」徽章！
+                </div>
+            </div>
+            <div class="report-modal-footer">
+                <button class="report-share-btn" onclick="shareSeasonReport()">📤 分享战报</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
     
