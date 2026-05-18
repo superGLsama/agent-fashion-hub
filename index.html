@@ -6136,6 +6136,215 @@
             animation: rankUp 0.5s ease;
         }
         
+        /* ==================== Top3专属展示区域 ==================== */
+        
+        .top-three-showcase {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05), rgba(168, 85, 247, 0.05));
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 20px;
+            padding: 1.2rem;
+            margin: 0 1rem 1rem;
+        }
+        
+        .top-three-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--legendary);
+        }
+        
+        .top-three-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 0.5rem;
+        }
+        
+        .top-three-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem 0.8rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .top-three-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .first-place {
+            order: 2;
+            z-index: 3;
+            transform: scale(1.1);
+        }
+        
+        .first-place:hover {
+            transform: scale(1.15) translateY(-5px);
+        }
+        
+        .second-place {
+            order: 1;
+            z-index: 2;
+        }
+        
+        .third-place {
+            order: 3;
+            z-index: 2;
+        }
+        
+        .top-avatar-ring {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            animation: rotateRing 8s linear infinite;
+        }
+        
+        .gold-ring {
+            background: conic-gradient(from 0deg, #ffd700, #ff8c00, #ffd700);
+            padding: 3px;
+        }
+        
+        .silver-ring {
+            background: conic-gradient(from 0deg, #c0c0c0, #ffffff, #c0c0c0);
+            padding: 3px;
+        }
+        
+        .bronze-ring {
+            background: conic-gradient(from 0deg, #cd7f32, #a0522d, #cd7f32);
+            padding: 3px;
+        }
+        
+        @keyframes rotateRing {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .top-avatar {
+            font-size: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .first-place .top-avatar {
+            font-size: 3rem;
+        }
+        
+        .crown-animation {
+            position: absolute;
+            top: -15px;
+            font-size: 1.5rem;
+            animation: crownBounce 2s ease-in-out infinite;
+            z-index: 5;
+        }
+        
+        @keyframes crownBounce {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-5px) rotate(5deg); }
+        }
+        
+        .top-name {
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            max-width: 80px;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .top-score {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.2rem;
+        }
+        
+        .first-place .top-score {
+            color: var(--legendary);
+            font-weight: 600;
+        }
+        
+        /* 排名变化特效 */
+        @keyframes rankUpGlow {
+            0% { box-shadow: 0 0 0 rgba(0, 255, 136, 0); }
+            50% { box-shadow: 0 0 20px rgba(0, 255, 136, 0.8); }
+            100% { box-shadow: 0 0 0 rgba(0, 255, 136, 0); }
+        }
+        
+        @keyframes rankDownGlow {
+            0% { box-shadow: 0 0 0 rgba(255, 0, 110, 0); }
+            50% { box-shadow: 0 0 20px rgba(255, 0, 110, 0.8); }
+            100% { box-shadow: 0 0 0 rgba(255, 0, 110, 0); }
+        }
+        
+        .rank-item.rank-up-glow {
+            animation: rankUpGlow 1s ease-out;
+        }
+        
+        .rank-item.rank-down-glow {
+            animation: rankDownGlow 1s ease-out;
+        }
+        
+        /* 排名提升徽章 */
+        .rank-up-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: linear-gradient(135deg, var(--accent-green), #00cc66);
+            color: #fff;
+            font-size: 0.65rem;
+            padding: 0.2rem 0.4rem;
+            border-radius: 10px;
+            font-weight: 700;
+            animation: badgePulse 1s ease-in-out infinite;
+            box-shadow: 0 2px 8px rgba(0, 255, 136, 0.4);
+        }
+        
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        /* 荣耀时刻Top3特效 */
+        .first-place {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 140, 0, 0.05));
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .second-place {
+            background: linear-gradient(135deg, rgba(192, 192, 192, 0.08), rgba(160, 160, 160, 0.05));
+            border: 1px solid rgba(192, 192, 192, 0.2);
+        }
+        
+        .third-place {
+            background: linear-gradient(135deg, rgba(205, 127, 50, 0.08), rgba(160, 82, 45, 0.05));
+            border: 1px solid rgba(205, 127, 50, 0.2);
+        }
+        
+        /* 榜单切换动画增强 */
+        .leaderboard-tabs {
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        
+        .leaderboard-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .leaderboard-tab {
+            flex-shrink: 0;
+            min-width: 70px;
+        }
+        
         /* ==================== 排行榜赛季系统 ==================== */
         
         /* 赛季导航栏 */
@@ -8931,6 +9140,43 @@
                         <span class="leaderboard-tab-icon">💎</span>
                         消费榜
                     </button>
+                    <button class="leaderboard-tab" data-type="active" onclick="switchLeaderboardTab('active')">
+                        <span class="leaderboard-tab-icon">🔥</span>
+                        活跃榜
+                    </button>
+                    <button class="leaderboard-tab" data-type="newbie" onclick="switchLeaderboardTab('newbie')">
+                        <span class="leaderboard-tab-icon">🌱</span>
+                        新人榜
+                    </button>
+                </div>
+                
+                <!-- Top3专属展示区域 -->
+                <div class="top-three-showcase" id="topThreeShowcase">
+                    <div class="top-three-header">
+                        <span>🏆</span>
+                        <span>TOP 3</span>
+                    </div>
+                    <div class="top-three-container">
+                        <div class="top-three-card second-place" id="secondPlace">
+                            <div class="top-avatar-ring silver-ring"></div>
+                            <div class="top-avatar">🥈</div>
+                            <div class="top-name">--</div>
+                            <div class="top-score">--</div>
+                        </div>
+                        <div class="top-three-card first-place" id="firstPlace">
+                            <div class="top-avatar-ring gold-ring"></div>
+                            <div class="crown-animation">👑</div>
+                            <div class="top-avatar">🥇</div>
+                            <div class="top-name">--</div>
+                            <div class="top-score">--</div>
+                        </div>
+                        <div class="top-three-card third-place" id="thirdPlace">
+                            <div class="top-avatar-ring bronze-ring"></div>
+                            <div class="top-avatar">🥉</div>
+                            <div class="top-name">--</div>
+                            <div class="top-score">--</div>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- 我的排名卡片 -->
@@ -11334,10 +11580,40 @@
             { id: 'u10', name: '深渊行者', avatar: '🌊', level: 2, rank: '潮流学徒', spent: 3200, alliance: 'nature', tier: 'bronze', badge: null, change: 5, likes: 78 }
         ];
         
+        // 活跃天数排行榜数据
+        const ACTIVE_LEADERBOARD = [
+            { id: 'u1', name: '星河漫步', avatar: '🌟', level: 6, rank: '潮流教父', activeDays: 45, alliance: 'nature', tier: 'legendary', badge: 'vip', change: 0, likes: 234 },
+            { id: 'u2', name: '暗夜猎手', avatar: '🦇', level: 5, rank: '潮流大师', activeDays: 38, alliance: 'chaos', tier: 'diamond', badge: null, change: 1, likes: 189 },
+            { id: 'u3', name: '量子骑士', avatar: '⚡', level: 5, rank: '潮流大师', activeDays: 35, alliance: 'tech', tier: 'diamond', badge: 'hot', change: -1, likes: 167 },
+            { id: 'u7', name: '冰霜女王', avatar: '❄️', level: 3, rank: '潮流达人', activeDays: 32, alliance: 'nature', tier: 'silver', badge: null, change: 2, likes: 145 },
+            { id: 'u4', name: '森林精灵', avatar: '🧚', level: 4, rank: '潮流高手', activeDays: 28, alliance: 'nature', tier: 'gold', badge: null, change: 0, likes: 134 },
+            { id: 'u8', name: '疾风剑豪', avatar: '⚔️', level: 3, rank: '潮流达人', activeDays: 25, alliance: 'chaos', tier: 'silver', badge: null, change: -2, likes: 98 },
+            { id: 'u5', name: '机械之心', avatar: '🦾', level: 4, rank: '潮流高手', activeDays: 22, alliance: 'tech', tier: 'gold', badge: null, change: 3, likes: 112 },
+            { id: 'u6', name: '烈焰凤凰', avatar: '🔥', level: 4, rank: '潮流高手', activeDays: 20, alliance: 'chaos', tier: 'gold', badge: 'new', change: 5, likes: 89 },
+            { id: 'u9', name: '光之子', avatar: '💫', level: 3, rank: '潮流达人', activeDays: 18, alliance: 'tech', tier: 'silver', badge: null, change: 1, likes: 76 },
+            { id: 'u10', name: '深渊行者', avatar: '🌊', level: 2, rank: '潮流学徒', activeDays: 15, alliance: 'nature', tier: 'bronze', badge: null, change: 4, likes: 54 }
+        ];
+        
+        // 新人潜力排行榜数据
+        const NEWBIE_LEADERBOARD = [
+            { id: 'u13', name: '彩虹独角兽', avatar: '🦄', level: 1, rank: '潮流新人', growthRate: 95, alliance: 'nature', tier: 'bronze', badge: 'new', change: 8, likes: 89 },
+            { id: 'u14', name: '钢铁机甲', avatar: '🤖', level: 1, rank: '潮流新人', growthRate: 88, alliance: 'tech', tier: 'bronze', badge: 'new', change: 5, likes: 67 },
+            { id: 'u15', name: '暗黑骑士', avatar: '🗡️', level: 1, rank: '潮流新人', growthRate: 82, alliance: 'chaos', tier: 'bronze', badge: 'new', change: 3, likes: 45 },
+            { id: 'u12', name: '月光刺客', avatar: '🌙', level: 2, rank: '潮流学徒', growthRate: 78, alliance: 'chaos', tier: 'bronze', badge: 'new', change: 2, likes: 56 },
+            { id: 'u11', name: '雷霆之主', avatar: '⛈️', level: 2, rank: '潮流学徒', growthRate: 72, alliance: 'tech', tier: 'bronze', badge: null, change: 4, likes: 43 },
+            { id: 'u10', name: '深渊行者', avatar: '🌊', level: 2, rank: '潮流学徒', growthRate: 65, alliance: 'nature', tier: 'bronze', badge: null, change: -1, likes: 54 },
+            { id: 'u9', name: '光之子', avatar: '💫', level: 3, rank: '潮流达人', growthRate: 58, alliance: 'tech', tier: 'silver', badge: null, change: 0, likes: 76 },
+            { id: 'u8', name: '疾风剑豪', avatar: '⚔️', level: 3, rank: '潮流达人', growthRate: 52, alliance: 'chaos', tier: 'silver', badge: null, change: -3, likes: 87 },
+            { id: 'u7', name: '冰霜女王', avatar: '❄️', level: 3, rank: '潮流达人', growthRate: 48, alliance: 'nature', tier: 'silver', badge: null, change: 1, likes: 98 },
+            { id: 'u6', name: '烈焰凤凰', avatar: '🔥', level: 4, rank: '潮流高手', growthRate: 42, alliance: 'chaos', tier: 'gold', badge: 'new', change: 5, likes: 129 }
+        ];
+        
         // 当前排行榜状态
         let leaderboardState = {
             currentTab: 'xp',
-            likedUsers: new Set(JSON.parse(localStorage.getItem('leaderboardLikes') || '[]'))
+            likedUsers: new Set(JSON.parse(localStorage.getItem('leaderboardLikes') || '[]')),
+            previousRanks: JSON.parse(localStorage.getItem('leaderboardPreviousRanks') || '{}'),
+            topThreeHighlight: true
         };
         
         // ==================== 排行榜赛季系统 ====================
@@ -15727,6 +16003,7 @@
                 overlay.classList.add('show');
                 renderLeaderboard();
                 updateMyRank();
+                updateTopThreeShowcase(); // 更新Top3展示
                 updateDivisionDisplay(); // 更新段位显示
                 updateGloryMoments(); // 更新荣耀时刻
                 updateBadgeWall(); // 更新徽章墙
@@ -15750,7 +16027,64 @@
                 t.classList.toggle('active', t.dataset.type === tab);
             });
             
+            // 更新Top3展示
+            updateTopThreeShowcase();
+            
             renderLeaderboard();
+        }
+        
+        /** 更新Top3专属展示区域 */
+        function updateTopThreeShowcase() {
+            const data = getCurrentLeaderboard();
+            const firstPlace = document.getElementById('firstPlace');
+            const secondPlace = document.getElementById('secondPlace');
+            const thirdPlace = document.getElementById('thirdPlace');
+            
+            if (!firstPlace || !secondPlace || !thirdPlace) return;
+            
+            // 获取Top3数据
+            const top3 = data.slice(0, 3);
+            const scoreKey = getScoreKey();
+            
+            // 第一名
+            if (top3[0]) {
+                firstPlace.querySelector('.top-name').textContent = top3[0].name;
+                firstPlace.querySelector('.top-score').textContent = formatScore(top3[0][scoreKey], scoreKey);
+            }
+            
+            // 第二名
+            if (top3[1]) {
+                secondPlace.querySelector('.top-name').textContent = top3[1].name;
+                secondPlace.querySelector('.top-score').textContent = formatScore(top3[1][scoreKey], scoreKey);
+            }
+            
+            // 第三名
+            if (top3[2]) {
+                thirdPlace.querySelector('.top-name').textContent = top3[2].name;
+                thirdPlace.querySelector('.top-score').textContent = formatScore(top3[2][scoreKey], scoreKey);
+            }
+        }
+        
+        /** 获取当前榜单的分数字段名 */
+        function getScoreKey() {
+            switch (leaderboardState.currentTab) {
+                case 'favorites': return 'favorites';
+                case 'spending': return 'spent';
+                case 'active': return 'activeDays';
+                case 'newbie': return 'growthRate';
+                default: return 'xp';
+            }
+        }
+        
+        /** 格式化分数显示 */
+        function formatScore(score, key) {
+            switch (key) {
+                case 'spent': return `${score.toLocaleString()} 积分`;
+                case 'activeDays': return `${score} 天`;
+                case 'growthRate': return `${score}%`;
+                case 'favorites': return `${score} 件`;
+                default: return `${score} XP`;
+            }
         }
         
         /** 获取当前排行榜数据 */
@@ -15760,6 +16094,10 @@
                     return FAVORITES_LEADERBOARD;
                 case 'spending':
                     return SPENDING_LEADERBOARD;
+                case 'active':
+                    return ACTIVE_LEADERBOARD;
+                case 'newbie':
+                    return NEWBIE_LEADERBOARD;
                 default:
                     return LEADERBOARD_USERS;
             }
@@ -15772,6 +16110,20 @@
                     return state.favorites.items.length + state.favorites.agents.length + state.favorites.outfits.length;
                 case 'spending':
                     return state.totalSpent || 0;
+                case 'active':
+                    // 模拟活跃天数
+                    const lastActive = localStorage.getItem('lastActiveDate');
+                    const today = new Date().toDateString();
+                    let days = parseInt(localStorage.getItem('activeDaysCount') || '0');
+                    if (lastActive !== today) {
+                        days += 1;
+                        localStorage.setItem('activeDaysCount', days.toString());
+                        localStorage.setItem('lastActiveDate', today);
+                    }
+                    return days;
+                case 'newbie':
+                    // 模拟成长值
+                    return Math.floor(Math.random() * 30) + 10;
                 default:
                     return state.totalXp;
             }
@@ -15784,6 +16136,10 @@
                     return `${score} 件收藏`;
                 case 'spending':
                     return `${score.toLocaleString()} 积分`;
+                case 'active':
+                    return `${score} 天活跃`;
+                case 'newbie':
+                    return `${score}% 成长值`;
                 default:
                     return `${score} XP`;
             }
@@ -15813,13 +16169,15 @@
                 }
             }
             
-            // 如果用户排名在前15名，直接用数据
+            // 如果用户排名在前15名，直接用数据（跳过前3名因为有Top3展示）
             const showData = userRank <= data.length ? data.slice(0, 15) : data.slice(0, 14);
+            const scoreKey = getScoreKey();
             
-            list.innerHTML = showData.map((user, index) => {
-                const rank = index + 1;
-                const score = user.seasonScore || user[leaderboardState.currentTab === 'spending' ? 'spent' : (leaderboardState.currentTab === 'favorites' ? 'favorites' : 'xp')];
+            list.innerHTML = showData.slice(3).map((user, index) => {
+                const rank = index + 4; // 从第4名开始显示
+                const score = user.seasonScore || user[scoreKey];
                 const isLiked = leaderboardState.likedUsers.has(user.id);
+                const previousRank = leaderboardState.previousRanks[leaderboardState.currentTab]?.[user.id];
                 
                 let rankClass = '';
                 let positionClass = '';
@@ -15829,6 +16187,14 @@
                 
                 const avatarClass = user.tier === 'legendary' ? 'legendary' : (user.tier === 'diamond' ? 'epic' : '');
                 
+                // 排名变化动画类
+                let rankGlowClass = '';
+                if (user.change > 3) {
+                    rankGlowClass = 'rank-up-glow';
+                } else if (user.change < -3) {
+                    rankGlowClass = 'rank-down-glow';
+                }
+                
                 let changeHtml = '';
                 if (user.change > 0) {
                     changeHtml = `<span class="rank-change up">↑${user.change}</span>`;
@@ -15836,6 +16202,14 @@
                     changeHtml = `<span class="rank-change down">↓${Math.abs(user.change)}</span>`;
                 } else {
                     changeHtml = `<span class="rank-change same">-</span>`;
+                }
+                
+                // 排名提升徽章
+                let upBadge = '';
+                if (user.change >= 5) {
+                    upBadge = `<span class="rank-up-badge">🚀 飙升</span>`;
+                } else if (user.change >= 3) {
+                    upBadge = `<span class="rank-up-badge">↑ 进击</span>`;
                 }
                 
                 let badgeHtml = '';
@@ -15852,7 +16226,8 @@
                     `<span class="rank-user-badge" style="background: rgba(245, 158, 11, 0.2); color: var(--legendary);">🏅</span>` : '';
                 
                 return `
-                    <div class="rank-item ${rank <= 3 ? 'top-three' : ''}" onclick="showRankDetail('${user.id}')">
+                    <div class="rank-item ${rank <= 3 ? 'top-three' : ''} ${rankGlowClass}" onclick="showRankDetail('${user.id}')" style="position: relative;">
+                        ${upBadge}
                         <div class="rank-position ${positionClass}">${rank <= 3 ? ['🥇', '🥈', '🥉'][rank-1] : rank}</div>
                         <div class="rank-avatar ${avatarClass}">${user.avatar}</div>
                         <div class="rank-info">
@@ -15868,7 +16243,7 @@
                         </div>
                         <div class="rank-data">
                             <div class="rank-score">${getSeasonScoreText(score)}</div>
-                            <div class="rank-score-label">${seasonState.currentSeasonTab === 'current' ? '赛季' : ''}${leaderboardState.currentTab === 'spending' ? '积分' : (leaderboardState.currentTab === 'favorites' ? '收藏' : 'XP')}</div>
+                            <div class="rank-score-label">${seasonState.currentSeasonTab === 'current' ? '赛季' : ''}${getTabScoreLabel()}</div>
                             ${changeHtml}
                         </div>
                         <button class="rank-like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation(); toggleLike('${user.id}', this)">
@@ -15900,11 +16275,35 @@
                         </div>
                         <div class="rank-data">
                             <div class="rank-score">${getSeasonScoreText(score)}</div>
-                            <div class="rank-score-label">${seasonState.currentSeasonTab === 'current' ? '赛季' : ''}${leaderboardState.currentTab === 'spending' ? '积分' : (leaderboardState.currentTab === 'favorites' ? '收藏' : 'XP')}</div>
+                            <div class="rank-score-label">${seasonState.currentSeasonTab === 'current' ? '赛季' : ''}${getTabScoreLabel()}</div>
                         </div>
                     </div>
                 `;
             }
+            
+            // 保存当前排名用于下次比较
+            saveLeaderboardRanks(showData);
+        }
+        
+        /** 获取当前Tab的分数字段标签 */
+        function getTabScoreLabel() {
+            switch (leaderboardState.currentTab) {
+                case 'favorites': return '收藏';
+                case 'spending': return '积分';
+                case 'active': return '活跃';
+                case 'newbie': return '成长';
+                default: return 'XP';
+            }
+        }
+        
+        /** 保存排行榜排名用于变化检测 */
+        function saveLeaderboardRanks(data) {
+            const tabRanks = {};
+            data.forEach((user, index) => {
+                tabRanks[user.id] = index + 1;
+            });
+            leaderboardState.previousRanks[leaderboardState.currentTab] = tabRanks;
+            localStorage.setItem('leaderboardPreviousRanks', JSON.stringify(leaderboardState.previousRanks));
         }
         
         /** 更新我的排名卡片 */
