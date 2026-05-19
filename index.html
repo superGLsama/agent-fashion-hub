@@ -13088,6 +13088,488 @@
             localStorage.setItem('agentOutfits', JSON.stringify(savedOutfits));
             
             showNotification(`方案 "${name}" 保存成功！`, 'success');
+            renderOutfitSchemes();
+        }
+        
+        /**
+         * 切换方案管理面板
+         */
+        function toggleOutfitManager() {
+            const manager = document.getElementById('outfitManager');
+            const isVisible = manager.style.display !== 'none';
+            manager.style.display = isVisible ? 'none' : 'block';
+            if (!isVisible) {
+                renderOutfitSchemes();
+            }
+        }
+        
+        /**
+         * 渲染已保存的方案列表
+         */
+        function renderOutfitSchemes() {
+            const list = document.getElementById('outfitSchemesList');
+            const savedOutfits = JSON.parse(localStorage.getItem('agentOutfits') || '[]');
+            
+            if (savedOutfits.length === 0) {
+                list.innerHTML = '<div class="outfit-empty">暂无保存的方案~</div>';
+                return;
+            }
+            
+            list.innerHTML = savedOutfits.map(outfit => {
+                const equippedCount = Object.values(outfit.equipped).filter(v => v !== null).length;
+                const previewItems = Object.entries(outfit.equipped)
+                    .filter(([_, id]) => id !== null)
+                    .slice(0, 4)
+                    .map(([slot, id]) => {
+                        const item = outfitItems.find(i => i.id === id);
+                        return item ? item.icon : '';
+                    })
+                    .join(' ');
+                
+                return `
+                    <div class="scheme-card" onclick="loadOutfitScheme('${outfit.id}')">
+                        <div class="scheme-preview">${previewItems || '👔'}</div>
+                        <div class="scheme-info">
+                            <div class="scheme-name">${outfit.name}</div>
+                            <div class="scheme-meta">
+                                <span class="scheme-trend">🔥 ${outfit.totalTrend}</span>
+                                <span class="scheme-count">${equippedCount}/6件</span>
+                            </div>
+                        </div>
+                        <div class="scheme-actions">
+                            <button class="scheme-btn pk-btn" onclick="event.stopPropagation(); openOutfitPKPanel('${outfit.id}')" title="PK挑战">
+                                ⚔️
+                            </button>
+                            <button class="scheme-btn share-btn" onclick="event.stopPropagation(); shareOutfitScheme('${outfit.id}')" title="分享">
+                                📤
+                            </button>
+                            <button class="scheme-btn delete-btn" onclick="event.stopPropagation(); deleteOutfitScheme('${outfit.id}')" title="删除">
+                                🗑️
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        /**
+         * 加载装扮方案
+         */
+        function loadOutfitScheme(id) {
+            const savedOutfits = JSON.parse(localStorage.getItem('agentOutfits') || '[]');
+            const outfit = savedOutfits.find(o => o.id === id);
+            if (!outfit) return;
+            
+            state.equipped = { ...outfit.equipped };
+            saveState();
+            updateCharacterDisplay();
+            updateTrendDisplay();
+            updateSlotTabs();
+            renderClothingGrid();
+            
+            showNotification(`已加载方案 "${outfit.name}"`, 'success');
+        }
+        
+        /**
+         * 删除装扮方案
+         */
+        function deleteOutfitScheme(id) {
+            if (!confirm('确定要删除这个方案吗？')) return;
+            
+            let savedOutfits = JSON.parse(localStorage.getItem('agentOutfits') || '[]');
+            savedOutfits = savedOutfits.filter(o => o.id !== id);
+            localStorage.setItem('agentOutfits', JSON.stringify(savedOutfits));
+            
+            renderOutfitSchemes();
+            showNotification('方案已删除', 'success');
+        }
+        
+        /**
+         * 分享装扮方案
+         */
+        function shareOutfitScheme(id) {
+            const savedOutfits = JSON.parse(localStorage.getItem('agentOutfits') || '[]');
+            const outfit = savedOutfits.find(o => o.id === id);
+            if (!outfit) return;
+            
+            const previewItems = Object.entries(outfit.equipped)
+                .filter(([_, itemId]) => itemId !== null)
+                .map(([slot, itemId]) => {
+                    const item = outfitItems.find(i => i.id === itemId);
+                    return item ? `${item.icon}${item.name}` : '';
+                })
+                .filter(Boolean)
+                .join(' + ');
+            
+            const shareText = `🔥 我的潮流穿搭方案【${outfit.name}】🔥\n${previewItems}\n总潮流度：${outfit.totalTrend}\n\n来自 AI Agent 潮流联盟 🚀`;
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    showNotification('方案已复制到剪贴板！', 'success');
+                });
+            } else {
+                prompt('复制以下内容分享：', shareText);
+            }
+        }
+        
+        /**
+         * 打开装扮PK面板
+         */
+        let outfitPKState = {
+            selectedSchemeId: null,
+            selectedOpponent: null,
+            isMatching: false
+        };
+        
+        function openOutfitPKPanel(schemeId) {
+            outfitPKState.selectedSchemeId = schemeId;
+            outfitPKState.selectedOpponent = null;
+            outfitPKState.isMatching = false;
+            
+            const overlay = document.getElementById('outfitPKOverlay');
+            const panel = document.getElementById('outfitPKPanel');
+            
+            if (!overlay || !panel) {
+                createOutfitPKPanel();
+                return;
+            }
+            
+            overlay.classList.add('show');
+            panel.classList.add('show');
+            renderOutfitPKContent();
+        }
+        
+        /**
+         * 关闭PK面板
+         */
+        function closeOutfitPKPanel() {
+            const overlay = document.getElementById('outfitPKOverlay');
+            const panel = document.getElementById('outfitPKPanel');
+            
+            if (overlay) overlay.classList.remove('show');
+            if (panel) panel.classList.remove('show');
+            outfitPKState.isMatching = false;
+        }
+        
+        /**
+         * 渲染PK内容
+         */
+        function renderOutfitPKContent() {
+            const content = document.getElementById('outfitPKContent');
+            if (!content) return;
+            
+            const savedOutfits = JSON.parse(localStorage.getItem('agentOutfits') || '[]');
+            const myScheme = savedOutfits.find(o => o.id === outfitPKState.selectedSchemeId);
+            
+            if (outfitPKState.isMatching) {
+                renderPKMatching(content, myScheme);
+            } else if (outfitPKState.selectedOpponent) {
+                renderPKReady(content, myScheme);
+            } else {
+                renderOpponentSelection(content, myScheme);
+            }
+        }
+        
+        /**
+         * 渲染对手选择
+         */
+        function renderOpponentSelection(content, myScheme) {
+            const opponents = LEADERBOARD_USERS.slice(0, 12).map(user => {
+                const outfitScore = Math.floor(Math.random() * 300) + 100;
+                return { ...user, outfitScore };
+            });
+            
+            content.innerHTML = `
+                <div class="pk-header">
+                    <div class="pk-title">⚔️ 装扮PK挑战</div>
+                    <div class="pk-my-scheme">
+                        <div class="pk-scheme-preview">${getSchemePreview(myScheme)}</div>
+                        <div class="pk-scheme-info">
+                            <div class="pk-scheme-name">${myScheme?.name || '我的穿搭'}</div>
+                            <div class="pk-scheme-score">🔥 ${myScheme?.totalTrend || 0}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pk-opponent-section">
+                    <div class="pk-section-title">选择挑战对手</div>
+                    <div class="pk-opponent-grid">
+                        ${opponents.map(user => `
+                            <div class="pk-opponent-card ${outfitPKState.selectedOpponent === user.id ? 'selected' : ''}"
+                                 onclick="selectPKOpponent('${user.id}', ${user.outfitScore})">
+                                <div class="pk-opponent-avatar ${user.tier === 'legendary' ? 'legendary' : ''}">${user.avatar}</div>
+                                <div class="pk-opponent-name">${user.name}</div>
+                                <div class="pk-opponent-score">🔥 ${user.outfitScore}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <button class="pk-start-btn" onclick="startPKMatch()" ${!outfitPKState.selectedOpponent ? 'disabled' : ''}>
+                    ⚔️ 开始匹配
+                </button>
+            `;
+        }
+        
+        /**
+         * 选择PK对手
+         */
+        function selectPKOpponent(userId, score) {
+            outfitPKState.selectedOpponent = { id: userId, score };
+            renderOutfitPKContent();
+        }
+        
+        /**
+         * 获取方案预览图标
+         */
+        function getSchemePreview(scheme) {
+            if (!scheme) return '👔';
+            return Object.entries(scheme.equipped)
+                .filter(([_, id]) => id !== null)
+                .slice(0, 4)
+                .map(([slot, id]) => {
+                    const item = outfitItems.find(i => i.id === id);
+                    return item ? item.icon : '';
+                })
+                .join(' ') || '👔';
+        }
+        
+        /**
+         * 开始PK匹配
+         */
+        function startPKMatch() {
+            if (!outfitPKState.selectedOpponent) return;
+            outfitPKState.isMatching = true;
+            renderOutfitPKContent();
+            
+            // 模拟匹配动画
+            setTimeout(() => {
+                executePKBattle();
+            }, 2000);
+        }
+        
+        /**
+         * 渲染匹配中界面
+         */
+        function renderPKMatching(content, myScheme) {
+            const opponent = LEADERBOARD_USERS.find(u => u.id === outfitPKState.selectedOpponent.id);
+            
+            content.innerHTML = `
+                <div class="pk-matching">
+                    <div class="pk-matching-title">⚔️ 匹配中...</div>
+                    <div class="pk-matching-animation">
+                        <div class="pk-vs-anim">
+                            <div class="pk-anim-avatar">${getSchemePreview(myScheme)}</div>
+                            <div class="pk-anim-vs">⚡</div>
+                            <div class="pk-anim-avatar opponent">${opponent?.avatar || '?'}</div>
+                        </div>
+                    </div>
+                    <div class="pk-matching-dots">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+            `;
+        }
+        
+        /**
+         * 渲染PK准备界面
+         */
+        function renderPKReady(content, myScheme) {
+            const opponent = LEADERBOARD_USERS.find(u => u.id === outfitPKState.selectedOpponent.id);
+            
+            content.innerHTML = `
+                <div class="pk-ready">
+                    <div class="pk-ready-title">⚔️ PK对决</div>
+                    <div class="pk-ready-battle">
+                        <div class="pk-ready-side my-side">
+                            <div class="pk-ready-label">你的穿搭</div>
+                            <div class="pk-ready-avatar">${getSchemePreview(myScheme)}</div>
+                            <div class="pk-ready-score">${myScheme?.totalTrend || 0}</div>
+                        </div>
+                        <div class="pk-ready-divider">
+                            <div class="pk-ready-vs">VS</div>
+                        </div>
+                        <div class="pk-ready-side opponent-side">
+                            <div class="pk-ready-label">${opponent?.name || '对手'}</div>
+                            <div class="pk-ready-avatar ${opponent?.tier === 'legendary' ? 'legendary' : ''}">${opponent?.avatar || '?'}</div>
+                            <div class="pk-ready-score">${outfitPKState.selectedOpponent.score}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        /**
+         * 执行PK战斗
+         */
+        function executePKBattle() {
+            const content = document.getElementById('outfitPKContent');
+            if (!content) return;
+            
+            const savedOutfits = JSON.parse(localStorage.getItem('agentOutfits') || '[]');
+            const myScheme = savedOutfits.find(o => o.id === outfitPKState.selectedSchemeId);
+            const opponent = LEADERBOARD_USERS.find(u => u.id === outfitPKState.selectedOpponent.id);
+            
+            const myScore = myScheme?.totalTrend || 0;
+            const oppScore = outfitPKState.selectedOpponent.score;
+            const isWin = myScore > oppScore;
+            const isDraw = myScore === oppScore;
+            
+            // 动画计数
+            let myCurrent = 0;
+            let oppCurrent = 0;
+            const duration = 2000;
+            const steps = 40;
+            const interval = duration / steps;
+            
+            content.innerHTML = `
+                <div class="pk-battle">
+                    <div class="pk-battle-title">⚔️ 战斗进行中</div>
+                    <div class="pk-battle-scores">
+                        <div class="pk-battle-score my-score">
+                            <div class="pk-battle-score-label">你的穿搭</div>
+                            <div class="pk-battle-score-value" id="pkMyScore">0</div>
+                        </div>
+                        <div class="pk-battle-divider">
+                            <div class="pk-battle-vs">⚡</div>
+                        </div>
+                        <div class="pk-battle-score opp-score">
+                            <div class="pk-battle-score-label">${opponent?.name || '对手'}</div>
+                            <div class="pk-battle-score-value" id="pkOppScore">0</div>
+                        </div>
+                    </div>
+                    <div class="pk-battle-progress">
+                        <div class="pk-battle-progress-bar" id="pkProgressBar"></div>
+                    </div>
+                </div>
+            `;
+            
+            const progressBar = document.getElementById('pkProgressBar');
+            let step = 0;
+            
+            const timer = setInterval(() => {
+                step++;
+                const progress = (step / steps) * 100;
+                
+                // 缓动效果
+                const easeProgress = 1 - Math.pow(1 - step / steps, 3);
+                
+                myCurrent = Math.floor(myScore * easeProgress * (0.9 + Math.random() * 0.2));
+                oppCurrent = Math.floor(oppScore * easeProgress * (0.9 + Math.random() * 0.2));
+                
+                document.getElementById('pkMyScore').textContent = Math.min(myCurrent, myScore);
+                document.getElementById('pkOppScore').textContent = Math.min(oppCurrent, oppScore);
+                
+                if (progressBar) {
+                    progressBar.style.width = `${Math.min(progress, 100)}%`;
+                }
+                
+                if (step >= steps) {
+                    clearInterval(timer);
+                    // 最终结果
+                    setTimeout(() => {
+                        showPKResult(isWin, isDraw, myScore, oppScore, opponent, myScheme);
+                    }, 500);
+                }
+            }, interval);
+        }
+        
+        /**
+         * 显示PK结果
+         */
+        function showPKResult(isWin, isDraw, myScore, oppScore, opponent, myScheme) {
+            const content = document.getElementById('outfitPKContent');
+            if (!content) return;
+            
+            const reward = isWin ? 100 : (isDraw ? 50 : 30);
+            
+            if (isWin) {
+                state.totalXp += reward;
+                checkAchievements();
+            }
+            saveState();
+            updateLevelDisplay();
+            
+            content.innerHTML = `
+                <div class="pk-result ${isWin ? 'win' : (isDraw ? 'draw' : 'lose')}">
+                    <div class="pk-result-title">${isWin ? '🏆 胜利！' : (isDraw ? '🤝 平局' : '💔 惜败')}</div>
+                    <div class="pk-result-scores">
+                        <div class="pk-result-score my-score">
+                            <div class="pk-result-label">你的穿搭</div>
+                            <div class="pk-result-value">${myScore}</div>
+                        </div>
+                        <div class="pk-result-divider">
+                            <div class="pk-result-vs">VS</div>
+                        </div>
+                        <div class="pk-result-score opp-score">
+                            <div class="pk-result-label">${opponent?.name || '对手'}</div>
+                            <div class="pk-result-value">${oppScore}</div>
+                        </div>
+                    </div>
+                    <div class="pk-result-reward">
+                        ${isWin ? '🎉' : '💪'} 获得 ${reward} XP
+                    </div>
+                    <div class="pk-result-actions">
+                        <button class="pk-result-btn" onclick="closeOutfitPKPanel()">完成</button>
+                        <button class="pk-result-btn secondary" onclick="outfitPKState.selectedOpponent = null; outfitPKState.isMatching = false; renderOutfitPKContent()">再来一局</button>
+                    </div>
+                </div>
+            `;
+            
+            // 庆祝动画
+            if (isWin) {
+                triggerCelebration();
+            }
+        }
+        
+        /**
+         * 触发庆祝特效
+         */
+        function triggerCelebration() {
+            const container = document.createElement('div');
+            container.className = 'celebration-container';
+            document.body.appendChild(container);
+            
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'celebration-particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 0.5 + 's';
+                particle.style.background = ['#f59e0b', '#00d4ff', '#ff006e', '#00ff88'][Math.floor(Math.random() * 4)];
+                container.appendChild(particle);
+            }
+            
+            setTimeout(() => container.remove(), 2000);
+        }
+        
+        /**
+         * 创建PK面板（首次调用时）
+         */
+        function createOutfitPKPanel() {
+            // CSS样式会在后面添加
+            
+            // 创建遮罩
+            const overlay = document.createElement('div');
+            overlay.id = 'outfitPKOverlay';
+            overlay.className = 'outfit-pk-overlay';
+            overlay.onclick = closeOutfitPKPanel;
+            
+            // 创建面板
+            const panel = document.createElement('div');
+            panel.id = 'outfitPKPanel';
+            panel.className = 'outfit-pk-panel';
+            panel.innerHTML = `
+                <div class="outfit-pk-header">
+                    <span class="outfit-pk-title">⚔️ 装扮PK</span>
+                    <button class="outfit-pk-close" onclick="closeOutfitPKPanel()">✕</button>
+                </div>
+                <div class="outfit-pk-content" id="outfitPKContent"></div>
+            `;
+            
+            document.body.appendChild(overlay);
+            document.body.appendChild(panel);
+            
+            overlay.classList.add('show');
+            panel.classList.add('show');
+            renderOutfitPKContent();
         }
         
         /**
@@ -19504,5 +19986,616 @@
         .event-panel {
             width: 100%;
             right: -100%;
+        }
+    }
+    
+    /* ==================== 装扮PK对战系统 ==================== */
+    
+    .outfit-pk-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 9998;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s;
+    }
+    
+    .outfit-pk-overlay.show {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .outfit-pk-panel {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.9);
+        width: 500px;
+        max-width: 95vw;
+        max-height: 85vh;
+        background: var(--bg-card);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        z-index: 9999;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .outfit-pk-panel.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    
+    .outfit-pk-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        background: rgba(0, 0, 0, 0.3);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .outfit-pk-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.2rem;
+        background: linear-gradient(90deg, var(--legendary), var(--accent-pink));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .outfit-pk-close {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--text-secondary);
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .outfit-pk-close:hover {
+        background: rgba(255, 0, 110, 0.2);
+        border-color: var(--accent-pink);
+        color: var(--accent-pink);
+    }
+    
+    .outfit-pk-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1.5rem;
+    }
+    
+    /* PK头部 */
+    .pk-header {
+        margin-bottom: 1.5rem;
+    }
+    
+    .pk-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.1rem;
+        text-align: center;
+        margin-bottom: 1rem;
+        color: var(--legendary);
+    }
+    
+    .pk-my-scheme {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: rgba(0, 212, 255, 0.1);
+        border: 1px solid var(--accent-cyan);
+        border-radius: 12px;
+    }
+    
+    .pk-scheme-preview {
+        font-size: 2rem;
+        padding: 0.5rem;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+    }
+    
+    .pk-scheme-info {
+        flex: 1;
+    }
+    
+    .pk-scheme-name {
+        font-weight: 600;
+        margin-bottom: 0.3rem;
+    }
+    
+    .pk-scheme-score {
+        font-family: 'Orbitron', sans-serif;
+        color: var(--accent-green);
+    }
+    
+    /* 对手选择 */
+    .pk-section-title {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+    }
+    
+    .pk-opponent-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.8rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .pk-opponent-card {
+        padding: 1rem 0.5rem;
+        background: var(--bg-dark);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .pk-opponent-card:hover {
+        border-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+    
+    .pk-opponent-card.selected {
+        border-color: var(--legendary);
+        background: rgba(245, 158, 11, 0.1);
+    }
+    
+    .pk-opponent-avatar {
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .pk-opponent-avatar.legendary {
+        animation: legendaryGlow 2s ease-in-out infinite;
+    }
+    
+    .pk-opponent-name {
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-bottom: 0.2rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .pk-opponent-score {
+        font-size: 0.75rem;
+        color: var(--accent-green);
+    }
+    
+    /* PK按钮 */
+    .pk-start-btn {
+        width: 100%;
+        padding: 1rem;
+        background: linear-gradient(135deg, var(--legendary), var(--accent-pink));
+        border: none;
+        border-radius: 12px;
+        color: #fff;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .pk-start-btn:hover:not(:disabled) {
+        transform: scale(1.02);
+        box-shadow: 0 5px 20px rgba(245, 158, 11, 0.4);
+    }
+    
+    .pk-start-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    /* 匹配中 */
+    .pk-matching {
+        text-align: center;
+        padding: 2rem;
+    }
+    
+    .pk-matching-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.3rem;
+        color: var(--legendary);
+        margin-bottom: 2rem;
+        animation: pkPulse 1s ease-in-out infinite;
+    }
+    
+    @keyframes pkPulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.6; }
+    }
+    
+    .pk-matching-animation {
+        margin-bottom: 2rem;
+    }
+    
+    .pk-vs-anim {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    .pk-anim-avatar {
+        font-size: 3rem;
+        padding: 1rem;
+        background: var(--bg-dark);
+        border-radius: 50%;
+        animation: avatarBounce 0.8s ease-in-out infinite;
+    }
+    
+    .pk-anim-avatar.opponent {
+        animation-delay: 0.4s;
+    }
+    
+    @keyframes avatarBounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    .pk-anim-vs {
+        font-size: 2rem;
+        animation: vsFlash 0.5s ease-in-out infinite;
+    }
+    
+    @keyframes vsFlash {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(1.2); }
+    }
+    
+    .pk-matching-dots {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    .pk-matching-dots span {
+        width: 8px;
+        height: 8px;
+        background: var(--accent-cyan);
+        border-radius: 50%;
+        animation: dotBounce 1.4s ease-in-out infinite;
+    }
+    
+    .pk-matching-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .pk-matching-dots span:nth-child(3) { animation-delay: 0.4s; }
+    
+    @keyframes dotBounce {
+        0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+        40% { transform: scale(1); opacity: 1; }
+    }
+    
+    /* 战斗界面 */
+    .pk-battle {
+        text-align: center;
+        padding: 1.5rem;
+    }
+    
+    .pk-battle-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.1rem;
+        color: var(--accent-pink);
+        margin-bottom: 2rem;
+    }
+    
+    .pk-battle-scores {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .pk-battle-score {
+        flex: 1;
+        max-width: 150px;
+    }
+    
+    .pk-battle-score-label {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+    }
+    
+    .pk-battle-score-value {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--accent-cyan);
+    }
+    
+    .pk-battle-divider {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.5rem;
+        color: var(--accent-pink);
+    }
+    
+    .pk-battle-progress {
+        height: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+        overflow: hidden;
+    }
+    
+    .pk-battle-progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, var(--accent-cyan), var(--accent-pink));
+        border-radius: 3px;
+        transition: width 0.1s;
+        width: 0%;
+    }
+    
+    /* PK结果 */
+    .pk-result {
+        text-align: center;
+        padding: 1.5rem;
+    }
+    
+    .pk-result-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .pk-result.win .pk-result-title {
+        color: var(--legendary);
+        animation: winGlow 1s ease-in-out infinite;
+    }
+    
+    @keyframes winGlow {
+        0%, 100% { text-shadow: 0 0 10px rgba(245, 158, 11, 0.5); }
+        50% { text-shadow: 0 0 30px rgba(245, 158, 11, 0.8); }
+    }
+    
+    .pk-result.draw .pk-result-title {
+        color: var(--accent-cyan);
+    }
+    
+    .pk-result.lose .pk-result-title {
+        color: var(--text-secondary);
+    }
+    
+    .pk-result-scores {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .pk-result-score {
+        flex: 1;
+        max-width: 120px;
+        padding: 1rem;
+        background: var(--bg-dark);
+        border-radius: 12px;
+    }
+    
+    .pk-result-label {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.3rem;
+    }
+    
+    .pk-result-value {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+    
+    .pk-result-score.my-score .pk-result-value {
+        color: var(--accent-cyan);
+    }
+    
+    .pk-result-score.opp-score .pk-result-value {
+        color: var(--accent-pink);
+    }
+    
+    .pk-result-divider {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1rem;
+        color: var(--text-secondary);
+    }
+    
+    .pk-result-reward {
+        font-size: 1.1rem;
+        color: var(--accent-green);
+        margin-bottom: 1.5rem;
+        padding: 0.8rem;
+        background: rgba(0, 255, 136, 0.1);
+        border-radius: 8px;
+    }
+    
+    .pk-result-actions {
+        display: flex;
+        gap: 0.8rem;
+    }
+    
+    .pk-result-btn {
+        flex: 1;
+        padding: 0.8rem;
+        background: linear-gradient(135deg, var(--legendary), var(--accent-pink));
+        border: none;
+        border-radius: 10px;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .pk-result-btn:hover {
+        transform: scale(1.02);
+    }
+    
+    .pk-result-btn.secondary {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .pk-result-btn.secondary:hover {
+        background: rgba(255, 255, 255, 0.15);
+    }
+    
+    /* 庆祝特效 */
+    .celebration-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 10000;
+        overflow: hidden;
+    }
+    
+    .celebration-particle {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        animation: celebrationFall 2s ease-out forwards;
+    }
+    
+    @keyframes celebrationFall {
+        0% {
+            top: -10px;
+            opacity: 1;
+            transform: translateX(0) rotate(0deg);
+        }
+        100% {
+            top: 100%;
+            opacity: 0;
+            transform: translateX(100px) rotate(720deg);
+        }
+    }
+    
+    /* 方案卡片增强 */
+    .scheme-card {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.8rem;
+        background: var(--bg-card);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        margin-bottom: 0.6rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .scheme-card:hover {
+        border-color: rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.03);
+    }
+    
+    .scheme-preview {
+        font-size: 1.5rem;
+        padding: 0.5rem;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 8px;
+        min-width: 50px;
+        text-align: center;
+    }
+    
+    .scheme-info {
+        flex: 1;
+    }
+    
+    .scheme-name {
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 0.2rem;
+    }
+    
+    .scheme-meta {
+        display: flex;
+        gap: 0.8rem;
+        font-size: 0.75rem;
+    }
+    
+    .scheme-trend {
+        color: var(--accent-green);
+    }
+    
+    .scheme-count {
+        color: var(--text-secondary);
+    }
+    
+    .scheme-actions {
+        display: flex;
+        gap: 0.3rem;
+    }
+    
+    .scheme-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .scheme-btn:hover {
+        transform: scale(1.1);
+    }
+    
+    .scheme-btn.pk-btn:hover {
+        border-color: var(--legendary);
+        color: var(--legendary);
+        background: rgba(245, 158, 11, 0.1);
+    }
+    
+    .scheme-btn.share-btn:hover {
+        border-color: var(--accent-cyan);
+        color: var(--accent-cyan);
+        background: rgba(0, 212, 255, 0.1);
+    }
+    
+    .scheme-btn.delete-btn:hover {
+        border-color: var(--accent-pink);
+        color: var(--accent-pink);
+        background: rgba(255, 0, 110, 0.1);
+    }
+    
+    /* 响应式 */
+    @media (max-width: 600px) {
+        .pk-opponent-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .pk-result-scores,
+        .pk-battle-scores {
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .pk-result-divider,
+        .pk-battle-divider {
+            transform: rotate(90deg);
         }
     }
