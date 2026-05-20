@@ -8989,6 +8989,11 @@
                     ⚔️
                     <span class="challenge-badge" id="challengeBadge">0</span>
                 </button>
+                <!-- 每周任务按钮 -->
+                <button class="weekly-quest-btn" id="weeklyQuestBtn" onclick="toggleWeeklyQuestPanel()">
+                    📜
+                    <span class="weekly-quest-badge" id="weeklyQuestBadge">0</span>
+                </button>
                 <!-- 限时活动按钮 -->
                 <button class="event-btn" id="eventBtn" onclick="toggleEventPanel()">
                     🎯
@@ -9689,6 +9694,58 @@
                     <span class="record-value" id="eventPointsEarned">0</span>
                     <span class="record-label">获得积分</span>
                 </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 每周任务面板遮罩 -->
+    <div class="weekly-quest-overlay" id="weeklyQuestOverlay" onclick="closeWeeklyQuestPanel()"></div>
+    
+    <!-- 每周任务面板 -->
+    <div class="weekly-quest-panel" id="weeklyQuestPanel">
+        <div class="weekly-quest-header">
+            <h3>📜 每周任务</h3>
+            <button class="weekly-quest-close-btn" onclick="closeWeeklyQuestPanel()">✕</button>
+        </div>
+        
+        <!-- 每周进度信息 -->
+        <div class="weekly-quest-info">
+            <div class="weekly-quest-timer">
+                <span class="wq-timer-icon">⏰</span>
+                <span class="wq-timer-text">本周剩余</span>
+                <span class="wq-timer-value" id="weeklyTimeLeft">6天 12时 30分</span>
+            </div>
+            <div class="weekly-quest-progress">
+                <div class="wq-progress-label">
+                    <span>任务进度</span>
+                    <span id="wqProgressText">0/5 已完成</span>
+                </div>
+                <div class="wq-progress-bar-container">
+                    <div class="wq-progress-bar" id="wqProgressBar" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="weekly-quest-reward-preview">
+                <span class="wq-reward-icon">🎁</span>
+                <span class="wq-reward-text">全部完成奖励：</span>
+                <span class="wq-reward-xp">+500 XP</span>
+                <span class="wq-reward-points">+300 积分</span>
+                <span class="wq-reward-special">🌟 每周徽章</span>
+            </div>
+        </div>
+        
+        <!-- 每周任务列表 -->
+        <div class="weekly-quest-list" id="weeklyQuestList">
+            <!-- 任务会动态插入 -->
+        </div>
+        
+        <!-- 已完成任务记录 -->
+        <div class="weekly-quest-completed">
+            <div class="wq-completed-header" onclick="toggleWeeklyCompletedHistory()">
+                <span>🏆 本周成就</span>
+                <span class="wq-toggle-icon" id="wqToggleIcon">▼</span>
+            </div>
+            <div class="wq-completed-list" id="wqCompletedList" style="display: none;">
+                <!-- 已完成任务记录 -->
             </div>
         </div>
     </div>
@@ -12380,6 +12437,8 @@
             renderProducts();
             renderFavoritesContent();
             updateChallengeDisplay();
+            // 每周任务检查：收藏
+            checkWeeklyQuestCompletion();
         }
         
         /** 检查是否已收藏 */
@@ -13004,6 +13063,8 @@
             updateTrendDisplay();
             updateSlotTabs();
             renderClothingGrid();
+            // 每周任务检查：装备穿戴
+            checkWeeklyQuestCompletion();
         }
         
         /**
@@ -13656,6 +13717,8 @@
             checkRandomSurprise();
             
             saveState();
+            // 每周任务检查：购买
+            checkWeeklyQuestCompletion();
             renderProducts();
             renderOutfit();
             
@@ -16019,6 +16082,436 @@
                 showEmotionToast('excited', '欢迎来到潮流联盟！开始你的潮流之旅吧~');
             }, 2000);
         }
+        
+        // ==================== 每周任务系统 ====================
+        
+        // 每周任务配置
+        const WEEKLY_QUESTS = [
+            {
+                id: 'weekly_collect_10',
+                title: '收藏达人',
+                desc: '收藏10件不同的装备',
+                icon: '💎',
+                difficulty: 'easy',
+                reward: { xp: 80, points: 50 },
+                target: 10,
+                check: () => state.favorites.items.length >= 10,
+                progress: () => Math.min(state.favorites.items.length, 10)
+            },
+            {
+                id: 'weekly_equip_full',
+                title: '完美穿搭',
+                desc: '完成一次全身6件装备穿戴',
+                icon: '👔',
+                difficulty: 'medium',
+                reward: { xp: 120, points: 80 },
+                target: 1,
+                check: () => state.equippedItems.length >= 6,
+                progress: () => state.equippedItems.length >= 6 ? 1 : 0
+            },
+            {
+                id: 'weekly_purchase_3',
+                title: '买买买',
+                desc: '购买3件装备',
+                icon: '🛒',
+                difficulty: 'medium',
+                reward: { xp: 150, points: 100 },
+                target: 3,
+                check: () => state.totalPurchases >= 3,
+                progress: () => Math.min(state.totalPurchases, 3)
+            },
+            {
+                id: 'weekly_alliance_3',
+                title: '联盟探索者',
+                desc: '收藏三个不同联盟的装备',
+                icon: '🌟',
+                difficulty: 'hard',
+                reward: { xp: 200, points: 150 },
+                target: 3,
+                check: () => {
+                    const alliances = new Set();
+                    state.favorites.items.forEach(id => {
+                        const p = products.find(prod => prod.id === id);
+                        if (p?.alliance) alliances.add(p.alliance);
+                    });
+                    return alliances.size >= 3;
+                },
+                progress: () => {
+                    const alliances = new Set();
+                    state.favorites.items.forEach(id => {
+                        const p = products.find(prod => prod.id === id);
+                        if (p?.alliance) alliances.add(p.alliance);
+                    });
+                    return Math.min(alliances.size, 3);
+                }
+            },
+            {
+                id: 'weekly_legendary',
+                title: '传奇收藏家',
+                desc: '获得一件传奇装备',
+                icon: '🏆',
+                difficulty: 'legendary',
+                reward: { xp: 500, points: 300 },
+                target: 1,
+                check: () => state.favorites.items.some(id => {
+                    const p = products.find(prod => prod.id === id);
+                    return p?.rarity === 'legendary';
+                }),
+                progress: () => state.favorites.items.some(id => {
+                    const p = products.find(prod => prod.id === id);
+                    return p?.rarity === 'legendary';
+                }) ? 1 : 0
+            }
+        ];
+        
+        // 每周任务状态
+        let weeklyQuestState = {
+            completedQuests: [],      // 已完成的任务ID
+            claimedQuests: [],         // 已领取奖励的任务ID
+            weekStartDate: null,       // 本周开始日期
+            totalAllCompleted: false   // 是否已领取全部完成奖励
+        };
+        
+        /** 获取本周开始日期（周一） */
+        function getWeekStartDate() {
+            const now = new Date();
+            const day = now.getDay();
+            const diff = now.getDate() - day + (day === 0 ? -6 : 1); // 调整为周一
+            const monday = new Date(now.setDate(diff));
+            monday.setHours(0, 0, 0, 0);
+            return monday.toDateString();
+        }
+        
+        /** 加载每周任务状态 */
+        function loadWeeklyQuestState() {
+            const saved = localStorage.getItem('weeklyQuestState');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                // 检查是否是本周
+                const currentWeekStart = getWeekStartDate();
+                if (parsed.weekStartDate !== currentWeekStart) {
+                    // 新的一周，重置任务
+                    weeklyQuestState = {
+                        completedQuests: [],
+                        claimedQuests: [],
+                        weekStartDate: currentWeekStart,
+                        totalAllCompleted: false
+                    };
+                    saveWeeklyQuestState();
+                } else {
+                    weeklyQuestState = parsed;
+                }
+            } else {
+                weeklyQuestState = {
+                    completedQuests: [],
+                    claimedQuests: [],
+                    weekStartDate: getWeekStartDate(),
+                    totalAllCompleted: false
+                };
+                saveWeeklyQuestState();
+            }
+        }
+        
+        function saveWeeklyQuestState() {
+            localStorage.setItem('weeklyQuestState', JSON.stringify(weeklyQuestState));
+        }
+        
+        /** 检查任务完成状态 */
+        function checkWeeklyQuestCompletion() {
+            WEEKLY_QUESTS.forEach(quest => {
+                if (!weeklyQuestState.completedQuests.includes(quest.id) && quest.check()) {
+                    weeklyQuestState.completedQuests.push(quest.id);
+                    // 显示任务完成通知
+                    showEmotionToast('celebrate', `🎉 完成任务：${quest.title}！奖励：+${quest.reward.xp} XP, +${quest.reward.points} 积分`);
+                }
+            });
+            saveWeeklyQuestState();
+            updateWeeklyQuestBadge();
+            updateWeeklyQuestDisplay();
+        }
+        
+        /** 领取任务奖励 */
+        function claimWeeklyQuestReward(questId) {
+            const quest = WEEKLY_QUESTS.find(q => q.id === questId);
+            if (!quest || !weeklyQuestState.completedQuests.includes(questId)) return;
+            if (weeklyQuestState.claimedQuests.includes(questId)) return;
+            
+            // 发放奖励
+            state.totalXp += quest.reward.xp;
+            state.points += quest.reward.points;
+            weeklyQuestState.claimedQuests.push(questId);
+            saveWeeklyQuestState();
+            
+            // 更新显示
+            updateUserDisplay();
+            updateWeeklyQuestBadge();
+            updateWeeklyQuestDisplay();
+            
+            // 升级检查
+            checkLevelUp();
+            
+            // 显示奖励通知
+            showEmotionToast('excited', `🎁 领取 ${quest.title} 奖励：+${quest.reward.xp} XP, +${quest.reward.points} 积分`);
+            
+            // 检查全部完成
+            checkAllQuestsCompleted();
+        }
+        
+        /** 领取全部完成奖励 */
+        function claimAllCompletedReward() {
+            if (weeklyQuestState.totalAllCompleted) return;
+            
+            const allQuestsCount = WEEKLY_QUESTS.length;
+            const allCompleted = WEEKLY_QUESTS.every(q => weeklyQuestState.claimedQuests.includes(q.id));
+            if (!allCompleted) return;
+            
+            // 发放额外奖励
+            state.totalXp += 500;
+            state.points += 300;
+            weeklyQuestState.totalAllCompleted = true;
+            saveWeeklyQuestState();
+            
+            // 更新显示
+            updateUserDisplay();
+            updateWeeklyQuestBadge();
+            updateWeeklyQuestDisplay();
+            
+            // 升级检查
+            checkLevelUp();
+            
+            // 显示奖励通知
+            showEmotionToast('excited', '🌟🏆 全部任务完成！获得超级奖励：+500 XP, +300 积分, 🌟每周徽章');
+            
+            // 显示庆祝特效
+            showParticleCelebration();
+        }
+        
+        /** 检查是否全部任务完成 */
+        function checkAllQuestsCompleted() {
+            const allCompleted = WEEKLY_QUESTS.every(q => weeklyQuestState.completedQuests.includes(q.id));
+            if (allCompleted && !weeklyQuestState.totalAllCompleted) {
+                setTimeout(() => {
+                    showEmotionToast('excited', '🎊 恭喜！已完成所有每周任务！快去领取全部完成奖励吧！');
+                }, 1000);
+            }
+        }
+        
+        /** 获取本周剩余时间 */
+        function getWeekTimeLeft() {
+            const now = new Date();
+            const nextMonday = new Date(now);
+            const day = now.getDay();
+            const daysUntilMonday = day === 0 ? 1 : 8 - day;
+            nextMonday.setDate(now.getDate() + daysUntilMonday);
+            nextMonday.setHours(0, 0, 0, 0);
+            
+            const diff = nextMonday - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            
+            return { days, hours, mins, total: diff };
+        }
+        
+        /** 更新每周任务倒计时显示 */
+        function updateWeeklyTimeLeft() {
+            const timeLeft = getWeekTimeLeft();
+            const timerEl = document.getElementById('weeklyTimeLeft');
+            if (timerEl) {
+                timerEl.textContent = `${timeLeft.days}天 ${timeLeft.hours}时 ${timeLeft.mins}分`;
+            }
+        }
+        
+        /** 更新每周任务徽章 */
+        function updateWeeklyQuestBadge() {
+            const badge = document.getElementById('weeklyQuestBadge');
+            if (badge) {
+                const claimableCount = WEEKLY_QUESTS.filter(q => 
+                    weeklyQuestState.completedQuests.includes(q.id) && 
+                    !weeklyQuestState.claimedQuests.includes(q.id)
+                ).length;
+                
+                if (claimableCount > 0) {
+                    badge.textContent = claimableCount;
+                    badge.style.display = 'block';
+                } else if (weeklyQuestState.completedQuests.length === WEEKLY_QUESTS.length && !weeklyQuestState.totalAllCompleted) {
+                    badge.textContent = '!';
+                    badge.style.display = 'block';
+                    badge.style.background = 'var(--legendary)';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        }
+        
+        /** 更新每周任务显示 */
+        function updateWeeklyQuestDisplay() {
+            const listEl = document.getElementById('weeklyQuestList');
+            if (!listEl) return;
+            
+            listEl.innerHTML = WEEKLY_QUESTS.map(quest => {
+                const isCompleted = weeklyQuestState.completedQuests.includes(quest.id);
+                const isClaimed = weeklyQuestState.claimedQuests.includes(quest.id);
+                const progress = quest.progress();
+                const progressPercent = (progress / quest.target) * 100;
+                
+                let statusIcon = '';
+                let statusClass = 'pending';
+                
+                if (isClaimed) {
+                    statusIcon = '✓';
+                    statusClass = 'completed';
+                } else if (isCompleted) {
+                    statusIcon = '!';
+                    statusClass = 'claimable';
+                } else {
+                    statusIcon = progress + '/' + quest.target;
+                }
+                
+                return `
+                    <div class="wq-quest-item ${isCompleted && isClaimed ? 'completed' : ''}" 
+                         onclick="${isCompleted && !isClaimed ? `claimWeeklyQuestReward('${quest.id}')` : ''}">
+                        <div class="wq-quest-icon ${quest.difficulty}">${quest.icon}</div>
+                        <div class="wq-quest-info">
+                            <div class="wq-quest-title">
+                                ${quest.title}
+                                <span class="wq-quest-difficulty ${quest.difficulty}">${quest.difficulty === 'legendary' ? '传奇' : quest.difficulty === 'hard' ? '困难' : quest.difficulty === 'medium' ? '中等' : '简单'}</span>
+                            </div>
+                            <div class="wq-quest-desc">${quest.desc}</div>
+                            <div class="wq-quest-progress-bar">
+                                <div class="wq-quest-progress-fill" style="width: ${progressPercent}%"></div>
+                            </div>
+                            <div class="wq-quest-progress-text">${progress} / ${quest.target}</div>
+                        </div>
+                        <div class="wq-quest-reward">
+                            <span class="wq-quest-reward-xp">+${quest.reward.xp} XP</span>
+                            <span class="wq-quest-reward-points">+${quest.reward.points}</span>
+                        </div>
+                        <div class="wq-quest-status ${statusClass}">${statusIcon}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            // 更新进度
+            const completedCount = WEEKLY_QUESTS.filter(q => weeklyQuestState.completedQuests.includes(q.id)).length;
+            const progressPercent = (completedCount / WEEKLY_QUESTS.length) * 100;
+            
+            const progressBar = document.getElementById('wqProgressBar');
+            const progressText = document.getElementById('wqProgressText');
+            if (progressBar) progressBar.style.width = `${progressPercent}%`;
+            if (progressText) progressText.textContent = `${completedCount}/${WEEKLY_QUESTS.length} 已完成`;
+            
+            // 更新全部完成按钮
+            updateAllCompletedButton();
+        }
+        
+        /** 更新全部完成按钮 */
+        function updateAllCompletedButton() {
+            const allCompleted = WEEKLY_QUESTS.every(q => weeklyQuestState.completedQuests.includes(q.id));
+            if (allCompleted && !weeklyQuestState.totalAllCompleted) {
+                // 显示全部完成提示
+                const listEl = document.getElementById('weeklyQuestList');
+                if (listEl) {
+                    const existingBtn = listEl.querySelector('.wq-all-complete-btn');
+                    if (!existingBtn) {
+                        const btn = document.createElement('button');
+                        btn.className = 'wq-all-complete-btn';
+                        btn.innerHTML = '🎁 领取全部完成奖励 (+500 XP, +300 积分, 🌟每周徽章)';
+                        btn.onclick = claimAllCompletedReward;
+                        btn.style.cssText = `
+                            width: 100%;
+                            padding: 1rem;
+                            margin-top: 1rem;
+                            background: linear-gradient(135deg, var(--legendary), var(--accent-pink));
+                            border: none;
+                            border-radius: 12px;
+                            color: #fff;
+                            font-weight: 700;
+                            font-size: 1rem;
+                            cursor: pointer;
+                            animation: claimablePulse 1.5s ease-in-out infinite;
+                        `;
+                        listEl.appendChild(btn);
+                    }
+                }
+            }
+        }
+        
+        /** 切换每周任务面板 */
+        function toggleWeeklyQuestPanel() {
+            const panel = document.getElementById('weeklyQuestPanel');
+            const overlay = document.getElementById('weeklyQuestOverlay');
+            
+            if (panel.classList.contains('show')) {
+                panel.classList.remove('show');
+                overlay.classList.remove('show');
+            } else {
+                updateWeeklyQuestDisplay();
+                panel.classList.add('show');
+                overlay.classList.add('show');
+            }
+        }
+        
+        /** 关闭每周任务面板 */
+        function closeWeeklyQuestPanel() {
+            const panel = document.getElementById('weeklyQuestPanel');
+            const overlay = document.getElementById('weeklyQuestOverlay');
+            panel.classList.remove('show');
+            overlay.classList.remove('show');
+        }
+        
+        /** 切换已完成历史显示 */
+        function toggleWeeklyCompletedHistory() {
+            const list = document.getElementById('wqCompletedList');
+            const icon = document.getElementById('wqToggleIcon');
+            if (list.style.display === 'none') {
+                list.style.display = 'block';
+                icon.classList.add('expanded');
+                
+                // 渲染已完成记录
+                const completedQuests = WEEKLY_QUESTS.filter(q => weeklyQuestState.claimedQuests.includes(q.id));
+                list.innerHTML = completedQuests.length > 0 ? 
+                    completedQuests.map(q => `
+                        <div class="wq-completed-item">
+                            <span class="wq-completed-check">✓</span>
+                            <span class="wq-completed-name">${q.title}</span>
+                            <span class="wq-completed-date">本周</span>
+                        </div>
+                    `).join('') :
+                    '<div style="text-align: center; color: var(--text-secondary); padding: 1rem;">暂无完成记录</div>';
+            } else {
+                list.style.display = 'none';
+                icon.classList.remove('expanded');
+            }
+        }
+        
+        /** 显示粒子庆祝特效 */
+        function showParticleCelebration() {
+            const container = document.createElement('div');
+            container.className = 'celebration-container';
+            document.body.appendChild(container);
+            
+            const colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff', '#9b59b6', '#f39c12'];
+            
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'celebration-particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.animationDelay = Math.random() * 2 + 's';
+                particle.style.animationDuration = (2 + Math.random() * 2) + 's';
+                container.appendChild(particle);
+            }
+            
+            setTimeout(() => container.remove(), 4000);
+        }
+        
+        // 初始化每周任务系统
+        loadWeeklyQuestState();
+        
+        // 每秒更新倒计时
+        setInterval(updateWeeklyTimeLeft, 1000);
+        updateWeeklyTimeLeft();
         
         // ==================== 排行榜挑战系统 ====================
         
@@ -19442,6 +19935,480 @@
     @keyframes discountPulse {
         0%, 100% { transform: scale(1); }
         50% { transform: scale(1.05); }
+    }
+    
+    /* ==================== 每周任务系统样式 ==================== */
+    
+    /* 每周任务按钮 */
+    .weekly-quest-btn {
+        position: relative;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(168, 85, 247, 0.1);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        color: var(--epic);
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .weekly-quest-btn:hover {
+        background: rgba(168, 85, 247, 0.2);
+        border-color: var(--epic);
+        transform: scale(1.1);
+        box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+    }
+    
+    .weekly-quest-badge {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        background: var(--epic);
+        color: #fff;
+        font-size: 0.65rem;
+        font-weight: 700;
+        padding: 0.15rem 0.4rem;
+        border-radius: 10px;
+        min-width: 18px;
+        text-align: center;
+    }
+    
+    /* 每周任务面板 */
+    .weekly-quest-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 190;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s;
+    }
+    
+    .weekly-quest-overlay.show {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .weekly-quest-panel {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.9);
+        width: 480px;
+        max-width: 90vw;
+        max-height: 85vh;
+        background: var(--bg-card);
+        border-radius: 20px;
+        z-index: 191;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 0 60px rgba(168, 85, 247, 0.2);
+    }
+    
+    .weekly-quest-panel.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    
+    .weekly-quest-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.2rem 1.5rem;
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(0, 212, 255, 0.05));
+    }
+    
+    .weekly-quest-header h3 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.2rem;
+        color: var(--epic);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .weekly-quest-close-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+        border: none;
+        color: var(--text-secondary);
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .weekly-quest-close-btn:hover {
+        background: rgba(168, 85, 247, 0.2);
+        color: var(--epic);
+    }
+    
+    /* 每周任务信息区域 */
+    .weekly-quest-info {
+        padding: 1.2rem 1.5rem;
+        background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(245, 158, 11, 0.05));
+        border-bottom: 1px solid rgba(168, 85, 247, 0.15);
+    }
+    
+    .weekly-quest-timer {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        padding: 0.8rem 1rem;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+    }
+    
+    .wq-timer-icon {
+        font-size: 1.3rem;
+        animation: timerPulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes timerPulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+    
+    .wq-timer-text {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+    }
+    
+    .wq-timer-value {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+        color: var(--epic);
+        margin-left: auto;
+    }
+    
+    .weekly-quest-progress {
+        margin-bottom: 1rem;
+    }
+    
+    .wq-progress-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+    }
+    
+    .wq-progress-bar-container {
+        height: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+    }
+    
+    .wq-progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, var(--epic), var(--accent-cyan));
+        border-radius: 5px;
+        transition: width 0.5s ease;
+        position: relative;
+    }
+    
+    .wq-progress-bar::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+    
+    .weekly-quest-reward-preview {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem 1rem;
+        background: rgba(245, 158, 11, 0.1);
+        border: 1px solid rgba(245, 158, 11, 0.2);
+        border-radius: 12px;
+        flex-wrap: wrap;
+    }
+    
+    .wq-reward-icon {
+        font-size: 1.2rem;
+    }
+    
+    .wq-reward-text {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+    }
+    
+    .wq-reward-xp {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+        color: var(--legendary);
+    }
+    
+    .wq-reward-points {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+        color: var(--accent-cyan);
+    }
+    
+    .wq-reward-special {
+        background: linear-gradient(90deg, var(--epic), var(--accent-pink));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+    }
+    
+    /* 每周任务列表 */
+    .weekly-quest-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem 1.5rem;
+    }
+    
+    .wq-quest-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        margin-bottom: 0.8rem;
+        transition: all 0.3s;
+        cursor: pointer;
+    }
+    
+    .wq-quest-item:hover {
+        border-color: rgba(168, 85, 247, 0.3);
+        background: rgba(168, 85, 247, 0.05);
+        transform: translateY(-2px);
+    }
+    
+    .wq-quest-item.completed {
+        border-color: rgba(0, 255, 136, 0.3);
+        background: rgba(0, 255, 136, 0.05);
+    }
+    
+    .wq-quest-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        flex-shrink: 0;
+    }
+    
+    .wq-quest-icon.easy { background: rgba(0, 255, 136, 0.15); }
+    .wq-quest-icon.medium { background: rgba(0, 212, 255, 0.15); }
+    .wq-quest-icon.hard { background: rgba(245, 158, 11, 0.15); }
+    .wq-quest-icon.legendary { background: rgba(168, 85, 247, 0.15); }
+    
+    .wq-quest-info {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .wq-quest-title {
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-bottom: 0.3rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .wq-quest-difficulty {
+        font-size: 0.7rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+    
+    .wq-quest-difficulty.easy { background: rgba(0, 255, 136, 0.2); color: var(--accent-green); }
+    .wq-quest-difficulty.medium { background: rgba(0, 212, 255, 0.2); color: var(--accent-cyan); }
+    .wq-quest-difficulty.hard { background: rgba(245, 158, 11, 0.2); color: var(--legendary); }
+    .wq-quest-difficulty.legendary { background: rgba(168, 85, 247, 0.2); color: var(--epic); }
+    
+    .wq-quest-desc {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+    }
+    
+    .wq-quest-progress-bar {
+        height: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+        overflow: hidden;
+        margin-bottom: 0.3rem;
+    }
+    
+    .wq-quest-progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--epic), var(--accent-cyan));
+        border-radius: 3px;
+        transition: width 0.5s ease;
+    }
+    
+    .wq-quest-progress-text {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+    }
+    
+    .wq-quest-reward {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.5rem;
+        background: rgba(245, 158, 11, 0.1);
+        border-radius: 10px;
+        min-width: 70px;
+    }
+    
+    .wq-quest-reward-xp {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--legendary);
+    }
+    
+    .wq-quest-reward-points {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.75rem;
+        color: var(--accent-cyan);
+    }
+    
+    .wq-quest-status {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+    
+    .wq-quest-status.pending {
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .wq-quest-status.completed {
+        background: var(--accent-green);
+        color: #000;
+    }
+    
+    .wq-quest-status.claimable {
+        background: var(--legendary);
+        color: #000;
+        animation: claimablePulse 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes claimablePulse {
+        0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(245, 158, 11, 0); }
+        50% { transform: scale(1.1); box-shadow: 0 0 15px rgba(245, 158, 11, 0.5); }
+    }
+    
+    /* 已完成任务记录 */
+    .weekly-quest-completed {
+        padding: 1rem 1.5rem;
+        border-top: 1px solid rgba(168, 85, 247, 0.15);
+        background: rgba(0, 0, 0, 0.1);
+    }
+    
+    .wq-completed-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 8px;
+        transition: background 0.3s;
+    }
+    
+    .wq-completed-header:hover {
+        background: rgba(168, 85, 247, 0.1);
+    }
+    
+    .wq-toggle-icon {
+        transition: transform 0.3s;
+        color: var(--text-secondary);
+    }
+    
+    .wq-toggle-icon.expanded {
+        transform: rotate(180deg);
+    }
+    
+    .wq-completed-list {
+        padding-top: 0.8rem;
+    }
+    
+    .wq-completed-item {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.6rem;
+        background: rgba(0, 255, 136, 0.05);
+        border-radius: 10px;
+        margin-bottom: 0.5rem;
+    }
+    
+    .wq-completed-check {
+        color: var(--accent-green);
+        font-size: 1rem;
+    }
+    
+    .wq-completed-name {
+        flex: 1;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+    }
+    
+    .wq-completed-date {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        opacity: 0.7;
+    }
+    
+    /* 每周徽章 */
+    .weekly-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.3rem 0.8rem;
+        background: linear-gradient(135deg, var(--epic), var(--accent-pink));
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #fff;
     }
     
     /* ==================== 动态/说说系统样式 ==================== */
