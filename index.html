@@ -7798,6 +7798,349 @@
             color: var(--text-secondary);
         }
         
+        /* ==================== 签到荣耀时刻增强 ==================== */
+        
+        /* 里程碑庆祝背景 */
+        .milestone-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        /* 里程碑粒子 */
+        .milestone-particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: particleFly 2s ease-out forwards;
+        }
+        
+        @keyframes particleFly {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
+        }
+        
+        /* 里程碑光效 */
+        .milestone-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            animation: milestoneGlowPulse 1.5s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        .milestone-glow.gold {
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.6), transparent 70%);
+            box-shadow: 0 0 60px rgba(245, 158, 11, 0.8);
+        }
+        
+        .milestone-glow.silver {
+            background: radial-gradient(circle, rgba(192, 192, 192, 0.6), transparent 70%);
+            box-shadow: 0 0 50px rgba(192, 192, 192, 0.6);
+        }
+        
+        .milestone-glow.bronze {
+            background: radial-gradient(circle, rgba(205, 127, 50, 0.6), transparent 70%);
+            box-shadow: 0 0 40px rgba(205, 127, 50, 0.6);
+        }
+        
+        @keyframes milestoneGlowPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+            50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+        }
+        
+        /* 里程碑徽章 */
+        .milestone-badge {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 4rem;
+            animation: badgeDrop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        @keyframes badgeDrop {
+            0% { transform: translateX(-50%) translateY(-100px) scale(0) rotate(-20deg); opacity: 0; }
+            60% { transform: translateX(-50%) translateY(10px) scale(1.2) rotate(5deg); opacity: 1; }
+            80% { transform: translateX(-50%) translateY(-5px) scale(0.95) rotate(-2deg); }
+            100% { transform: translateX(-50%) translateY(0) scale(1) rotate(0deg); }
+        }
+        
+        /* 连签守护天使 */
+        .guardian-angel {
+            position: absolute;
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3rem;
+            animation: angelFloat 2s ease-in-out infinite;
+        }
+        
+        @keyframes angelFloat {
+            0%, 100% { transform: translateX(-50%) translateY(0) rotate(-5deg); }
+            50% { transform: translateX(-50%) translateY(-15px) rotate(5deg); }
+        }
+        
+        /* 守护天使翅膀粒子 */
+        .wing-particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: wingSparkle 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes wingSparkle {
+            0%, 100% { transform: scale(0.5); opacity: 0.3; }
+            50% { transform: scale(1.5); opacity: 1; }
+        }
+        
+        /* 里程碑标题 */
+        .milestone-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            animation: titlePop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+        }
+        
+        .milestone-title.gold { 
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));
+        }
+        
+        .milestone-title.silver { 
+            background: linear-gradient(135deg, #c0c0c0, #808080);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .milestone-title.bronze { 
+            background: linear-gradient(135deg, #cd7f32, #8b4513);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        @keyframes titlePop {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        /* 里程碑奖励加成 */
+        .milestone-bonus {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            animation: bonusSlide 0.5s ease 0.5s both;
+        }
+        
+        @keyframes bonusSlide {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        
+        .bonus-tag {
+            background: linear-gradient(135deg, var(--legendary), var(--accent-pink));
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            animation: bonusPulse 1s ease infinite;
+        }
+        
+        @keyframes bonusPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* 漏签提醒气泡 */
+        .miss-checkin-bubble {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.95), rgba(255, 0, 110, 0.95));
+            color: #fff;
+            padding: 1rem 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(245, 158, 11, 0.4);
+            z-index: 9999;
+            max-width: 300px;
+            animation: bubbleSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .miss-checkin-bubble:hover {
+            transform: scale(1.02);
+        }
+        
+        @keyframes bubbleSlideIn {
+            0% { transform: translateX(100px) scale(0.8); opacity: 0; }
+            100% { transform: translateX(0) scale(1); opacity: 1; }
+        }
+        
+        .bubble-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .bubble-icon {
+            font-size: 1.5rem;
+        }
+        
+        .bubble-message {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 0.8rem;
+        }
+        
+        .bubble-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .bubble-close {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        
+        .bubble-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* 连签徽章挂件 */
+        .streak-guardian-badge {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .guardian-mini {
+            position: absolute;
+            right: -8px;
+            bottom: -5px;
+            font-size: 0.8rem;
+            animation: guardianWave 1s ease-in-out infinite;
+        }
+        
+        @keyframes guardianWave {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+        }
+        
+        /* 连签天数环形进度 */
+        .streak-ring-progress {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+        }
+        
+        .streak-ring-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.1);
+            stroke-width: 6;
+        }
+        
+        .streak-ring-fill {
+            fill: none;
+            stroke: var(--accent-cyan);
+            stroke-width: 6;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: center;
+            transition: stroke-dashoffset 1s ease;
+        }
+        
+        .streak-ring-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .streak-ring-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--legendary);
+        }
+        
+        .streak-ring-label {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+        }
+        
+        /* 签到连续7天特殊标记 */
+        .weekly-complete-marker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: linear-gradient(135deg, var(--legendary), var(--accent-pink));
+            color: #fff;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-left: 0.5rem;
+            animation: markerShine 2s ease infinite;
+        }
+        
+        @keyframes markerShine {
+            0%, 100% { box-shadow: 0 0 10px rgba(245, 158, 11, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(245, 158, 11, 0.8), 0 0 30px rgba(255, 0, 110, 0.5); }
+        }
+        
         /* ==================== 移动端底部导航系统 ==================== */
         
         /* 移动端底部导航栏 */
@@ -9481,10 +9824,20 @@
     
     <!-- 签到成功动画 -->
     <div class="checkin-success-overlay" id="checkinSuccessOverlay" onclick="closeCheckinSuccess()">
-        <div class="checkin-success-content">
+        <div class="milestone-bg" id="milestoneBg"></div>
+        <div class="checkin-success-content" id="checkinSuccessContent">
             <div class="checkin-success-icon" id="checkinSuccessIcon">🎉</div>
+            <div class="milestone-badge" id="milestoneBadge" style="display:none;"></div>
+            <div class="milestone-glow" id="milestoneGlow" style="display:none;"></div>
+            <div class="guardian-angel" id="guardianAngel" style="display:none;">
+                <span>👼</span>
+            </div>
+            <div class="milestone-title" id="milestoneTitle" style="display:none;"></div>
             <div class="checkin-success-title">签到成功!</div>
             <div class="checkin-success-streak" id="checkinSuccessStreak">🔥 连续 1 天</div>
+            <div class="milestone-bonus" id="milestoneBonus" style="display:none;">
+                <span class="bonus-tag" id="bonusTag"></span>
+            </div>
             <div class="checkin-success-reward" id="checkinSuccessReward">
                 <div class="checkin-reward-item">
                     <span class="checkin-reward-icon">⭐</span>
@@ -9493,6 +9846,17 @@
                 <div class="checkin-reward-item">
                     <span class="checkin-reward-icon">💎</span>
                     <span class="checkin-reward-value" id="checkinPointsReward">+50</span>
+                </div>
+            </div>
+            <div class="streak-ring-progress" id="streakRingProgress" style="display:none;">
+                <svg width="80" height="80">
+                    <circle class="streak-ring-bg" cx="40" cy="40" r="34"></circle>
+                    <circle class="streak-ring-fill" id="streakRingFill" cx="40" cy="40" r="34" 
+                        stroke-dasharray="213.6" stroke-dashoffset="213.6"></circle>
+                </svg>
+                <div class="streak-ring-center">
+                    <div class="streak-ring-number" id="streakRingNumber">7</div>
+                    <div class="streak-ring-label">天循环</div>
                 </div>
             </div>
             <button class="checkin-success-btn" onclick="closeCheckinSuccess()">太棒了!</button>
@@ -12084,11 +12448,198 @@
             document.getElementById('checkinXpReward').textContent = `+${xp} XP`;
             document.getElementById('checkinPointsReward').textContent = `+${points}`;
             
+            // 重置所有增强元素
+            resetMilestoneUI();
+            
             // 根据连续天数显示不同图标
             const icons = ['🎉', '🎊', '🎈', '🏆', '🌟', '💫', '👑'];
             document.getElementById('checkinSuccessIcon').textContent = icons[Math.min(streak - 1, icons.length - 1)];
             
+            // 检查里程碑并显示特殊效果
+            checkAndShowMilestone(streak);
+            
             document.getElementById('checkinSuccessOverlay').classList.add('show');
+        }
+        
+        /** 重置里程碑UI */
+        function resetMilestoneUI() {
+            const elements = [
+                'milestoneBadge', 'milestoneGlow', 'guardianAngel', 
+                'milestoneTitle', 'milestoneBonus', 'streakRingProgress'
+            ];
+            elements.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+            
+            // 清除粒子
+            const bg = document.getElementById('milestoneBg');
+            if (bg) bg.innerHTML = '';
+            
+            // 重置光环颜色
+            const glow = document.getElementById('milestoneGlow');
+            if (glow) glow.className = 'milestone-glow';
+            
+            // 重置标题颜色
+            const title = document.getElementById('milestoneTitle');
+            if (title) title.className = 'milestone-title';
+        }
+        
+        /** 检查里程碑并显示特殊效果 */
+        function checkAndShowMilestone(streak) {
+            const milestoneBadge = document.getElementById('milestoneBadge');
+            const milestoneGlow = document.getElementById('milestoneGlow');
+            const guardianAngel = document.getElementById('guardianAngel');
+            const milestoneTitle = document.getElementById('milestoneTitle');
+            const milestoneBonus = document.getElementById('milestoneBonus');
+            const bonusTag = document.getElementById('bonusTag');
+            const streakRingProgress = document.getElementById('streakRingProgress');
+            const streakRingFill = document.getElementById('streakRingFill');
+            const streakRingNumber = document.getElementById('streakRingNumber');
+            
+            // 连签里程碑配置
+            const milestones = {
+                7: { badge: '🏅', glow: 'gold', title: '周冠王者', titleClass: 'gold', bonus: '周冠勋章 x1', ring: true },
+                14: { badge: '🥈', glow: 'silver', title: '双周传奇', titleClass: 'silver', bonus: '双周徽章 x1', ring: true },
+                21: { badge: '🥉', glow: 'bronze', title: '三周战神', titleClass: 'bronze', bonus: '战神徽章 x1', ring: true },
+                30: { badge: '👑', glow: 'gold', title: '月冠霸主', titleClass: 'gold', bonus: '月冠头像框 x1', ring: true },
+                50: { badge: '💎', glow: 'gold', title: '五十日传奇', titleClass: 'gold', bonus: '传奇称号 x1', ring: true },
+                100: { badge: '🌟', glow: 'gold', title: '百日王者', titleClass: 'gold', bonus: '荣耀传奇徽章 x1', ring: true }
+            };
+            
+            // 检查当前天数是否为里程碑
+            const milestone = milestones[streak];
+            
+            if (milestone) {
+                // 显示里程碑效果
+                milestoneBadge.textContent = milestone.badge;
+                milestoneBadge.style.display = 'block';
+                
+                milestoneGlow.className = `milestone-glow ${milestone.glow}`;
+                milestoneGlow.style.display = 'block';
+                
+                milestoneTitle.textContent = milestone.title;
+                milestoneTitle.className = `milestone-title ${milestone.titleClass}`;
+                milestoneTitle.style.display = 'block';
+                
+                bonusTag.textContent = `🎁 ${milestone.bonus}`;
+                milestoneBonus.style.display = 'flex';
+                
+                // 守护天使在30天及以上显示
+                if (streak >= 30) {
+                    guardianAngel.style.display = 'block';
+                }
+                
+                // 生成庆祝粒子
+                createCelebrationParticles();
+                
+                // 显示环形进度
+                if (milestone.ring) {
+                    streakRingProgress.style.display = 'block';
+                    streakRingNumber.textContent = Math.min(streak, 100);
+                    
+                    // 计算下一里程碑
+                    const nextMilestone = streak < 30 ? 30 : (streak < 50 ? 50 : 100);
+                    const progress = (streak % 7) / 7;
+                    const offset = 213.6 * (1 - progress);
+                    setTimeout(() => {
+                        streakRingFill.style.strokeDashoffset = offset;
+                    }, 300);
+                }
+            } else if (streak > 0) {
+                // 非里程碑，但显示连签守护天使动画
+                guardianAngel.style.display = 'block';
+                guardianAngel.innerHTML = '<span>🤗</span>';
+                
+                // 显示环形进度
+                streakRingProgress.style.display = 'block';
+                streakRingNumber.textContent = Math.min(streak % 7 || 7, 7);
+                
+                const progress = (streak % 7) / 7;
+                const offset = 213.6 * (1 - progress);
+                setTimeout(() => {
+                    streakRingFill.style.strokeDashoffset = offset;
+                }, 300);
+                
+                // 生成小粒子
+                createCelebrationParticles(10);
+            }
+        }
+        
+        /** 创建庆祝粒子 */
+        function createCelebrationParticles(count = 30) {
+            const bg = document.getElementById('milestoneBg');
+            if (!bg) return;
+            
+            const colors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ff006e', '#00d4ff'];
+            
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'milestone-particle';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.left = `${50 + (Math.random() - 0.5) * 20}%`;
+                particle.style.top = `${50 + (Math.random() - 0.5) * 20}%`;
+                particle.style.setProperty('--tx', `${(Math.random() - 0.5) * 400}px`);
+                particle.style.setProperty('--ty', `${(Math.random() - 0.5) * 400}px`);
+                particle.style.animationDelay = `${Math.random() * 0.5}s`;
+                particle.style.animationDuration = `${1.5 + Math.random()}s`;
+                bg.appendChild(particle);
+            }
+        }
+        
+        /** 显示漏签提醒 */
+        function showMissCheckinReminder() {
+            // 检查是否已显示过提醒
+            const lastReminder = localStorage.getItem('lastMissReminder');
+            const today = getDateString(new Date());
+            
+            if (lastReminder === today) return;
+            
+            const streak = state.checkinData.currentStreak;
+            if (streak > 0 && !isSignedToday()) {
+                const bubble = document.createElement('div');
+                bubble.className = 'miss-checkin-bubble';
+                bubble.id = 'missCheckinBubble';
+                bubble.innerHTML = `
+                    <button class="bubble-close" onclick="dismissMissReminder(event)">✕</button>
+                    <div class="bubble-header">
+                        <span class="bubble-icon">🔥</span>
+                        <span>连签${streak}天即将中断!</span>
+                    </div>
+                    <div class="bubble-message">
+                        快来签到保持你的连续记录，${streak}天的努力不要白费啦！
+                    </div>
+                    <div class="bubble-action" onclick="handleReminderClick()">
+                        🎯 立即签到
+                    </div>
+                `;
+                
+                document.body.appendChild(bubble);
+                
+                // 5秒后自动消失
+                setTimeout(() => {
+                    const existing = document.getElementById('missCheckinBubble');
+                    if (existing) existing.remove();
+                }, 8000);
+            }
+        }
+        
+        /** 关闭漏签提醒 */
+        function dismissMissReminder(event) {
+            event.stopPropagation();
+            const bubble = document.getElementById('missCheckinBubble');
+            if (bubble) bubble.remove();
+            
+            const today = getDateString(new Date());
+            localStorage.setItem('lastMissReminder', today);
+        }
+        
+        /** 处理提醒点击 */
+        function handleReminderClick() {
+            const bubble = document.getElementById('missCheckinBubble');
+            if (bubble) bubble.remove();
+            
+            toggleCheckinPanel();
         }
         
         /** 关闭签到成功动画 */
@@ -15707,6 +16258,7 @@
         loadSeasonState(); // 加载赛季系统状态
         initLeaderboardEnhancement(); // 初始化排行榜增强系统
         initHomepageV2(); // 初始化首页2.0功能
+        setTimeout(showMissCheckinReminder, 3000); // 3秒后检查漏签提醒
         
         // 恢复搜索框状态
         if (state.currentSearch) {
