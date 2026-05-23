@@ -9207,6 +9207,546 @@
             }
         }
     </style>
+    
+    /* ==================== 移动端沉浸式全屏浏览体验 ==================== */
+    
+    /* 全屏浏览模态框 */
+    .immersive-viewer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--bg-dark);
+        z-index: 99999;
+        display: none;
+        flex-direction: column;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .immersive-viewer.active {
+        display: flex;
+        opacity: 1;
+    }
+    
+    /* 全屏浏览头部 */
+    .immersive-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        background: rgba(10, 10, 15, 0.9);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .immersive-close {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: #fff;
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+    }
+    
+    .immersive-close:hover {
+        background: rgba(255, 0, 110, 0.3);
+        transform: scale(1.1);
+    }
+    
+    .immersive-counter {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .immersive-counter-current {
+        color: var(--accent-cyan);
+        font-weight: 700;
+    }
+    
+    .immersive-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .immersive-action-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: #fff;
+        font-size: 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+    }
+    
+    .immersive-action-btn:hover {
+        transform: scale(1.1);
+    }
+    
+    .immersive-action-btn.favorite {
+        background: rgba(255, 0, 110, 0.2);
+    }
+    
+    .immersive-action-btn.favorite.active {
+        background: var(--accent-pink);
+        animation: heartBeat 0.5s ease;
+    }
+    
+    @keyframes heartBeat {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.3); }
+    }
+    
+    /* 全屏浏览主体 */
+    .immersive-body {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        touch-action: pan-y;
+    }
+    
+    /* 全屏浏览内容 */
+    .immersive-content {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    
+    /* 商品图片容器 */
+    .immersive-image-container {
+        position: relative;
+        width: 100%;
+        max-width: 400px;
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .immersive-product-image {
+        font-size: 8rem;
+        transition: transform 0.3s ease;
+    }
+    
+    /* 稀有度光效 */
+    .immersive-rarity-glow {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 120%;
+        height: 120%;
+        border-radius: 50%;
+        animation: immersiveGlow 2s ease-in-out infinite;
+        pointer-events: none;
+    }
+    
+    .immersive-rarity-glow.legendary {
+        background: radial-gradient(circle, rgba(245, 158, 11, 0.3), transparent 70%);
+        box-shadow: 0 0 60px rgba(245, 158, 11, 0.5);
+    }
+    
+    .immersive-rarity-glow.epic {
+        background: radial-gradient(circle, rgba(168, 85, 247, 0.3), transparent 70%);
+        box-shadow: 0 0 50px rgba(168, 85, 247, 0.4);
+    }
+    
+    .immersive-rarity-glow.rare {
+        background: radial-gradient(circle, rgba(59, 130, 246, 0.2), transparent 70%);
+        box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
+    }
+    
+    .immersive-rarity-glow.common {
+        background: radial-gradient(circle, rgba(156, 163, 175, 0.1), transparent 70%);
+        box-shadow: 0 0 30px rgba(156, 163, 175, 0.2);
+    }
+    
+    @keyframes immersiveGlow {
+        0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+        50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+    }
+    
+    /* 商品信息 */
+    .immersive-info {
+        text-align: center;
+        padding: 0 1rem;
+    }
+    
+    .immersive-product-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+    }
+    
+    .immersive-product-brand {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+    }
+    
+    .immersive-product-price {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--accent-cyan);
+        margin-bottom: 0.5rem;
+    }
+    
+    .immersive-product-rarity {
+        display: inline-block;
+        padding: 0.3rem 1rem;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .immersive-product-rarity.legendary {
+        background: rgba(245, 158, 11, 0.2);
+        border: 1px solid var(--legendary);
+        color: var(--legendary);
+    }
+    
+    .immersive-product-rarity.epic {
+        background: rgba(168, 85, 247, 0.2);
+        border: 1px solid var(--epic);
+        color: var(--epic);
+    }
+    
+    .immersive-product-rarity.rare {
+        background: rgba(59, 130, 246, 0.2);
+        border: 1px solid var(--rare);
+        color: var(--rare);
+    }
+    
+    .immersive-product-rarity.common {
+        background: rgba(156, 163, 175, 0.2);
+        border: 1px solid var(--common);
+        color: var(--common);
+    }
+    
+    .immersive-product-tags {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    
+    .immersive-product-tag {
+        padding: 0.3rem 0.8rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+    }
+    
+    /* 全屏浏览底部操作栏 */
+    .immersive-footer {
+        padding: 1rem;
+        padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+        background: rgba(10, 10, 15, 0.95);
+        backdrop-filter: blur(20px);
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .immersive-action-bar {
+        display: flex;
+        gap: 0.8rem;
+    }
+    
+    .immersive-action-btn-large {
+        flex: 1;
+        padding: 1rem;
+        border-radius: 12px;
+        border: none;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: all 0.2s;
+    }
+    
+    .immersive-action-btn-large.primary {
+        background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
+        color: #fff;
+    }
+    
+    .immersive-action-btn-large.secondary {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: var(--text-primary);
+    }
+    
+    .immersive-action-btn-large:active {
+        transform: scale(0.95);
+    }
+    
+    /* 左右滑动提示 */
+    .immersive-swipe-hint {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 2rem;
+        color: rgba(255, 255, 255, 0.3);
+        pointer-events: none;
+        animation: swipeHintPulse 2s ease-in-out infinite;
+    }
+    
+    .immersive-swipe-hint.left {
+        left: 1rem;
+    }
+    
+    .immersive-swipe-hint.right {
+        right: 1rem;
+    }
+    
+    @keyframes swipeHintPulse {
+        0%, 100% { opacity: 0.2; transform: translateY(-50%) translateX(0); }
+        50% { opacity: 0.5; transform: translateY(-50%) translateX(-10px); }
+    }
+    
+    .immersive-swipe-hint.right {
+        animation: swipeHintPulseRight 2s ease-in-out infinite;
+    }
+    
+    @keyframes swipeHintPulseRight {
+        0%, 100% { opacity: 0.2; transform: translateY(-50%) translateX(0); }
+        50% { opacity: 0.5; transform: translateY(-50%) translateX(10px); }
+    }
+    
+    /* 移动端筛选底部弹出面板 */
+    .mobile-filter-panel {
+        position: fixed;
+        bottom: 70px;
+        left: 0;
+        right: 0;
+        background: var(--bg-card);
+        border-radius: 20px 20px 0 0;
+        padding: 1.5rem;
+        padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+        z-index: 9998;
+        transform: translateY(100%);
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+    
+    .mobile-filter-panel.active {
+        transform: translateY(0);
+    }
+    
+    .mobile-filter-handle {
+        width: 40px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 2px;
+        margin: 0 auto 1rem;
+    }
+    
+    .mobile-filter-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .mobile-filter-section {
+        margin-bottom: 1.5rem;
+    }
+    
+    .mobile-filter-section-title {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.8rem;
+    }
+    
+    .mobile-filter-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .mobile-filter-chip {
+        padding: 0.6rem 1.2rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50px;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .mobile-filter-chip:hover {
+        border-color: var(--accent-cyan);
+        color: var(--text-primary);
+    }
+    
+    .mobile-filter-chip.active {
+        background: rgba(0, 212, 255, 0.15);
+        border-color: var(--accent-cyan);
+        color: var(--accent-cyan);
+    }
+    
+    .mobile-filter-chip.legendary.active {
+        background: rgba(245, 158, 11, 0.15);
+        border-color: var(--legendary);
+        color: var(--legendary);
+    }
+    
+    .mobile-filter-chip.epic.active {
+        background: rgba(168, 85, 247, 0.15);
+        border-color: var(--epic);
+        color: var(--epic);
+    }
+    
+    .mobile-filter-chip.rare.active {
+        background: rgba(59, 130, 246, 0.15);
+        border-color: var(--rare);
+        color: var(--rare);
+    }
+    
+    .mobile-filter-chip.common.active {
+        background: rgba(156, 163, 175, 0.15);
+        border-color: var(--common);
+        color: var(--common);
+    }
+    
+    .mobile-filter-actions {
+        display: flex;
+        gap: 0.8rem;
+        margin-top: 1rem;
+    }
+    
+    .mobile-filter-btn {
+        flex: 1;
+        padding: 0.8rem;
+        border-radius: 10px;
+        border: none;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .mobile-filter-btn.reset {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-secondary);
+    }
+    
+    .mobile-filter-btn.apply {
+        background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
+        color: #fff;
+    }
+    
+    /* 移动端全屏筛选遮罩 */
+    .mobile-filter-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9997;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .mobile-filter-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+    
+    /* 移动端筛选按钮 */
+    .mobile-filter-trigger {
+        display: none;
+        position: fixed;
+        bottom: 90px;
+        right: 1rem;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
+        border: none;
+        color: #fff;
+        font-size: 1.2rem;
+        cursor: pointer;
+        z-index: 999;
+        box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+        transition: all 0.2s;
+    }
+    
+    .mobile-filter-trigger:hover {
+        transform: scale(1.1);
+    }
+    
+    @media (max-width: 768px) {
+        .mobile-filter-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .immersive-viewer {
+            z-index: 99999;
+        }
+    }
+    
+    /* 移动端全屏浏览图片指示器 */
+    .immersive-image-indicators {
+        display: flex;
+        gap: 0.3rem;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+    
+    .immersive-indicator {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transition: all 0.2s;
+    }
+    
+    .immersive-indicator.active {
+        background: var(--accent-cyan);
+        width: 24px;
+        border-radius: 4px;
+    }
+</style>
 </head>
 <body>
     <!-- 背景动效 -->
@@ -13549,7 +14089,7 @@
                     <div class="product-card ${item.rarity}" 
                          onmousemove="handleCardTilt(event, this)"
                          onmouseleave="resetCardTilt(this)"
-                         onclick="createParticles(event, '${item.rarity}')">
+                         onclick="handleCardClick(event, '${type}', ${item.id}, '${item.rarity}')">
                         <div class="product-card-inner">
                             <button class="card-fav-btn ${isFavorited(type, item.id) ? 'favorited' : ''}" 
                                     onclick="event.stopPropagation(); toggleFavoriteWithEffect(event, '${type}', ${item.id})" title="${isFavorited(type, item.id) ? '取消收藏' : '收藏'}">
@@ -13698,6 +14238,28 @@
         
         function resetCardTilt(card) {
             card.style.transform = '';
+        }
+        
+        // ==================== 商品卡片点击处理 ====================
+        
+        function handleCardClick(e, type, itemId, rarity) {
+            // 检测是否为移动设备
+            const isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
+            
+            // 创建粒子效果（桌面端）
+            if (!isMobile) {
+                createParticles(e, rarity);
+            }
+            
+            // 根据设备类型决定行为
+            if (isMobile) {
+                // 移动端：打开沉浸式浏览模式
+                openImmersiveViewer(itemId);
+            } else {
+                // 桌面端：打开详情弹窗
+                const item = type === 'items' ? products.find(p => p.id === itemId) : agents.find(a => a.id === itemId);
+                if (item) showModal(item);
+            }
         }
         
         // ==================== 粒子反馈效果 ====================
@@ -19734,6 +20296,372 @@
                 updateMobileNavBadges();
             }
         });
+        
+        // ==================== 移动端沉浸式全屏浏览体验 ====================
+        
+        let immersiveState = {
+            currentIndex: 0,
+            currentProduct: null,
+            products: [],
+            isFavorite: false,
+            startX: 0,
+            startY: 0,
+            isSwiping: false
+        };
+        
+        // 打开沉浸式浏览
+        function openImmersiveViewer(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            // 获取当前筛选后的商品列表
+            immersiveState.products = getFilteredProducts();
+            immersiveState.currentIndex = immersiveState.products.findIndex(p => p.id === productId);
+            if (immersiveState.currentIndex === -1) immersiveState.currentIndex = 0;
+            
+            immersiveState.currentProduct = product;
+            immersiveState.isFavorite = isProductFavorited(product.id);
+            
+            updateImmersiveViewer();
+            
+            const viewer = document.getElementById('immersiveViewer');
+            viewer.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // 初始化触摸手势
+            initImmersiveTouch();
+            
+            // 触觉反馈
+            if ('vibrate' in navigator) {
+                navigator.vibrate(15);
+            }
+        }
+        
+        // 获取筛选后的商品列表
+        function getFilteredProducts() {
+            const searchQuery = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            const activeRarityFilter = document.querySelector('.rarity-btn.active')?.dataset.rarity || 'all';
+            const userAlliance = localStorage.getItem('user_alliance') || 'all';
+            
+            let filtered = products.filter(p => {
+                const matchSearch = p.name.toLowerCase().includes(searchQuery) || 
+                                   p.brand.toLowerCase().includes(searchQuery);
+                const matchRarity = activeRarityFilter === 'all' || p.rarity === activeRarityFilter;
+                const matchAlliance = userAlliance === 'all' || p.alliance === userAlliance;
+                return matchSearch && matchRarity && matchAlliance;
+            });
+            
+            return filtered;
+        }
+        
+        // 更新沉浸式浏览内容
+        function updateImmersiveViewer() {
+            const product = immersiveState.products[immersiveState.currentIndex];
+            if (!product) return;
+            
+            immersiveState.currentProduct = product;
+            
+            // 更新图片
+            document.getElementById('immersiveImage').textContent = product.icon;
+            
+            // 更新稀有度光效
+            const glow = document.getElementById('immersiveRarityGlow');
+            glow.className = 'immersive-rarity-glow ' + product.rarity;
+            
+            // 更新信息
+            document.getElementById('immersiveName').textContent = product.name;
+            document.getElementById('immersiveBrand').textContent = product.brand;
+            document.getElementById('immersivePrice').textContent = '¥' + product.price.toLocaleString();
+            
+            // 更新稀有度标签
+            const rarityEl = document.getElementById('immersiveRarity');
+            const rarityNames = { common: '普通', rare: '稀有', epic: '史诗', legendary: '传奇' };
+            rarityEl.textContent = rarityNames[product.rarity] || '普通';
+            rarityEl.className = 'immersive-product-rarity ' + product.rarity;
+            
+            // 更新标签
+            const tagsEl = document.getElementById('immersiveTags');
+            const allianceNames = { tech: '⚡ 科技派', nature: '🌿 自然派', chaos: '🔥 混沌派' };
+            const slotNames = { hair: '发型', top: '上衣', bottom: '下装', shoes: '鞋子', accessory: '配饰', expression: '表情' };
+            tagsEl.innerHTML = `
+                <span class="immersive-product-tag">${allianceNames[product.alliance] || '全部'}</span>
+                <span class="immersive-product-tag">${slotNames[product.slot] || product.slot}</span>
+            `;
+            
+            // 更新计数器
+            document.getElementById('immersiveCurrent').textContent = immersiveState.currentIndex + 1;
+            document.getElementById('immersiveTotal').textContent = immersiveState.products.length;
+            
+            // 更新收藏状态
+            immersiveState.isFavorite = isProductFavorited(product.id);
+            const favBtn = document.getElementById('immersiveFavBtn');
+            favBtn.classList.toggle('active', immersiveState.isFavorite);
+            
+            // 更新指示器
+            updateImmersiveIndicators();
+            
+            // 更新滑动提示
+            updateSwipeHints();
+        }
+        
+        // 更新图片指示器
+        function updateImmersiveIndicators() {
+            const product = immersiveState.currentProduct;
+            if (!product || !product.gallery || product.gallery.length <= 1) {
+                document.getElementById('immersiveIndicators').innerHTML = '';
+                return;
+            }
+            
+            const indicators = document.getElementById('immersiveIndicators');
+            indicators.innerHTML = product.gallery.map((_, i) => 
+                `<span class="immersive-indicator ${i === 0 ? 'active' : ''}"></span>`
+            ).join('');
+        }
+        
+        // 更新滑动提示
+        function updateSwipeHints() {
+            const leftHint = document.getElementById('swipeLeftHint');
+            const rightHint = document.getElementById('swipeRightHint');
+            
+            leftHint.style.display = immersiveState.currentIndex > 0 ? 'block' : 'none';
+            rightHint.style.display = immersiveState.currentIndex < immersiveState.products.length - 1 ? 'block' : 'none';
+        }
+        
+        // 关闭沉浸式浏览
+        function closeImmersiveViewer() {
+            const viewer = document.getElementById('immersiveViewer');
+            viewer.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // 初始化沉浸式触摸手势
+        function initImmersiveTouch() {
+            const body = document.getElementById('immersiveBody');
+            if (!body) return;
+            
+            body.addEventListener('touchstart', function(e) {
+                immersiveState.startX = e.touches[0].clientX;
+                immersiveState.startY = e.touches[0].clientY;
+                immersiveState.isSwiping = false;
+            }, { passive: true });
+            
+            body.addEventListener('touchmove', function(e) {
+                const deltaX = Math.abs(e.touches[0].clientX - immersiveState.startX);
+                const deltaY = Math.abs(e.touches[0].clientY - immersiveState.startY);
+                
+                if (deltaX > 10 && deltaX > deltaY) {
+                    immersiveState.isSwiping = true;
+                }
+            }, { passive: true });
+            
+            body.addEventListener('touchend', function(e) {
+                if (!immersiveState.isSwiping) return;
+                
+                const deltaX = e.changedTouches[0].clientX - immersiveState.startX;
+                
+                if (deltaX < -50 && immersiveState.currentIndex < immersiveState.products.length - 1) {
+                    // 左滑 - 下一个
+                    immersiveState.currentIndex++;
+                    updateImmersiveViewer();
+                    slideImmersiveContent('left');
+                } else if (deltaX > 50 && immersiveState.currentIndex > 0) {
+                    // 右滑 - 上一个
+                    immersiveState.currentIndex--;
+                    updateImmersiveViewer();
+                    slideImmersiveContent('right');
+                }
+                
+                immersiveState.isSwiping = false;
+            });
+        }
+        
+        // 滑动动画
+        function slideImmersiveContent(direction) {
+            const content = document.getElementById('immersiveContent');
+            content.style.transform = direction === 'left' ? 'translateX(-30px)' : 'translateX(30px)';
+            content.style.opacity = '0.5';
+            
+            setTimeout(() => {
+                content.style.transition = 'none';
+                content.style.transform = direction === 'left' ? 'translateX(30px)' : 'translateX(-30px)';
+                content.style.opacity = '0.5';
+                
+                requestAnimationFrame(() => {
+                    content.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease';
+                    content.style.transform = 'translateX(0)';
+                    content.style.opacity = '1';
+                });
+            }, 50);
+        }
+        
+        // 切换收藏状态
+        function toggleImmersiveFavorite() {
+            const product = immersiveState.currentProduct;
+            if (!product) return;
+            
+            toggleFavorite(product.id);
+            immersiveState.isFavorite = !immersiveState.isFavorite;
+            
+            const favBtn = document.getElementById('immersiveFavBtn');
+            favBtn.classList.toggle('active', immersiveState.isFavorite);
+            
+            if (immersiveState.isFavorite) {
+                showEmotionToast('love', `❤️ 已收藏 ${product.name}`);
+            } else {
+                showEmotionToast('cool', `💔 已取消收藏`);
+            }
+            
+            // 触觉反馈
+            if ('vibrate' in navigator) {
+                navigator.vibrate(20);
+            }
+        }
+        
+        // 分享商品
+        function shareImmersiveProduct() {
+            const product = immersiveState.currentProduct;
+            if (!product) return;
+            
+            const text = `发现超赞的 ${product.name}！稀有度：${product.rarity}，价格：¥${product.price}。快来潮流联盟一起玩耍吧~`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: product.name,
+                    text: text,
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(text).then(() => {
+                    showEmotionToast('excited', '📋 已复制到剪贴板');
+                });
+            }
+        }
+        
+        // 添加到对比
+        function addToCompareImmersive() {
+            const product = immersiveState.currentProduct;
+            if (!product) return;
+            
+            showEmotionToast('cool', '⚖️ 已加入对比清单');
+            
+            // 触觉反馈
+            if ('vibrate' in navigator) {
+                navigator.vibrate(10);
+            }
+        }
+        
+        // 购买商品
+        function buyImmersiveProduct() {
+            const product = immersiveState.currentProduct;
+            if (!product) return;
+            
+            if (state.totalPoints >= product.price) {
+                purchaseProduct(product.id);
+                showEmotionToast('celebrate', `🎉 购买成功！-¥${product.price}`);
+            } else {
+                showEmotionToast('surprise', `💰 积分不足，需要 ${product.price} 积分`);
+            }
+        }
+        
+        // ==================== 移动端筛选面板 ====================
+        
+        let mobileFilterState = {
+            rarity: null,
+            alliance: null,
+            price: null
+        };
+        
+        // 打开移动端筛选面板
+        function openMobileFilter() {
+            if (window.innerWidth > 768) return;
+            
+            const panel = document.getElementById('mobileFilterPanel');
+            const overlay = document.getElementById('mobileFilterOverlay');
+            
+            panel.classList.add('active');
+            overlay.classList.add('active');
+            
+            // 触觉反馈
+            if ('vibrate' in navigator) {
+                navigator.vibrate(10);
+            }
+        }
+        
+        // 关闭移动端筛选面板
+        function closeMobileFilter() {
+            const panel = document.getElementById('mobileFilterPanel');
+            const overlay = document.getElementById('mobileFilterOverlay');
+            
+            panel.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+        
+        // 选择筛选选项
+        function selectMobileFilter(btn, type) {
+            const wasActive = btn.classList.contains('active');
+            
+            // 清除同类其他选中状态
+            const siblings = btn.parentElement.querySelectorAll('.mobile-filter-chip');
+            siblings.forEach(s => s.classList.remove('active'));
+            
+            if (!wasActive) {
+                btn.classList.add('active');
+                mobileFilterState[type] = btn.dataset[type];
+            } else {
+                mobileFilterState[type] = null;
+            }
+            
+            // 触觉反馈
+            if ('vibrate' in navigator) {
+                navigator.vibrate(5);
+            }
+        }
+        
+        // 重置筛选
+        function resetMobileFilter() {
+            mobileFilterState = { rarity: null, alliance: null, price: null };
+            
+            document.querySelectorAll('.mobile-filter-chip').forEach(chip => {
+                chip.classList.remove('active');
+            });
+            
+            // 触觉反馈
+            if ('vibrate' in navigator) {
+                navigator.vibrate(5);
+            }
+        }
+        
+        // 应用筛选
+        function applyMobileFilter() {
+            // 应用筛选条件到主筛选器
+            const rarityBtns = document.querySelectorAll('.rarity-btn');
+            if (mobileFilterState.rarity) {
+                rarityBtns.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.rarity === mobileFilterState.rarity);
+                });
+            } else {
+                // 选择"全部"
+                rarityBtns.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.rarity === 'all');
+                });
+            }
+            
+            // 重新渲染商品
+            renderProducts();
+            
+            // 关闭面板
+            closeMobileFilter();
+            
+            // 显示提示
+            if (mobileFilterState.rarity || mobileFilterState.alliance || mobileFilterState.price) {
+                showEmotionToast('excited', '🔍 筛选已应用');
+            }
+            
+            // 触觉反馈
+            if ('vibrate' in navigator) {
+                navigator.vibrate(15);
+            }
+        }
     </script>
     
     <!-- 赛季战报弹窗 -->
@@ -19770,6 +20698,95 @@
             </div>
         </div>
     </div>
+    
+    <!-- 移动端沉浸式全屏浏览模态框 -->
+    <div class="immersive-viewer" id="immersiveViewer">
+        <div class="immersive-header">
+            <button class="immersive-close" onclick="closeImmersiveViewer()">✕</button>
+            <div class="immersive-counter">
+                <span class="immersive-counter-current" id="immersiveCurrent">1</span>
+                <span>/</span>
+                <span id="immersiveTotal">1</span>
+            </div>
+            <div class="immersive-actions">
+                <button class="immersive-action-btn favorite" id="immersiveFavBtn" onclick="toggleImmersiveFavorite()">❤️</button>
+                <button class="immersive-action-btn" onclick="shareImmersiveProduct()">📤</button>
+            </div>
+        </div>
+        <div class="immersive-body" id="immersiveBody">
+            <div class="immersive-swipe-hint left" id="swipeLeftHint">‹</div>
+            <div class="immersive-swipe-hint right" id="swipeRightHint">›</div>
+            <div class="immersive-content" id="immersiveContent">
+                <div class="immersive-image-container">
+                    <div class="immersive-rarity-glow" id="immersiveRarityGlow"></div>
+                    <div class="immersive-product-image" id="immersiveImage">🛍️</div>
+                    <div class="immersive-image-indicators" id="immersiveIndicators"></div>
+                </div>
+                <div class="immersive-info">
+                    <div class="immersive-product-name" id="immersiveName">商品名称</div>
+                    <div class="immersive-product-brand" id="immersiveBrand">品牌</div>
+                    <div class="immersive-product-price" id="immersivePrice">¥0</div>
+                    <div class="immersive-product-rarity" id="immersiveRarity">普通</div>
+                    <div class="immersive-product-tags" id="immersiveTags"></div>
+                </div>
+            </div>
+        </div>
+        <div class="immersive-footer">
+            <div class="immersive-action-bar">
+                <button class="immersive-action-btn-large secondary" onclick="addToCompareImmersive()">⚖️ 对比</button>
+                <button class="immersive-action-btn-large primary" id="immersiveBuyBtn" onclick="buyImmersiveProduct()">💎 立即购买</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 移动端筛选遮罩 -->
+    <div class="mobile-filter-overlay" id="mobileFilterOverlay" onclick="closeMobileFilter()"></div>
+    
+    <!-- 移动端筛选面板 -->
+    <div class="mobile-filter-panel" id="mobileFilterPanel">
+        <div class="mobile-filter-handle"></div>
+        <div class="mobile-filter-title">🔍 筛选商品</div>
+        
+        <!-- 稀有度筛选 -->
+        <div class="mobile-filter-section">
+            <div class="mobile-filter-section-title">稀有度</div>
+            <div class="mobile-filter-options">
+                <button class="mobile-filter-chip legendary" data-rarity="legendary" onclick="selectMobileFilter(this, 'rarity')">传奇</button>
+                <button class="mobile-filter-chip epic" data-rarity="epic" onclick="selectMobileFilter(this, 'rarity')">史诗</button>
+                <button class="mobile-filter-chip rare" data-rarity="rare" onclick="selectMobileFilter(this, 'rarity')">稀有</button>
+                <button class="mobile-filter-chip common" data-rarity="common" onclick="selectMobileFilter(this, 'rarity')">普通</button>
+            </div>
+        </div>
+        
+        <!-- 联盟筛选 -->
+        <div class="mobile-filter-section">
+            <div class="mobile-filter-section-title">联盟</div>
+            <div class="mobile-filter-options">
+                <button class="mobile-filter-chip" data-alliance="tech" onclick="selectMobileFilter(this, 'alliance')">⚡ 科技派</button>
+                <button class="mobile-filter-chip" data-alliance="nature" onclick="selectMobileFilter(this, 'alliance')">🌿 自然派</button>
+                <button class="mobile-filter-chip" data-alliance="chaos" onclick="selectMobileFilter(this, 'alliance')">🔥 混沌派</button>
+            </div>
+        </div>
+        
+        <!-- 价格区间 -->
+        <div class="mobile-filter-section">
+            <div class="mobile-filter-section-title">价格区间</div>
+            <div class="mobile-filter-options">
+                <button class="mobile-filter-chip" data-price="low" onclick="selectMobileFilter(this, 'price')">💰 0-500</button>
+                <button class="mobile-filter-chip" data-price="mid" onclick="selectMobileFilter(this, 'price')">💎 500-1500</button>
+                <button class="mobile-filter-chip" data-price="high" onclick="selectMobileFilter(this, 'price')">👑 1500+</button>
+            </div>
+        </div>
+        
+        <div class="mobile-filter-actions">
+            <button class="mobile-filter-btn reset" onclick="resetMobileFilter()">重置</button>
+            <button class="mobile-filter-btn apply" onclick="applyMobileFilter()">应用筛选</button>
+        </div>
+    </div>
+    
+    <!-- 移动端筛选按钮 -->
+    <button class="mobile-filter-trigger" id="mobileFilterTrigger" onclick="openMobileFilter()">🔍</button>
+    
 </body>
 </html>
     
