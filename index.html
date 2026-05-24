@@ -9190,6 +9190,199 @@
             color: var(--text-primary);
         }
         
+        /* ==================== 社交分享卡片生成器 ==================== */
+        
+        /* 分享卡片模态框 */
+        .share-card-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .share-card-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .share-card-container {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 2rem;
+            max-width: 420px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .share-card-modal.show .share-card-container {
+            transform: scale(1);
+        }
+        
+        .share-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .share-card-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .share-card-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .share-card-close:hover {
+            background: rgba(255, 0, 110, 0.2);
+            color: var(--accent-pink);
+            transform: rotate(90deg);
+        }
+        
+        /* 分享卡片预览区 */
+        .share-card-preview {
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .share-card-preview::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.05) 0%, transparent 50%);
+            animation: previewGlow 8s ease-in-out infinite;
+        }
+        
+        @keyframes previewGlow {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+        
+        .share-card-preview canvas {
+            display: block;
+            width: 100%;
+            border-radius: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 分享操作区 */
+        .share-card-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+        }
+        
+        .share-action-btn {
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .share-action-btn:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.06);
+        }
+        
+        .share-action-btn.primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
+            border: none;
+            font-weight: 600;
+        }
+        
+        .share-action-btn.primary:hover {
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+        }
+        
+        .share-action-btn .icon {
+            font-size: 1.2rem;
+        }
+        
+        /* 分享模板选择 */
+        .share-template-selector {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .share-template-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .share-template-btn:hover,
+        .share-template-btn.active {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.1);
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .share-card-container {
+                width: 95%;
+                padding: 1.5rem;
+            }
+            
+            .share-card-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+        
         /* 移动端适配 */
         @media (max-width: 768px) {
             .notification-settings-panel {
@@ -20662,6 +20855,608 @@
                 navigator.vibrate(15);
             }
         }
+        
+        // ==================== 社交分享卡片生成器 ====================
+        
+        // 当前分享卡片状态
+        let shareCardState = {
+            template: 'achievement', // achievement, item, profile, collection
+            data: null,
+            canvas: null,
+            ctx: null
+        };
+        
+        // 稀有度颜色映射
+        const RARITY_COLORS = {
+            legendary: { primary: '#f59e0b', secondary: '#fbbf24', glow: 'rgba(245, 158, 11, 0.5)' },
+            epic: { primary: '#a855f7', secondary: '#c084fc', glow: 'rgba(168, 85, 247, 0.5)' },
+            rare: { primary: '#3b82f6', secondary: '#60a5fa', glow: 'rgba(59, 130, 246, 0.5)' },
+            common: { primary: '#9ca3af', secondary: '#d1d5db', glow: 'rgba(156, 163, 175, 0.5)' }
+        };
+        
+        // 打开分享卡片模态框
+        function openShareCardModal(type, data) {
+            const modal = document.getElementById('shareCardModal');
+            if (!modal) return;
+            
+            shareCardState.template = type || 'achievement';
+            shareCardState.data = data;
+            
+            // 更新模板选择状态
+            document.querySelectorAll('.share-template-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.template === shareCardState.template);
+            });
+            
+            // 初始化Canvas
+            const canvas = document.getElementById('shareCardCanvas');
+            shareCardState.canvas = canvas;
+            shareCardState.ctx = canvas.getContext('2d');
+            
+            // 生成卡片
+            generateShareCard();
+            
+            // 显示模态框
+            modal.classList.add('show');
+        }
+        
+        // 关闭分享卡片模态框
+        function closeShareCardModal() {
+            const modal = document.getElementById('shareCardModal');
+            if (modal) {
+                modal.classList.remove('show');
+            }
+        }
+        
+        // 选择分享模板
+        function selectShareTemplate(template) {
+            shareCardState.template = template;
+            
+            document.querySelectorAll('.share-template-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.template === template);
+            });
+            
+            generateShareCard();
+        }
+        
+        // 生成分享卡片
+        function generateShareCard() {
+            const { canvas, ctx, template, data } = shareCardState;
+            if (!canvas || !ctx) return;
+            
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // 清除画布
+            ctx.clearRect(0, 0, width, height);
+            
+            // 根据模板生成不同类型的卡片
+            switch (template) {
+                case 'achievement':
+                    generateAchievementCard(ctx, data, width, height);
+                    break;
+                case 'item':
+                    generateItemCard(ctx, data, width, height);
+                    break;
+                case 'profile':
+                    generateProfileCard(ctx, data, width, height);
+                    break;
+                case 'collection':
+                    generateCollectionCard(ctx, data, width, height);
+                    break;
+            }
+        }
+        
+        // 生成成就分享卡片
+        function generateAchievementCard(ctx, data, width, height) {
+            // 背景渐变
+            const gradient = ctx.createLinearGradient(0, 0, width, height);
+            gradient.addColorStop(0, '#0a0a0f');
+            gradient.addColorStop(0.5, '#1a1a2e');
+            gradient.addColorStop(1, '#16213e');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+            
+            // 稀有度颜色
+            const rarity = data?.rarity || 'rare';
+            const colors = RARITY_COLORS[rarity] || RARITY_COLORS.rare;
+            
+            // 装饰性光晕
+            ctx.save();
+            ctx.shadowColor = colors.glow;
+            ctx.shadowBlur = 40;
+            ctx.beginPath();
+            ctx.arc(width / 2, 80, 60, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+            ctx.fill();
+            ctx.restore();
+            
+            // 成就徽章背景圆
+            ctx.beginPath();
+            ctx.arc(width / 2, 100, 70, 0, Math.PI * 2);
+            const badgeGradient = ctx.createRadialGradient(width / 2, 100, 0, width / 2, 100, 70);
+            badgeGradient.addColorStop(0, colors.secondary);
+            badgeGradient.addColorStop(1, colors.primary);
+            ctx.fillStyle = badgeGradient;
+            ctx.fill();
+            
+            // 徽章图标
+            ctx.font = '60px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('🏆', width / 2, 100);
+            
+            // 标题
+            ctx.font = 'bold 28px Orbitron, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText('成就解锁', width / 2, 210);
+            
+            // 成就名称
+            ctx.font = 'bold 22px Noto Sans SC, sans-serif';
+            ctx.fillStyle = colors.primary;
+            ctx.fillText(data?.name || '初次见面', width / 2, 260);
+            
+            // 描述
+            ctx.font = '16px Noto Sans SC, sans-serif';
+            ctx.fillStyle = '#8892b0';
+            ctx.fillText(data?.desc || '感谢您的第一次访问！', width / 2, 300);
+            
+            // 分隔线
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(40, 340);
+            ctx.lineTo(width - 40, 340);
+            ctx.stroke();
+            
+            // 奖励信息
+            ctx.font = 'bold 18px Noto Sans SC, sans-serif';
+            ctx.fillStyle = '#00ff88';
+            ctx.fillText(`+${data?.reward || 50} XP`, width / 2, 380);
+            
+            // 用户信息
+            ctx.font = '14px Noto Sans SC, sans-serif';
+            ctx.fillStyle = '#8892b0';
+            ctx.fillText('来自 AI Agent 潮流联盟', width / 2, 440);
+            
+            // 底部品牌标识
+            ctx.font = '12px Orbitron, sans-serif';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.fillText('Agent Fashion Hub', width / 2, 480);
+        }
+        
+        // 生成装备分享卡片
+        function generateItemCard(ctx, data, width, height) {
+            // 背景
+            const gradient = ctx.createLinearGradient(0, 0, width, height);
+            gradient.addColorStop(0, '#0a0a0f');
+            gradient.addColorStop(1, '#1a1a2e');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+            
+            const rarity = data?.rarity || 'rare';
+            const colors = RARITY_COLORS[rarity] || RARITY_COLORS.rare;
+            
+            // 稀有度边框光效
+            ctx.save();
+            ctx.shadowColor = colors.glow;
+            ctx.shadowBlur = 30;
+            ctx.strokeStyle = colors.primary;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.roundRect(20, 20, width - 40, height - 40, 20);
+            ctx.stroke();
+            ctx.restore();
+            
+            // 物品图标区域
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+            ctx.beginPath();
+            ctx.roundRect(60, 60, width - 120, 180, 16);
+            ctx.fill();
+            
+            // 物品图标
+            ctx.font = '100px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(data?.icon || '✨', width / 2, 150);
+            
+            // 稀有度标签
+            const rarityText = getRarityText(rarity);
+            ctx.font = 'bold 14px Noto Sans SC, sans-serif';
+            const rarityWidth = ctx.measureText(rarityText).width + 20;
+            ctx.fillStyle = colors.primary;
+            ctx.beginPath();
+            ctx.roundRect(width / 2 - rarityWidth / 2, 260, rarityWidth, 28, 14);
+            ctx.fill();
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText(rarityText, width / 2, 274);
+            
+            // 物品名称
+            ctx.font = 'bold 26px Noto Sans SC, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText(data?.name || '神秘装备', width / 2, 320);
+            
+            // 价格信息
+            ctx.font = 'bold 24px Orbitron, sans-serif';
+            ctx.fillStyle = '#00d4ff';
+            ctx.fillText(`¥${data?.price || 1000}`, width / 2, 370);
+            
+            // 品牌信息
+            if (data?.brand) {
+                ctx.font = '14px Noto Sans SC, sans-serif';
+                ctx.fillStyle = '#8892b0';
+                ctx.fillText(data.brand, width / 2, 410);
+            }
+            
+            // 装饰粒子
+            for (let i = 0; i < 8; i++) {
+                const x = Math.random() * width;
+                const y = Math.random() * height;
+                const size = Math.random() * 3 + 1;
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, Math.PI * 2);
+                ctx.fillStyle = colors.glow;
+                ctx.fill();
+            }
+            
+            // 底部品牌
+            ctx.font = '12px Orbitron, sans-serif';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.fillText('Agent Fashion Hub', width / 2, 480);
+        }
+        
+        // 生成个人资料分享卡片
+        function generateProfileCard(ctx, data, width, height) {
+            // 背景
+            const gradient = ctx.createLinearGradient(0, 0, width, height);
+            gradient.addColorStop(0, '#0a0a0f');
+            gradient.addColorStop(0.5, '#1a1a2e');
+            gradient.addColorStop(1, '#16213e');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+            
+            // 用户头像背景
+            ctx.save();
+            ctx.shadowColor = 'rgba(0, 212, 255, 0.5)';
+            ctx.shadowBlur = 30;
+            ctx.beginPath();
+            ctx.arc(width / 2, 100, 50, 0, Math.PI * 2);
+            const avatarGradient = ctx.createRadialGradient(width / 2, 100, 0, width / 2, 100, 50);
+            avatarGradient.addColorStop(0, '#00d4ff');
+            avatarGradient.addColorStop(1, '#0099cc');
+            ctx.fillStyle = avatarGradient;
+            ctx.fill();
+            ctx.restore();
+            
+            // 头像
+            ctx.font = '50px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('👤', width / 2, 100);
+            
+            // 用户名
+            ctx.font = 'bold 24px Noto Sans SC, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText(data?.username || '潮流探险家', width / 2, 180);
+            
+            // 等级信息
+            const level = data?.level || 1;
+            const levelName = data?.levelName || '初出茅庐';
+            ctx.font = '16px Noto Sans SC, sans-serif';
+            ctx.fillStyle = '#00d4ff';
+            ctx.fillText(`Lv.${level} ${levelName}`, width / 2, 215);
+            
+            // 统计信息网格
+            const stats = [
+                { label: '积分', value: data?.points || 0, icon: '💎' },
+                { label: '收藏', value: data?.favorites || 0, icon: '❤️' },
+                { label: '成就', value: data?.achievements || 0, icon: '🏆' },
+                { label: '签到', value: data?.checkins || 0, icon: '📅' }
+            ];
+            
+            const gridStartX = 30;
+            const gridStartY = 260;
+            const cellWidth = (width - 60) / 2;
+            const cellHeight = 70;
+            
+            stats.forEach((stat, index) => {
+                const col = index % 2;
+                const row = Math.floor(index / 2);
+                const x = gridStartX + col * cellWidth;
+                const y = gridStartY + row * cellHeight;
+                
+                // 背景
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+                ctx.beginPath();
+                ctx.roundRect(x + 5, y, cellWidth - 10, cellHeight - 10, 12);
+                ctx.fill();
+                
+                // 图标
+                ctx.font = '24px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(stat.icon, x + cellWidth / 2, y + 25);
+                
+                // 数值
+                ctx.font = 'bold 20px Orbitron, sans-serif';
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText(stat.value.toLocaleString(), x + cellWidth / 2, y + 50);
+                
+                // 标签
+                ctx.font = '12px Noto Sans SC, sans-serif';
+                ctx.fillStyle = '#8892b0';
+                ctx.fillText(stat.label, x + cellWidth / 2, y + 65);
+            });
+            
+            // 底部品牌
+            ctx.font = '12px Orbitron, sans-serif';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.fillText('Agent Fashion Hub', width / 2, 480);
+        }
+        
+        // 生成收藏分享卡片
+        function generateCollectionCard(ctx, data, width, height) {
+            // 背景
+            const gradient = ctx.createLinearGradient(0, 0, width, height);
+            gradient.addColorStop(0, '#0a0a0f');
+            gradient.addColorStop(1, '#1a1a2e');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+            
+            // 标题
+            ctx.font = 'bold 28px Orbitron, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.fillText('🎨 我的收藏集', width / 2, 60);
+            
+            // 收藏物品展示（最多6个）
+            const items = data?.items || ['✨', '🎮', '🚀', '💎', '🔥', '⚡'];
+            const itemSize = 70;
+            const startY = 120;
+            const itemsPerRow = 3;
+            const gap = 20;
+            const totalWidth = itemsPerRow * itemSize + (itemsPerRow - 1) * gap;
+            const startX = (width - totalWidth) / 2;
+            
+            items.forEach((item, index) => {
+                const col = index % itemsPerRow;
+                const row = Math.floor(index / itemsPerRow);
+                const x = startX + col * (itemSize + gap);
+                const y = startY + row * (itemSize + gap);
+                
+                // 物品背景
+                const colors = ['#00d4ff', '#a855f7', '#f59e0b', '#00ff88', '#ff006e', '#3b82f6'];
+                ctx.fillStyle = colors[index % colors.length];
+                ctx.globalAlpha = 0.2;
+                ctx.beginPath();
+                ctx.roundRect(x, y, itemSize, itemSize, 16);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+                
+                // 物品图标
+                ctx.font = '36px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(item, x + itemSize / 2, y + itemSize / 2);
+            });
+            
+            // 收藏统计
+            const totalItems = data?.totalItems || items.length;
+            const totalRarity = data?.totalRarity || 'rare';
+            const colors = RARITY_COLORS[totalRarity] || RARITY_COLORS.rare;
+            
+            ctx.font = 'bold 18px Noto Sans SC, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText(`共收藏 ${totalItems} 件潮流装备`, width / 2, 340);
+            
+            // 稀有度分布
+            ctx.font = '14px Noto Sans SC, sans-serif';
+            ctx.fillStyle = colors.primary;
+            ctx.fillText(`包含多件稀有装备，等你来探索！`, width / 2, 380);
+            
+            // 装饰性边框
+            ctx.strokeStyle = 'rgba(0, 212, 255, 0.3)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([10, 5]);
+            ctx.beginPath();
+            ctx.roundRect(30, 30, width - 60, height - 60, 20);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // 底部品牌
+            ctx.font = '12px Orbitron, sans-serif';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.fillText('Agent Fashion Hub', width / 2, 480);
+        }
+        
+        // 下载分享卡片
+        function downloadShareCard() {
+            const canvas = shareCardState.canvas;
+            if (!canvas) return;
+            
+            const link = document.createElement('a');
+            link.download = `share-card-${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            
+            showEmotionToast('excited', '✅ 图片已下载');
+            triggerEmotionFeedback({ type: 'success' });
+        }
+        
+        // 复制卡片到剪贴板
+        function copyShareCardToClipboard() {
+            const canvas = shareCardState.canvas;
+            if (!canvas) return;
+            
+            canvas.toBlob(async (blob) => {
+                try {
+                    await navigator.clipboard.write([
+                        new ClipboardItem({ 'image/png': blob })
+                    ]);
+                    showEmotionToast('excited', '✅ 图片已复制到剪贴板');
+                    triggerEmotionFeedback({ type: 'success' });
+                } catch (err) {
+                    showEmotionToast('shy', '复制失败，请尝试下载');
+                }
+            });
+        }
+        
+        // 分享到社交平台
+        function shareToSocial() {
+            const canvas = shareCardState.canvas;
+            if (!canvas) return;
+            
+            // 如果支持原生分享
+            if (navigator.share) {
+                canvas.toBlob(async (blob) => {
+                    try {
+                        const file = new File([blob], 'share-card.png', { type: 'image/png' });
+                        await navigator.share({
+                            title: 'AI Agent 潮流联盟',
+                            text: '快来看看我的潮流收藏！',
+                            files: [file]
+                        });
+                    } catch (err) {
+                        if (err.name !== 'AbortError') {
+                            showEmotionToast('shy', '分享失败，请手动保存图片');
+                        }
+                    }
+                });
+            } else {
+                // 不支持原生分享时，复制图片
+                copyShareCardToClipboard();
+            }
+        }
+        
+        // 复制文字版本
+        function shareCardText() {
+            const { template, data } = shareCardState;
+            let text = '';
+            
+            switch (template) {
+                case 'achievement':
+                    text = `🎉 我在 AI Agent 潮流联盟 解锁了成就【${data?.name || '初次见面'}】！\n\n📋 ${data?.desc || '感谢您的第一次访问！'}\n⭐ 获得 ${data?.reward || 50} 经验值\n\n#AIAgent潮流联盟 #成就解锁`;
+                    break;
+                case 'item':
+                    text = `✨ 发现稀有装备: ${data?.name || '神秘装备'}\n🏷️ 稀有度: ${getRarityText(data?.rarity || 'rare')}\n💎 价格: ¥${data?.price || 0}\n\n快来和我一起探索潮流联盟吧!`;
+                    break;
+                case 'profile':
+                    text = `👤 AI Agent 潮流联盟资料卡\n\n🌟 ${data?.username || '潮流探险家'}\n📊 Lv.${data?.level || 1} ${data?.levelName || '初出茅庐'}\n💎 积分: ${(data?.points || 0).toLocaleString()}\n❤️ 收藏: ${data?.favorites || 0}\n🏆 成就: ${data?.achievements || 0}`;
+                    break;
+                case 'collection':
+                    text = `🎨 我的潮流收藏集\n\n共收藏 ${data?.totalItems || 0} 件潮流装备\n包含多件稀有装备，等你来探索！\n\n#AIAgent潮流联盟`;
+                    break;
+            }
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showEmotionToast('excited', '📋 分享文字已复制');
+                triggerEmotionFeedback({ type: 'success' });
+            }).catch(() => {
+                showEmotionToast('shy', '复制失败');
+            });
+        }
+        
+        // 获取稀有度文本
+        function getRarityText(rarity) {
+            const rarityMap = {
+                legendary: '传奇',
+                epic: '史诗',
+                rare: '稀有',
+                common: '普通'
+            };
+            return rarityMap[rarity] || '普通';
+        }
+        
+        // 为现有分享函数添加图片分享入口
+        const originalShareItem = shareItem;
+        shareItem = function(event, name, rarity) {
+            // 显示分享卡片生成器
+            openShareCardModal('item', {
+                name: name,
+                rarity: rarity,
+                icon: '✨',
+                price: 0
+            });
+        };
+        
+        const originalShareAchievement = shareAchievement;
+        shareAchievement = function() {
+            const { unlockedAchievements, level } = calculateProgress();
+            if (unlockedAchievements.length === 0) {
+                showEmotionToast('shy', '还没有解锁任何成就~');
+                return;
+            }
+            
+            // 获取最新解锁的成就
+            const latestAch = unlockedAchievements[unlockedAchievements.length - 1];
+            openShareCardModal('achievement', {
+                name: latestAch.name,
+                desc: latestAch.desc,
+                reward: latestAch.reward,
+                rarity: latestAch.rarity || 'rare'
+            });
+        };
+        
+        const originalShareProfileCard = shareProfileCard;
+        shareProfileCard = function() {
+            const { level, totalXP, currentXP, nextLevelXP } = calculateProgress();
+            const totalFavorites = state.favorites.items.length + state.favorites.agents.length + state.favorites.outfits.length;
+            
+            openShareCardModal('profile', {
+                username: '潮流探险家',
+                level: level.level,
+                levelName: level.name,
+                points: state.userPoints,
+                favorites: totalFavorites,
+                achievements: unlockedAchievements.length,
+                checkins: checkinState.totalDays || 0
+            });
+        };
+        
+        // 修改分享穿搭方案函数
+        const originalShareOutfitScheme = shareOutfitScheme;
+        shareOutfitScheme = function(id) {
+            const scheme = savedOutfits.find(o => o.id === id);
+            if (!scheme) return;
+            
+            const previewItems = scheme.items.map(itemId => {
+                const product = products.find(p => p.id === itemId) || agents.find(a => a.id === itemId);
+                return product ? product.icon : '❓';
+            }).join(' ');
+            
+            openShareCardModal('collection', {
+                items: previewItems.split(' ').slice(0, 6),
+                totalItems: scheme.items.length,
+                totalRarity: 'rare'
+            });
+        };
+        
+        // 修改赛季战报分享函数
+        const originalShareSeasonReport = shareSeasonReport;
+        shareSeasonReport = function() {
+            const report = generateSeasonReportData();
+            openShareCardModal('profile', {
+                username: '赛季选手',
+                level: 1,
+                levelName: '初出茅庐',
+                points: report.totalScore || 0,
+                favorites: 0,
+                achievements: report.badges.length,
+                checkins: 0
+            });
+        };
+        
+        // 生成赛季报告数据
+        function generateSeasonReportData() {
+            const currentSeason = SEASONS.find(s => s.id === seasonState.currentSeason);
+            return {
+                seasonName: currentSeason?.name || 'S1 巅峰赛季',
+                seasonRank: seasonState.seasonRank || 50,
+                seasonScore: seasonState.seasonScore || 0,
+                totalScore: seasonState.seasonScore || 0,
+                badges: Object.values(gloryState.badges || {}),
+                bestRank: gloryState.bestRank || 50
+            };
+        }
+        
     </script>
     
     <!-- 赛季战报弹窗 -->
@@ -20786,6 +21581,49 @@
     
     <!-- 移动端筛选按钮 -->
     <button class="mobile-filter-trigger" id="mobileFilterTrigger" onclick="openMobileFilter()">🔍</button>
+    
+    <!-- ==================== 社交分享卡片生成器 ==================== -->
+    <div class="share-card-modal" id="shareCardModal">
+        <div class="share-card-container">
+            <div class="share-card-header">
+                <div class="share-card-title">📤 生成分享图片</div>
+                <button class="share-card-close" onclick="closeShareCardModal()">✕</button>
+            </div>
+            
+            <!-- 分享模板选择 -->
+            <div class="share-template-selector">
+                <button class="share-template-btn active" data-template="achievement" onclick="selectShareTemplate('achievement')">🏆 成就</button>
+                <button class="share-template-btn" data-template="item" onclick="selectShareTemplate('item')">✨ 装备</button>
+                <button class="share-template-btn" data-template="profile" onclick="selectShareTemplate('profile')">👤 资料卡</button>
+                <button class="share-template-btn" data-template="collection" onclick="selectShareTemplate('collection')">🎨 收藏</button>
+            </div>
+            
+            <!-- 卡片预览 -->
+            <div class="share-card-preview">
+                <canvas id="shareCardCanvas" width="400" height="500"></canvas>
+            </div>
+            
+            <!-- 操作按钮 -->
+            <div class="share-card-actions">
+                <button class="share-action-btn" onclick="downloadShareCard()">
+                    <span class="icon">⬇️</span>
+                    下载图片
+                </button>
+                <button class="share-action-btn" onclick="copyShareCardToClipboard()">
+                    <span class="icon">📋</span>
+                    复制到剪贴板
+                </button>
+                <button class="share-action-btn primary" onclick="shareToSocial()">
+                    <span class="icon">🚀</span>
+                    分享到社交
+                </button>
+                <button class="share-action-btn" onclick="shareCardText()">
+                    <span class="icon">📝</span>
+                    复制文字
+                </button>
+            </div>
+        </div>
+    </div>
     
 </body>
 </html>
