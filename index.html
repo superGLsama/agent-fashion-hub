@@ -2569,6 +2569,282 @@
             color: var(--accent-pink);
         }
         
+        /* ==================== 收藏系统数据统计增强 ==================== */
+        
+        /* 收藏统计区域 */
+        .fav-stats-section {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: linear-gradient(135deg, rgba(255, 0, 110, 0.05), rgba(0, 255, 255, 0.03));
+        }
+        
+        .fav-stats-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .fav-stats-header span:first-child {
+            font-size: 1.1rem;
+        }
+        
+        /* 统计卡片网格 */
+        .fav-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .fav-stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 0.8rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .fav-stat-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 0, 110, 0.3);
+            box-shadow: 0 5px 20px rgba(255, 0, 110, 0.15);
+        }
+        
+        .fav-stat-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.4rem;
+        }
+        
+        .fav-stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.2rem;
+        }
+        
+        .fav-stat-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+        
+        /* 稀有度分布条 */
+        .fav-rarity-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .fav-rarity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+        
+        .fav-rarity-title {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .fav-rarity-total {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .fav-rarity-bar {
+            display: flex;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .fav-rarity-segment {
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+        
+        .fav-rarity-segment.legendary { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+        .fav-rarity-segment.epic { background: linear-gradient(90deg, #a855f7, #c084fc); }
+        .fav-rarity-segment.rare { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+        .fav-rarity-segment.common { background: linear-gradient(90deg, #6b7280, #9ca3af); }
+        
+        .fav-rarity-legend {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.6rem;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+        
+        .fav-rarity-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+        }
+        
+        .fav-rarity-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .fav-rarity-dot.legendary { background: var(--legendary); }
+        .fav-rarity-dot.epic { background: var(--epic); }
+        .fav-rarity-dot.rare { background: var(--rare); }
+        .fav-rarity-dot.common { background: #6b7280; }
+        
+        /* 收藏趋势时间线 */
+        .fav-trend-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 0.8rem;
+        }
+        
+        .fav-trend-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+        
+        .fav-trend-title {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .fav-trend-badge {
+            font-size: 0.65rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            background: rgba(255, 0, 110, 0.2);
+            color: var(--accent-pink);
+        }
+        
+        .fav-trend-timeline {
+            max-height: 100px;
+            overflow-y: auto;
+        }
+        
+        .fav-trend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            animation: trendItemSlide 0.4s ease forwards;
+            opacity: 0;
+        }
+        
+        .fav-trend-item:last-child {
+            border-bottom: none;
+        }
+        
+        @keyframes trendItemSlide {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .fav-trend-icon {
+            font-size: 1.2rem;
+        }
+        
+        .fav-trend-info {
+            flex: 1;
+        }
+        
+        .fav-trend-name {
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            margin-bottom: 0.1rem;
+        }
+        
+        .fav-trend-time {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+        }
+        
+        .fav-trend-rarity {
+            font-size: 0.65rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 6px;
+        }
+        
+        .fav-empty-stats {
+            text-align: center;
+            padding: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+        
+        /* 收藏价值评估 */
+        .fav-value-section {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(0, 255, 255, 0.05));
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 10px;
+            padding: 0.8rem;
+            margin-top: 1rem;
+        }
+        
+        .fav-value-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.6rem;
+        }
+        
+        .fav-value-title {
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .fav-value-score {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--legendary), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .fav-value-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .fav-value-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--legendary), var(--accent-cyan));
+            border-radius: 3px;
+            transition: width 0.8s ease;
+        }
+        
+        .fav-value-tip {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+        
         .fav-item-btn.buy-btn:hover {
             background: rgba(0, 212, 255, 0.2);
             color: var(--accent-cyan);
@@ -11079,6 +11355,27 @@
             <h3>❤️ 我的收藏</h3>
             <button class="panel-close" onclick="closeFavoritesPanel()">✕</button>
         </div>
+        
+        <!-- 收藏统计区域 -->
+        <div class="fav-stats-section" id="favStatsSection">
+            <div class="fav-stats-header">
+                <span>📊</span>
+                <span>收藏统计</span>
+            </div>
+            <div class="fav-stats-grid" id="favStatsGrid">
+                <!-- JS渲染 -->
+            </div>
+            <div class="fav-rarity-section" id="favRaritySection">
+                <!-- JS渲染稀有度分布 -->
+            </div>
+            <div class="fav-trend-section" id="favTrendSection">
+                <!-- JS渲染趋势时间线 -->
+            </div>
+            <div class="fav-value-section" id="favValueSection">
+                <!-- JS渲染收藏价值评估 -->
+            </div>
+        </div>
+        
         <div class="panel-tabs">
             <button class="panel-tab active" data-type="items" onclick="switchFavTab('items')">潮流装备</button>
             <button class="panel-tab" data-type="agents" onclick="switchFavTab('agents')">Agent收藏</button>
@@ -13980,6 +14277,7 @@
             updateFavoritesBadge();
             updateExclusiveZone();
             renderProducts();
+            renderFavoritesStats();
             renderFavoritesContent();
             updateChallengeDisplay();
             // 每周任务检查：收藏
@@ -14001,6 +14299,254 @@
             btn.classList.toggle('has-items', total > 0);
         }
         
+        // ==================== 收藏系统数据统计增强 ====================
+        
+        /** 渲染收藏统计区域 */
+        function renderFavoritesStats() {
+            const statsGrid = document.getElementById('favStatsGrid');
+            const raritySection = document.getElementById('favRaritySection');
+            const trendSection = document.getElementById('favTrendSection');
+            const valueSection = document.getElementById('favValueSection');
+            
+            if (!statsGrid || !raritySection || !trendSection || !valueSection) return;
+            
+            const itemsCount = state.favorites.items.length;
+            const agentsCount = state.favorites.agents.length;
+            const outfitsCount = state.favorites.outfits.length;
+            const total = itemsCount + agentsCount + outfitsCount;
+            
+            // 渲染统计卡片
+            statsGrid.innerHTML = `
+                <div class="fav-stat-card">
+                    <div class="fav-stat-icon">🎴</div>
+                    <div class="fav-stat-value">${itemsCount}</div>
+                    <div class="fav-stat-label">潮流装备</div>
+                </div>
+                <div class="fav-stat-card">
+                    <div class="fav-stat-icon">🤖</div>
+                    <div class="fav-stat-value">${agentsCount}</div>
+                    <div class="fav-stat-label">Agent</div>
+                </div>
+                <div class="fav-stat-card">
+                    <div class="fav-stat-icon">👗</div>
+                    <div class="fav-stat-value">${outfitsCount}</div>
+                    <div class="fav-stat-label">装扮物品</div>
+                </div>
+            `;
+            
+            // 获取所有收藏物品的稀有度分布
+            const allFavorites = [
+                ...state.favorites.items.map(id => products.find(p => p.id === id)).filter(Boolean),
+                ...state.favorites.agents.map(id => agents.find(a => a.id === id)).filter(Boolean),
+                ...state.favorites.outfits.map(id => outfitItems.find(o => o.id === id)).filter(Boolean)
+            ];
+            
+            const rarityCounts = {
+                legendary: allFavorites.filter(i => i.rarity === 'legendary').length,
+                epic: allFavorites.filter(i => i.rarity === 'epic').length,
+                rare: allFavorites.filter(i => i.rarity === 'rare').length,
+                common: allFavorites.filter(i => i.rarity === 'common').length
+            };
+            
+            const legendaryPct = total > 0 ? Math.round((rarityCounts.legendary / total) * 100) : 0;
+            const epicPct = total > 0 ? Math.round((rarityCounts.epic / total) * 100) : 0;
+            const rarePct = total > 0 ? Math.round((rarityCounts.rare / total) * 100) : 0;
+            const commonPct = total > 0 ? Math.round((rarityCounts.common / total) * 100) : 0;
+            
+            // 渲染稀有度分布
+            raritySection.innerHTML = `
+                <div class="fav-rarity-header">
+                    <div class="fav-rarity-title">
+                        <span>💎</span>
+                        <span>稀有度分布</span>
+                    </div>
+                    <div class="fav-rarity-total">${total} 件收藏</div>
+                </div>
+                <div class="fav-rarity-bar">
+                    ${legendaryPct > 0 ? `<div class="fav-rarity-segment legendary" style="width: ${legendaryPct}%"></div>` : ''}
+                    ${epicPct > 0 ? `<div class="fav-rarity-segment epic" style="width: ${epicPct}%"></div>` : ''}
+                    ${rarePct > 0 ? `<div class="fav-rarity-segment rare" style="width: ${rarePct}%"></div>` : ''}
+                    ${commonPct > 0 ? `<div class="fav-rarity-segment common" style="width: ${commonPct}%"></div>` : ''}
+                </div>
+                <div class="fav-rarity-legend">
+                    <div class="fav-rarity-item">
+                        <div class="fav-rarity-dot legendary"></div>
+                        <span>传奇 ${rarityCounts.legendary} (${legendaryPct}%)</span>
+                    </div>
+                    <div class="fav-rarity-item">
+                        <div class="fav-rarity-dot epic"></div>
+                        <span>史诗 ${rarityCounts.epic} (${epicPct}%)</span>
+                    </div>
+                    <div class="fav-rarity-item">
+                        <div class="fav-rarity-dot rare"></div>
+                        <span>稀有 ${rarityCounts.rare} (${rarePct}%)</span>
+                    </div>
+                    <div class="fav-rarity-item">
+                        <div class="fav-rarity-dot common"></div>
+                        <span>普通 ${rarityCounts.common} (${commonPct}%)</span>
+                    </div>
+                </div>
+            `;
+            
+            // 渲染收藏趋势（最近收藏的5件）
+            const recentFavorites = getRecentFavorites();
+            if (recentFavorites.length > 0) {
+                const trendItems = recentFavorites.slice(0, 5).map((item, index) => `
+                    <div class="fav-trend-item" style="animation-delay: ${index * 0.1}s">
+                        <div class="fav-trend-icon">${item.icon}</div>
+                        <div class="fav-trend-info">
+                            <div class="fav-trend-name">${escapeHtml(item.name)}</div>
+                            <div class="fav-trend-time">${item.timeAgo}</div>
+                        </div>
+                        <div class="fav-trend-rarity ${item.rarity}">${getRarityText(item.rarity)}</div>
+                    </div>
+                `).join('');
+                
+                trendSection.innerHTML = `
+                    <div class="fav-trend-header">
+                        <div class="fav-trend-title">
+                            <span>📈</span>
+                            <span>最近收藏</span>
+                        </div>
+                        <div class="fav-trend-badge">NEW</div>
+                    </div>
+                    <div class="fav-trend-timeline">
+                        ${trendItems}
+                    </div>
+                `;
+            } else {
+                trendSection.innerHTML = `
+                    <div class="fav-trend-header">
+                        <div class="fav-trend-title">
+                            <span>📈</span>
+                            <span>最近收藏</span>
+                        </div>
+                    </div>
+                    <div class="fav-empty-stats">还没有收藏记录，开始探索吧！</div>
+                `;
+            }
+            
+            // 计算收藏价值评分
+            const valueScore = calculateFavoritesValue(allFavorites);
+            const valueTips = {
+                low: '继续探索，解锁更多稀有物品！',
+                medium: '不错的收藏品味，继续加油！',
+                high: '收藏价值很高，你是资深收藏家！',
+                max: '传奇收藏家！你的收藏令人羡慕！'
+            };
+            
+            valueSection.innerHTML = `
+                <div class="fav-value-header">
+                    <div class="fav-value-title">
+                        <span>🏆</span>
+                        <span>收藏价值评估</span>
+                    </div>
+                    <div class="fav-value-score">${valueScore}/100</div>
+                </div>
+                <div class="fav-value-bar">
+                    <div class="fav-value-fill" style="width: ${valueScore}%"></div>
+                </div>
+                <div class="fav-value-tip">${valueTips[valueScore < 25 ? 'low' : valueScore < 50 ? 'medium' : valueScore < 80 ? 'high' : 'max']}</div>
+            `;
+        }
+        
+        /** 获取最近收藏的物品（带时间信息） */
+        function getRecentFavorites() {
+            const items = [];
+            const now = Date.now();
+            
+            // 潮流装备
+            state.favorites.items.forEach((id, index) => {
+                const product = products.find(p => p.id === id);
+                if (product) {
+                    // 模拟收藏时间（越新的在前面）
+                    const offset = (state.favorites.items.length - index) * 3600000; // 每件间隔1小时
+                    items.push({
+                        ...product,
+                        timeAgo: getTimeAgo(now - offset),
+                        type: 'items'
+                    });
+                }
+            });
+            
+            // Agents
+            state.favorites.agents.forEach((id, index) => {
+                const agent = agents.find(a => a.id === id);
+                if (agent) {
+                    const offset = (state.favorites.agents.length - index) * 3600000;
+                    items.push({
+                        ...agent,
+                        timeAgo: getTimeAgo(now - offset - 1800000),
+                        type: 'agents'
+                    });
+                }
+            });
+            
+            // 装扮物品
+            state.favorites.outfits.forEach((id, index) => {
+                const outfit = outfitItems.find(o => o.id === id);
+                if (outfit) {
+                    const offset = (state.favorites.outfits.length - index) * 3600000;
+                    items.push({
+                        ...outfit,
+                        timeAgo: getTimeAgo(now - offset - 3600000),
+                        type: 'outfits'
+                    });
+                }
+            });
+            
+            // 按时间排序（最新的在前）并返回前5个
+            return items.sort((a, b) => {
+                const timeA = parseTimeAgo(a.timeAgo);
+                const timeB = parseTimeAgo(b.timeAgo);
+                return timeB - timeA;
+            }).slice(0, 5);
+        }
+        
+        /** 解析相对时间为时间戳 */
+        function parseTimeAgo(timeStr) {
+            if (timeStr.includes('刚刚')) return 0;
+            if (timeStr.includes('分钟')) return parseInt(timeStr) * 60 * 1000;
+            if (timeStr.includes('小时')) return parseInt(timeStr) * 60 * 60 * 1000;
+            if (timeStr.includes('天')) return parseInt(timeStr) * 24 * 60 * 60 * 1000;
+            return Date.now();
+        }
+        
+        /** 获取相对时间描述 */
+        function getTimeAgo(ms) {
+            const seconds = Math.floor(ms / 1000);
+            if (seconds < 60) return '刚刚';
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return `${minutes}分钟前`;
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `${hours}小时前`;
+            const days = Math.floor(hours / 24);
+            return `${days}天前`;
+        }
+        
+        /** 计算收藏价值评分 */
+        function calculateFavoritesValue(items) {
+            if (items.length === 0) return 0;
+            
+            const rarityWeights = {
+                legendary: 40,
+                epic: 25,
+                rare: 15,
+                common: 5
+            };
+            
+            let totalScore = 0;
+            items.forEach(item => {
+                totalScore += rarityWeights[item.rarity] || 5;
+            });
+            
+            // 基础分 + 稀有度加分，最高100分
+            const baseScore = Math.min(items.length * 2, 20);
+            const rarityScore = Math.min(totalScore, 80);
+            
+            return Math.min(baseScore + rarityScore, 100);
+        }
+        
         /** 切换收藏面板 */
         function toggleFavoritesPanel() {
             const panel = document.getElementById('favoritesPanel');
@@ -14013,6 +14559,7 @@
                 panel.classList.add('show');
                 overlay.classList.add('show');
                 btn.classList.add('active');
+                renderFavoritesStats();
                 renderFavoritesContent();
             }
         }
