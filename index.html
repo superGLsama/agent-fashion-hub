@@ -4778,6 +4778,30 @@
             color: var(--text-secondary);
         }
         
+        .outfit-btn-gallery {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(168, 85, 247, 0.1));
+            color: var(--epic);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+        
+        .outfit-btn-analysis {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.3), rgba(0, 212, 255, 0.1));
+            color: var(--accent-cyan);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+        
+        .outfit-btn-compare {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(245, 158, 11, 0.1));
+            color: var(--legendary);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+        
+        .outfit-btn-leaderboard {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.3), rgba(0, 255, 136, 0.1));
+            color: var(--accent-green);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+        
         .outfit-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -5465,6 +5489,653 @@
         .alliance-harmony-fill.nature { background: var(--accent-green); }
         .alliance-harmony-fill.chaos { background: var(--accent-pink); }
 
+        /* ==================== 穿搭灵感画廊样式 ==================== */
+        .outfit-gallery-panel {
+            background: linear-gradient(135deg, rgba(18, 18, 26, 0.98), rgba(10, 10, 15, 0.99));
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 16px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .outfit-gallery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .outfit-gallery-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .gallery-badge {
+            padding: 0.15rem 0.5rem;
+            background: rgba(168, 85, 247, 0.2);
+            color: var(--epic);
+            font-size: 0.65rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .gallery-close-btn {
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .gallery-close-btn:hover {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+
+        .outfit-gallery-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .gallery-tab {
+            padding: 0.4rem 0.8rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .gallery-tab:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+        }
+
+        .gallery-tab.active {
+            background: rgba(168, 85, 247, 0.15);
+            border-color: var(--epic);
+            color: var(--epic);
+        }
+
+        .outfit-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .outfit-gallery-grid::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .outfit-gallery-grid::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 2px;
+        }
+
+        .outfit-gallery-grid::-webkit-scrollbar-thumb {
+            background: rgba(168, 85, 247, 0.3);
+            border-radius: 2px;
+        }
+
+        .gallery-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-3px);
+            border-color: rgba(168, 85, 247, 0.3);
+            box-shadow: 0 5px 20px rgba(168, 85, 247, 0.15);
+        }
+
+        .gallery-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-item-title {
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .gallery-item-tag {
+            padding: 0.15rem 0.4rem;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--accent-cyan);
+            font-size: 0.6rem;
+            border-radius: 4px;
+        }
+
+        .gallery-item-tag.tech { background: rgba(0, 212, 255, 0.1); color: var(--accent-cyan); }
+        .gallery-item-tag.nature { background: rgba(0, 255, 136, 0.1); color: var(--accent-green); }
+        .gallery-item-tag.chaos { background: rgba(255, 0, 110, 0.1); color: var(--accent-pink); }
+
+        .gallery-item-preview {
+            display: flex;
+            justify-content: center;
+            gap: 0.3rem;
+            font-size: 1.5rem;
+            padding: 0.5rem 0;
+        }
+
+        .gallery-item-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .gallery-item-score {
+            color: var(--legendary);
+            font-weight: 600;
+        }
+
+        /* ==================== 用户风格分析报告样式 ==================== */
+        .style-analysis-panel {
+            background: linear-gradient(135deg, rgba(18, 18, 26, 0.98), rgba(10, 10, 15, 0.99));
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 16px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .style-analysis-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .style-analysis-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .analysis-badge {
+            padding: 0.15rem 0.5rem;
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--accent-cyan);
+            font-size: 0.65rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .analysis-close-btn {
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .analysis-close-btn:hover {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+
+        .style-analysis-content {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .analysis-section {
+            margin-bottom: 1rem;
+        }
+
+        .analysis-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .analysis-section-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .analysis-radar {
+            display: flex;
+            justify-content: center;
+            padding: 1rem 0;
+        }
+
+        .analysis-radar canvas {
+            max-width: 200px;
+        }
+
+        .analysis-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .analysis-tag {
+            padding: 0.3rem 0.6rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .analysis-tag.tech { border-color: rgba(0, 212, 255, 0.3); color: var(--accent-cyan); }
+        .analysis-tag.nature { border-color: rgba(0, 255, 136, 0.3); color: var(--accent-green); }
+        .analysis-tag.chaos { border-color: rgba(255, 0, 110, 0.3); color: var(--accent-pink); }
+
+        .analysis-progress-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .analysis-progress-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .analysis-progress-label {
+            width: 60px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .analysis-progress-bar {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .analysis-progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .analysis-progress-value {
+            width: 35px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .analysis-tip {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px dashed rgba(0, 212, 255, 0.2);
+            border-radius: 8px;
+            padding: 0.6rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.4rem;
+        }
+
+        .analysis-tip-icon {
+            color: var(--accent-cyan);
+        }
+
+        /* ==================== 穿搭方案对比面板样式 ==================== */
+        .outfit-compare-panel {
+            background: linear-gradient(135deg, rgba(18, 18, 26, 0.98), rgba(10, 10, 15, 0.99));
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 16px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .outfit-compare-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .outfit-compare-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .compare-close-btn {
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .compare-close-btn:hover {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+
+        .outfit-compare-content {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .compare-slot {
+            flex: 1;
+            text-align: center;
+        }
+
+        .compare-slot-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.4rem;
+        }
+
+        .compare-slot-select {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+
+        .compare-slot-select:hover {
+            border-color: rgba(245, 158, 11, 0.5);
+            background: rgba(245, 158, 11, 0.05);
+        }
+
+        .compare-placeholder {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .compare-selected-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .compare-selected-preview {
+            font-size: 1.5rem;
+        }
+
+        .compare-vs {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-pink), var(--epic));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .outfit-compare-result {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .compare-result-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            text-align: center;
+        }
+
+        .compare-metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .compare-metric {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .compare-metric-label {
+            width: 60px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .compare-metric-bar {
+            flex: 1;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+        }
+
+        .compare-metric-fill {
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+
+        .compare-metric-fill.a {
+            background: linear-gradient(90deg, var(--accent-cyan), rgba(0, 212, 255, 0.7));
+            border-radius: 10px 0 0 10px;
+        }
+
+        .compare-metric-fill.b {
+            background: linear-gradient(90deg, rgba(168, 85, 247, 0.7), var(--epic));
+            border-radius: 0 10px 10px 0;
+            margin-left: auto;
+        }
+
+        .compare-metric-value {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0 0.4rem;
+        }
+
+        .compare-metric-value.a { left: 0.4rem; color: var(--accent-cyan); }
+        .compare-metric-value.b { right: 0.4rem; color: var(--epic); }
+
+        .compare-winner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+            padding: 0.6rem;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .compare-winner.a { background: rgba(0, 212, 255, 0.1); border-color: rgba(0, 212, 255, 0.2); }
+        .compare-winner.b { background: rgba(168, 85, 247, 0.1); border-color: rgba(168, 85, 247, 0.2); }
+
+        /* ==================== 穿搭排行榜样式 ==================== */
+        .outfit-leaderboard-panel {
+            background: linear-gradient(135deg, rgba(18, 18, 26, 0.98), rgba(10, 10, 15, 0.99));
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 16px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .outfit-leaderboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .outfit-leaderboard-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .leaderboard-close-btn {
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .leaderboard-close-btn:hover {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+
+        .outfit-leaderboard-content {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .outfit-leaderboard-content::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .outfit-leaderboard-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 2px;
+        }
+
+        .outfit-leaderboard-content::-webkit-scrollbar-thumb {
+            background: rgba(245, 158, 11, 0.3);
+            border-radius: 2px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.6rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .leaderboard-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .leaderboard-item.top1 { border-color: rgba(245, 158, 11, 0.3); background: rgba(245, 158, 11, 0.05); }
+        .leaderboard-item.top2 { border-color: rgba(192, 192, 192, 0.3); background: rgba(192, 192, 192, 0.03); }
+        .leaderboard-item.top3 { border-color: rgba(205, 127, 50, 0.3); background: rgba(205, 127, 50, 0.03); }
+
+        .leaderboard-rank {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border-radius: 50%;
+        }
+
+        .leaderboard-rank.rank1 { background: linear-gradient(135deg, #ffd700, #ffb700); color: #000; }
+        .leaderboard-rank.rank2 { background: linear-gradient(135deg, #c0c0c0, #a8a8a8); color: #000; }
+        .leaderboard-rank.rank3 { background: linear-gradient(135deg, #cd7f32, #b8722e); color: #fff; }
+        .leaderboard-rank.rank-default { background: rgba(255, 255, 255, 0.1); color: var(--text-secondary); }
+
+        .leaderboard-preview {
+            font-size: 1.5rem;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .leaderboard-info {
+            flex: 1;
+        }
+
+        .leaderboard-name {
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .leaderboard-meta {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .leaderboard-score {
+            text-align: right;
+        }
+
+        .leaderboard-score-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--legendary);
+        }
+
+        .leaderboard-score-label {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+        }
         
         /* 响应式 */
         @media (max-width: 768px) {
@@ -11778,6 +12449,10 @@
                 <div class="outfit-actions">
                     <button class="outfit-btn outfit-btn-save" onclick="toggleOutfitManager()">💾 方案管理</button>
                     <button class="outfit-btn outfit-btn-reset" onclick="resetOutfit()">🔄 重置穿戴</button>
+                    <button class="outfit-btn outfit-btn-gallery" onclick="openOutfitGallery()">🎨 灵感画廊</button>
+                    <button class="outfit-btn outfit-btn-analysis" onclick="openStyleAnalysis()">🔍 风格分析</button>
+                    <button class="outfit-btn outfit-btn-compare" onclick="openOutfitCompare()">⚖️ 方案对比</button>
+                    <button class="outfit-btn outfit-btn-leaderboard" onclick="openOutfitLeaderboard()">🏆 穿搭排行</button>
                 </div>
             </div>
             
@@ -11911,6 +12586,81 @@
                         <button class="outfit-btn-v2" onclick="saveOutfit()">
                             <span>💾</span> 保存当前
                         </button>
+                    </div>
+                </div>
+                
+                <!-- 穿搭灵感画廊 -->
+                <div class="outfit-gallery-panel" id="outfitGalleryPanel" style="display: none;">
+                    <div class="outfit-gallery-header">
+                        <div class="outfit-gallery-title">
+                            <span>🎨</span> 穿搭灵感画廊
+                            <span class="gallery-badge">精选</span>
+                        </div>
+                        <button class="gallery-close-btn" onclick="closeOutfitGallery()">✕</button>
+                    </div>
+                    <div class="outfit-gallery-tabs" id="outfitGalleryTabs">
+                        <button class="gallery-tab active" data-type="all" onclick="switchGalleryType('all')">全部</button>
+                        <button class="gallery-tab" data-type="tech" onclick="switchGalleryType('tech')">⚡科技</button>
+                        <button class="gallery-tab" data-type="nature" onclick="switchGalleryType('nature')">🌿自然</button>
+                        <button class="gallery-tab" data-type="chaos" onclick="switchGalleryType('chaos')">🔥混沌</button>
+                    </div>
+                    <div class="outfit-gallery-grid" id="outfitGalleryGrid">
+                        <!-- 动态生成 -->
+                    </div>
+                </div>
+                
+                <!-- 用户风格分析报告 -->
+                <div class="style-analysis-panel" id="styleAnalysisPanel" style="display: none;">
+                    <div class="style-analysis-header">
+                        <div class="style-analysis-title">
+                            <span>🔍</span> 风格分析报告
+                            <span class="analysis-badge">AI</span>
+                        </div>
+                        <button class="analysis-close-btn" onclick="closeStyleAnalysis()">✕</button>
+                    </div>
+                    <div class="style-analysis-content" id="styleAnalysisContent">
+                        <!-- 动态生成 -->
+                    </div>
+                </div>
+                
+                <!-- 穿搭方案对比面板 -->
+                <div class="outfit-compare-panel" id="outfitComparePanel" style="display: none;">
+                    <div class="outfit-compare-header">
+                        <div class="outfit-compare-title">
+                            <span>⚖️</span> 穿搭方案对比
+                        </div>
+                        <button class="compare-close-btn" onclick="closeOutfitCompare()">✕</button>
+                    </div>
+                    <div class="outfit-compare-content">
+                        <div class="compare-slot" id="compareSlot1">
+                            <div class="compare-slot-label">方案 A</div>
+                            <div class="compare-slot-select" onclick="openCompareSelector(1)">
+                                <span class="compare-placeholder">点击选择方案</span>
+                            </div>
+                        </div>
+                        <div class="compare-vs">VS</div>
+                        <div class="compare-slot" id="compareSlot2">
+                            <div class="compare-slot-label">方案 B</div>
+                            <div class="compare-slot-select" onclick="openCompareSelector(2)">
+                                <span class="compare-placeholder">点击选择方案</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="outfit-compare-result" id="outfitCompareResult" style="display: none;">
+                        <!-- 动态生成对比结果 -->
+                    </div>
+                </div>
+                
+                <!-- 穿搭排行榜 -->
+                <div class="outfit-leaderboard-panel" id="outfitLeaderboardPanel" style="display: none;">
+                    <div class="outfit-leaderboard-header">
+                        <div class="outfit-leaderboard-title">
+                            <span>🏆</span> 穿搭排行榜
+                        </div>
+                        <button class="leaderboard-close-btn" onclick="closeOutfitLeaderboard()">✕</button>
+                    </div>
+                    <div class="outfit-leaderboard-content" id="outfitLeaderboardContent">
+                        <!-- 动态生成 -->
                     </div>
                 </div>
                 
@@ -15426,6 +16176,537 @@
             } else {
                 prompt('复制以下内容分享：', shareText);
             }
+        }
+        
+        // ==================== 穿搭灵感画廊功能 ====================
+        
+        // 预设穿搭灵感数据
+        const OUTFIT_GALLERY = [
+            {
+                id: 'g1',
+                name: '赛博朋克战士',
+                type: 'tech',
+                items: { hair: 101, top: 201, bottom: 301, shoes: 401, accessory: 501, expression: 601 },
+                author: '潮流教父',
+                likes: 128
+            },
+            {
+                id: 'g2',
+                name: '森林精灵',
+                type: 'nature',
+                items: { hair: 102, top: 202, bottom: 302, shoes: 402, accessory: 502, expression: 602 },
+                author: '自然系女王',
+                likes: 95
+            },
+            {
+                id: 'g3',
+                name: '混沌街头',
+                type: 'chaos',
+                items: { hair: 103, top: 203, bottom: 303, shoes: 403, accessory: 503, expression: 603 },
+                author: '街头霸主',
+                likes: 156
+            },
+            {
+                id: 'g4',
+                name: '量子通勤',
+                type: 'tech',
+                items: { hair: 104, top: 204, bottom: 304, shoes: 404, accessory: 504, expression: 604 },
+                author: '科技达人',
+                likes: 88
+            },
+            {
+                id: 'g5',
+                name: '春日花园',
+                type: 'nature',
+                items: { hair: 105, top: 205, bottom: 305, shoes: 405, accessory: 505, expression: 605 },
+                author: '花园精灵',
+                likes: 112
+            },
+            {
+                id: 'g6',
+                name: '暗黑朋克',
+                type: 'chaos',
+                items: { hair: 106, top: 206, bottom: 306, shoes: 406, accessory: 506, expression: 606 },
+                author: '朋克教主',
+                likes: 134
+            }
+        ];
+        
+        let galleryCurrentType = 'all';
+        
+        function openOutfitGallery() {
+            const panel = document.getElementById('outfitGalleryPanel');
+            panel.style.display = 'block';
+            renderOutfitGallery();
+        }
+        
+        function closeOutfitGallery() {
+            document.getElementById('outfitGalleryPanel').style.display = 'none';
+        }
+        
+        function switchGalleryType(type) {
+            galleryCurrentType = type;
+            document.querySelectorAll('.gallery-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.type === type);
+            });
+            renderOutfitGallery();
+        }
+        
+        function renderOutfitGallery() {
+            const grid = document.getElementById('outfitGalleryGrid');
+            let items = OUTFIT_GALLERY;
+            if (galleryCurrentType !== 'all') {
+                items = items.filter(item => item.type === galleryCurrentType);
+            }
+            
+            grid.innerHTML = items.map(item => {
+                const previewIcons = Object.values(item.items)
+                    .slice(0, 4)
+                    .map(id => {
+                        const outfitItem = outfitItems.find(o => o.id === id);
+                        return outfitItem ? outfitItem.icon : '❓';
+                    })
+                    .join('');
+                
+                const score = calculateOutfitScore(item.items);
+                const typeTag = item.type === 'tech' ? '⚡科技' : item.type === 'nature' ? '🌿自然' : '🔥混沌';
+                
+                return `
+                    <div class="gallery-item" onclick="applyGalleryOutfit('${item.id}')">
+                        <div class="gallery-item-header">
+                            <span class="gallery-item-title">${item.name}</span>
+                            <span class="gallery-item-tag ${item.type}">${typeTag}</span>
+                        </div>
+                        <div class="gallery-item-preview">${previewIcons || '👔'}</div>
+                        <div class="gallery-item-stats">
+                            <span>👤 ${item.author}</span>
+                            <span class="gallery-item-score">🔥 ${score}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function applyGalleryOutfit(galleryId) {
+            const outfit = OUTFIT_GALLERY.find(o => o.id === galleryId);
+            if (!outfit) return;
+            
+            state.equipped = { ...outfit.items };
+            saveState();
+            updateCharacterDisplay();
+            updateTrendDisplay();
+            updateSlotTabs();
+            renderClothingGrid();
+            
+            closeOutfitGallery();
+            showNotification(`已应用穿搭灵感「${outfit.name}」`, 'success');
+        }
+        
+        function calculateOutfitScore(equipped) {
+            let total = 0;
+            Object.values(equipped).forEach(itemId => {
+                const item = outfitItems.find(i => i.id === itemId);
+                if (item) total += item.trendPoints || 50;
+            });
+            return total;
+        }
+        
+        // ==================== 用户风格分析报告功能 ====================
+        
+        function openStyleAnalysis() {
+            const panel = document.getElementById('styleAnalysisPanel');
+            panel.style.display = 'block';
+            renderStyleAnalysis();
+        }
+        
+        function closeStyleAnalysis() {
+            document.getElementById('styleAnalysisPanel').style.display = 'none';
+        }
+        
+        function renderStyleAnalysis() {
+            const content = document.getElementById('styleAnalysisContent');
+            
+            // 分析用户收藏和穿戴风格
+            const analysis = analyzeUserStyle();
+            
+            content.innerHTML = `
+                <div class="analysis-section">
+                    <div class="analysis-section-title">📊 风格偏好分布</div>
+                    <div class="analysis-progress-list">
+                        <div class="analysis-progress-item">
+                            <span class="analysis-progress-label">⚡科技</span>
+                            <div class="analysis-progress-bar">
+                                <div class="analysis-progress-fill" style="width: ${analysis.tech}%; background: var(--accent-cyan);"></div>
+                            </div>
+                            <span class="analysis-progress-value" style="color: var(--accent-cyan);">${analysis.tech}%</span>
+                        </div>
+                        <div class="analysis-progress-item">
+                            <span class="analysis-progress-label">🌿自然</span>
+                            <div class="analysis-progress-bar">
+                                <div class="analysis-progress-fill" style="width: ${analysis.nature}%; background: var(--accent-green);"></div>
+                            </div>
+                            <span class="analysis-progress-value" style="color: var(--accent-green);">${analysis.nature}%</span>
+                        </div>
+                        <div class="analysis-progress-item">
+                            <span class="analysis-progress-label">🔥混沌</span>
+                            <div class="analysis-progress-bar">
+                                <div class="analysis-progress-fill" style="width: ${analysis.chaos}%; background: var(--accent-pink);"></div>
+                            </div>
+                            <span class="analysis-progress-value" style="color: var(--accent-pink);">${analysis.chaos}%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="analysis-section">
+                    <div class="analysis-section-title">🎯 风格标签</div>
+                    <div class="analysis-tags">
+                        ${analysis.tags.map(tag => `<span class="analysis-tag ${tag.type}">${tag.icon} ${tag.name}</span>`).join('')}
+                    </div>
+                </div>
+                
+                <div class="analysis-section">
+                    <div class="analysis-section-title">📈 穿搭统计</div>
+                    <div class="analysis-progress-list">
+                        <div class="analysis-progress-item">
+                            <span class="analysis-progress-label">装备数</span>
+                            <div class="analysis-progress-bar">
+                                <div class="analysis-progress-fill" style="width: ${Math.min(analysis.ownedCount / 30 * 100, 100)}%; background: var(--legendary);"></div>
+                            </div>
+                            <span class="analysis-progress-value" style="color: var(--legendary);">${analysis.ownedCount}件</span>
+                        </div>
+                        <div class="analysis-progress-item">
+                            <span class="analysis-progress-label">穿戴率</span>
+                            <div class="analysis-progress-bar">
+                                <div class="analysis-progress-fill" style="width: ${analysis.equipRate}%; background: var(--epic);"></div>
+                            </div>
+                            <span class="analysis-progress-value" style="color: var(--epic);">${analysis.equipRate}%</span>
+                        </div>
+                        <div class="analysis-progress-item">
+                            <span class="analysis-progress-label">保存方案</span>
+                            <div class="analysis-progress-bar">
+                                <div class="analysis-progress-fill" style="width: ${Math.min(analysis.schemeCount * 20, 100)}%; background: var(--accent-cyan);"></div>
+                            </div>
+                            <span class="analysis-progress-value" style="color: var(--accent-cyan);">${analysis.schemeCount}个</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="analysis-section">
+                    <div class="analysis-tip">
+                        <span class="analysis-tip-icon">💡</span>
+                        <span>${analysis.tip}</span>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function analyzeUserStyle() {
+            // 分析收藏风格
+            const favorites = state.favorites.items || [];
+            const ownedOutfits = state.ownedOutfits || [];
+            const equipped = state.equipped || {};
+            const savedOutfits = JSON.parse(localStorage.getItem('agentOutfits') || '[]');
+            
+            // 统计各风格装备数量
+            let techCount = 0, natureCount = 0, chaosCount = 0;
+            
+            [...favorites, ...ownedOutfits].forEach(itemId => {
+                const item = outfitItems.find(i => i.id === itemId);
+                if (item) {
+                    if (item.alliance === 'tech') techCount++;
+                    else if (item.alliance === 'nature') natureCount++;
+                    else chaosCount++;
+                }
+            });
+            
+            const total = techCount + natureCount + chaosCount || 1;
+            const analysis = {
+                tech: Math.round(techCount / total * 100),
+                nature: Math.round(natureCount / total * 100),
+                chaos: Math.round(chaosCount / total * 100),
+                ownedCount: ownedOutfits.length,
+                equipRate: Math.round(Object.values(equipped).filter(v => v !== null).length / 6 * 100),
+                schemeCount: savedOutfits.length,
+                tags: []
+            };
+            
+            // 生成风格标签
+            if (analysis.tech > 50) {
+                analysis.tags.push({ name: '科技狂热', type: 'tech', icon: '⚡' });
+            }
+            if (analysis.nature > 50) {
+                analysis.tags.push({ name: '自然主义者', type: 'nature', icon: '🌿' });
+            }
+            if (analysis.chaos > 50) {
+                analysis.tags.push({ name: '混搭达人', type: 'chaos', icon: '🔥' });
+            }
+            if (analysis.equipRate === 100) {
+                analysis.tags.push({ name: '完美主义者', type: '', icon: '✨' });
+            }
+            if (analysis.schemeCount >= 3) {
+                analysis.tags.push({ name: '搭配高手', type: '', icon: '🎨' });
+            }
+            
+            // 生成建议
+            if (analysis.tech > analysis.nature && analysis.tech > analysis.chaos) {
+                analysis.tip = '你偏爱科技风格！建议尝试混搭一些自然元素，可能会发现意想不到的惊喜效果~';
+            } else if (analysis.nature > analysis.tech && analysis.nature > analysis.chaos) {
+                analysis.tip = '你偏爱自然风格！不妨挑战一下科技风单品，打破舒适区可能有意想不到的收获~';
+            } else if (analysis.chaos > analysis.tech && analysis.chaos > analysis.nature) {
+                analysis.tip = '你是混搭达人！你的风格充满创意，建议多保存搭配方案，建立自己的穿搭灵感库~';
+            } else {
+                analysis.tip = '你的风格多元且平衡！继续保持这种探索精神，尝试不同风格的组合会带来更多乐趣~';
+            }
+            
+            return analysis;
+        }
+        
+        // ==================== 穿搭方案对比功能 ====================
+        
+        let compareState = { slot1: null, slot2: null };
+        
+        function openOutfitCompare() {
+            const panel = document.getElementById('outfitComparePanel');
+            panel.style.display = 'block';
+            compareState = { slot1: null, slot2: null };
+            renderCompareSlots();
+            document.getElementById('outfitCompareResult').style.display = 'none';
+        }
+        
+        function closeOutfitCompare() {
+            document.getElementById('outfitComparePanel').style.display = 'none';
+        }
+        
+        function renderCompareSlots() {
+            const slot1 = document.getElementById('compareSlot1');
+            const slot2 = document.getElementById('compareSlot2');
+            
+            if (compareState.slot1) {
+                const outfit = compareState.slot1;
+                const preview = Object.values(outfit.equipped).filter(v => v !== null).slice(0, 3).map(id => {
+                    const item = outfitItems.find(i => i.id === id);
+                    return item ? item.icon : '';
+                }).join('');
+                slot1.innerHTML = `
+                    <div class="compare-slot-label">方案 A</div>
+                    <div class="compare-slot-select" onclick="openCompareSelector(1)">
+                        <span class="compare-selected-name">${outfit.name}</span>
+                        <span class="compare-selected-preview">${preview}</span>
+                    </div>
+                `;
+            } else {
+                slot1.innerHTML = `
+                    <div class="compare-slot-label">方案 A</div>
+                    <div class="compare-slot-select" onclick="openCompareSelector(1)">
+                        <span class="compare-placeholder">点击选择方案</span>
+                    </div>
+                `;
+            }
+            
+            if (compareState.slot2) {
+                const outfit = compareState.slot2;
+                const preview = Object.values(outfit.equipped).filter(v => v !== null).slice(0, 3).map(id => {
+                    const item = outfitItems.find(i => i.id === id);
+                    return item ? item.icon : '';
+                }).join('');
+                slot2.innerHTML = `
+                    <div class="compare-slot-label">方案 B</div>
+                    <div class="compare-slot-select" onclick="openCompareSelector(2)">
+                        <span class="compare-selected-name">${outfit.name}</span>
+                        <span class="compare-selected-preview">${preview}</span>
+                    </div>
+                `;
+            } else {
+                slot2.innerHTML = `
+                    <div class="compare-slot-label">方案 B</div>
+                    <div class="compare-slot-select" onclick="openCompareSelector(2)">
+                        <span class="compare-placeholder">点击选择方案</span>
+                    </div>
+                `;
+            }
+        }
+        
+        function openCompareSelector(slot) {
+            const savedOutfits = JSON.parse(localStorage.getItem('agentOutfits') || '[]');
+            if (savedOutfits.length < 2) {
+                showNotification('需要至少2个保存的方案才能对比', 'error');
+                return;
+            }
+            
+            const names = savedOutfits.map((o, i) => `${i + 1}. ${o.name}`).join('\n');
+            const choice = prompt(`选择方案 (输入数字):\n${names}`);
+            if (!choice) return;
+            
+            const index = parseInt(choice) - 1;
+            if (index >= 0 && index < savedOutfits.length) {
+                if (slot === 1) {
+                    compareState.slot1 = savedOutfits[index];
+                } else {
+                    compareState.slot2 = savedOutfits[index];
+                }
+                renderCompareSlots();
+                
+                // 如果两个方案都选择了，显示对比结果
+                if (compareState.slot1 && compareState.slot2) {
+                    showCompareResult();
+                }
+            }
+        }
+        
+        function showCompareResult() {
+            const result = document.getElementById('outfitCompareResult');
+            result.style.display = 'block';
+            
+            const score1 = calculateSchemeScore(compareState.slot1);
+            const score2 = calculateSchemeScore(compareState.slot2);
+            const rarity1 = calculateRarityScore(compareState.slot1);
+            const rarity2 = calculateRarityScore(compareState.slot2);
+            const complete1 = calculateCompleteScore(compareState.slot1);
+            const complete2 = calculateCompleteScore(compareState.slot2);
+            const harmony1 = calculateHarmonyScore(compareState.slot1);
+            const harmony2 = calculateHarmonyScore(compareState.slot2);
+            
+            const total1 = score1 + rarity1 + complete1 + harmony1;
+            const total2 = score2 + rarity2 + complete2 + harmony2;
+            const winner = total1 > total2 ? 'a' : total2 > total1 ? 'b' : 'tie';
+            
+            result.innerHTML = `
+                <div class="compare-result-title">对比结果</div>
+                <div class="compare-metrics">
+                    <div class="compare-metric">
+                        <span class="compare-metric-label">潮流度</span>
+                        <div class="compare-metric-bar">
+                            <div class="compare-metric-fill a" style="width: ${Math.min(score1, 50)}%"></div>
+                            <div class="compare-metric-fill b" style="width: ${Math.min(score2, 50)}%"></div>
+                        </div>
+                    </div>
+                    <div class="compare-metric">
+                        <span class="compare-metric-label">稀有度</span>
+                        <div class="compare-metric-bar">
+                            <div class="compare-metric-fill a" style="width: ${rarity1}%"></div>
+                            <div class="compare-metric-fill b" style="width: ${rarity2}%"></div>
+                        </div>
+                    </div>
+                    <div class="compare-metric">
+                        <span class="compare-metric-label">完整度</span>
+                        <div class="compare-metric-bar">
+                            <div class="compare-metric-fill a" style="width: ${complete1}%"></div>
+                            <div class="compare-metric-fill b" style="width: ${complete2}%"></div>
+                        </div>
+                    </div>
+                    <div class="compare-metric">
+                        <span class="compare-metric-label">风格统一</span>
+                        <div class="compare-metric-bar">
+                            <div class="compare-metric-fill a" style="width: ${harmony1}%"></div>
+                            <div class="compare-metric-fill b" style="width: ${harmony2}%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="compare-winner ${winner}">
+                    ${winner === 'a' ? `🏆 方案A「${compareState.slot1.name}」获胜！` : 
+                      winner === 'b' ? `🏆 方案B「${compareState.slot2.name}」获胜！` : 
+                      '🤝 两个方案势均力敌！'}
+                </div>
+            `;
+        }
+        
+        function calculateSchemeScore(scheme) {
+            let total = 0;
+            Object.values(scheme.equipped).forEach(itemId => {
+                const item = outfitItems.find(i => i.id === itemId);
+                if (item) total += item.trendPoints || 50;
+            });
+            return Math.min(total / 2, 50);
+        }
+        
+        function calculateRarityScore(scheme) {
+            const rarities = { legendary: 25, epic: 20, rare: 15, common: 10 };
+            let total = 0, count = 0;
+            Object.values(scheme.equipped).forEach(itemId => {
+                const item = outfitItems.find(i => i.id === itemId);
+                if (item) {
+                    total += rarities[item.rarity] || 10;
+                    count++;
+                }
+            });
+            return count > 0 ? Math.round(total / count) : 0;
+        }
+        
+        function calculateCompleteScore(scheme) {
+            const count = Object.values(scheme.equipped).filter(v => v !== null).length;
+            return Math.round(count / 6 * 100);
+        }
+        
+        function calculateHarmonyScore(scheme) {
+            const alliances = Object.values(scheme.equipped).map(itemId => {
+                const item = outfitItems.find(i => i.id === itemId);
+                return item ? item.alliance : null;
+            }).filter(Boolean);
+            
+            if (alliances.length === 0) return 0;
+            
+            const counts = {};
+            alliances.forEach(a => counts[a] = (counts[a] || 0) + 1);
+            const maxCount = Math.max(...Object.values(counts));
+            return Math.round(maxCount / alliances.length * 100);
+        }
+        
+        // ==================== 穿搭排行榜功能 ====================
+        
+        const OUTFIT_LEADERBOARD_DATA = [
+            { rank: 1, name: '赛博朋克战士', preview: '🤖⚡👾✨', alliance: '科技派', score: 580 },
+            { rank: 2, name: '森林精灵公主', preview: '🧚🌿👗🦋', alliance: '自然派', score: 545 },
+            { rank: 3, name: '混沌街头霸王', preview: '🔥💀👊⚔️', alliance: '混沌派', score: 520 },
+            { rank: 4, name: '量子通勤达人', preview: '💼⚡🖥️🔮', alliance: '科技派', score: 495 },
+            { rank: 5, name: '暗黑朋克女王', preview: '🖤💜👑🔥', alliance: '混沌派', score: 470 },
+            { rank: 6, name: '未来战士', preview: '🤖⚔️🔫🌟', alliance: '科技派', score: 450 },
+            { rank: 7, name: '春日花园', preview: '🌸🌷🌿💐', alliance: '自然派', score: 435 },
+            { rank: 8, name: '霓虹朋克', preview: '🌃💡🎮⚡', alliance: '混沌派', score: 420 }
+        ];
+        
+        function openOutfitLeaderboard() {
+            const panel = document.getElementById('outfitLeaderboardPanel');
+            panel.style.display = 'block';
+            renderOutfitLeaderboard();
+        }
+        
+        function closeOutfitLeaderboard() {
+            document.getElementById('outfitLeaderboardPanel').style.display = 'none';
+        }
+        
+        function renderOutfitLeaderboard() {
+            const content = document.getElementById('outfitLeaderboardContent');
+            
+            content.innerHTML = OUTFIT_LEADERBOARD_DATA.map((item, index) => {
+                let rankClass = 'rank-default';
+                let itemClass = '';
+                if (item.rank === 1) { rankClass = 'rank1'; itemClass = 'top1'; }
+                else if (item.rank === 2) { rankClass = 'rank2'; itemClass = 'top2'; }
+                else if (item.rank === 3) { rankClass = 'rank3'; itemClass = 'top3'; }
+                
+                return `
+                    <div class="leaderboard-item ${itemClass}" onclick="applyLeaderboardOutfit(${index})">
+                        <div class="leaderboard-rank ${rankClass}">${item.rank}</div>
+                        <div class="leaderboard-preview">${item.preview}</div>
+                        <div class="leaderboard-info">
+                            <div class="leaderboard-name">${item.name}</div>
+                            <div class="leaderboard-meta">${item.alliance}</div>
+                        </div>
+                        <div class="leaderboard-score">
+                            <div class="leaderboard-score-value">${item.score}</div>
+                            <div class="leaderboard-score-label">潮流度</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function applyLeaderboardOutfit(index) {
+            const item = OUTFIT_LEADERBOARD_DATA[index];
+            if (!item) return;
+            
+            showNotification(`穿搭排行榜第${item.rank}名「${item.name}」仅供参考~`, 'info');
+            closeOutfitLeaderboard();
         }
         
         /**
