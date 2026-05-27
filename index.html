@@ -5211,6 +5211,192 @@
             box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4);
         }
         
+        /* AI推荐物品卡片增强 */
+        .ai-recommend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ai-recommend-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .ai-recommend-item.legendary::before { background: var(--legendary); }
+        .ai-recommend-item.epic::before { background: var(--epic); }
+        .ai-recommend-item.rare::before { background: var(--rare); }
+        .ai-recommend-item.common::before { background: var(--common); }
+        
+        .ai-recommend-item:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .ai-recommend-item:hover::before {
+            opacity: 1;
+        }
+        
+        .ai-recommend-item.owned {
+            border-color: rgba(0, 255, 136, 0.2);
+            background: rgba(0, 255, 136, 0.03);
+        }
+        
+        .ai-recommend-item.owned::before {
+            background: var(--accent-green);
+            opacity: 0.7;
+        }
+        
+        .ai-recommend-item-icon {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-gradient);
+            border-radius: 10px;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .ai-recommend-item-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            min-width: 0;
+        }
+        
+        .ai-recommend-item-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .ai-recommend-item-slot {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .ai-recommend-item-status {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            flex-shrink: 0;
+        }
+        
+        .ai-recommend-item.owned .ai-recommend-item-status {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--accent-green);
+        }
+        
+        /* AI推荐入场动画 */
+        @keyframes aiItemEnter {
+            from {
+                opacity: 0;
+                transform: translateX(-20px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+        
+        .ai-recommend-item.ai-item-enter {
+            animation: aiItemEnter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        
+        /* AI推荐空状态增强 */
+        .ai-recommend-items .outfit-empty {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--text-secondary);
+        }
+        
+        .ai-recommend-items .outfit-empty .empty-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+            opacity: 0.6;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .ai-recommend-items .outfit-empty p {
+            font-size: 0.9rem;
+        }
+        
+        /* AI主题按钮增强 */
+        .ai-theme-tab {
+            flex: 1;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+        }
+        
+        .ai-theme-tab[data-theme="tech"].active {
+            background: rgba(0, 212, 255, 0.15);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+        
+        .ai-theme-tab[data-theme="nature"].active {
+            background: rgba(0, 255, 136, 0.15);
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+        
+        .ai-theme-tab[data-theme="chaos"].active {
+            background: rgba(255, 0, 110, 0.15);
+            border-color: var(--accent-pink);
+            color: var(--accent-pink);
+        }
+        
+        .ai-theme-tab[data-theme="balanced"].active {
+            background: rgba(168, 85, 247, 0.15);
+            border-color: var(--epic);
+            color: var(--epic);
+        }
+        
+        /* AI推荐评分增强 */
+        .ai-recommend-total {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .ai-recommend-total span {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--legendary), var(--epic));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* AI推荐应用按钮增强 */
+        .ai-apply-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
         /* 装扮评分系统 */
         .outfit-score-panel {
             background: rgba(255, 255, 255, 0.03);
@@ -12903,6 +13089,7 @@
             startTaglineRotation();
             initHeroStats();
             initSearchFocus();
+            initAIRecommendation();
             
             // 从localStorage恢复联盟选择
             const savedAlliance = localStorage.getItem('user_alliance');
@@ -15867,6 +16054,412 @@
             // 渲染当前部位的服装
             renderClothingGrid();
         }
+        
+        // ==================== AI智能推荐系统 ====================
+        
+        /**
+         * AI推荐状态管理
+         */
+        let aiRecommendState = {
+            currentTheme: 'balanced',     // balanced, tech, nature, chaos
+            currentRecommendation: [],    // 当前推荐结果
+            recommendationScore: 0,       // 推荐方案评分
+            lastGenerated: null           // 上次生成时间
+        };
+        
+        /**
+         * AI推荐主题配置
+         */
+        const AI_THEME_CONFIG = {
+            balanced: {
+                name: '均衡',
+                icon: '⚖️',
+                color: 'var(--accent-cyan)',
+                desc: '综合考虑多种风格，打造平衡美感',
+                priority: ['harmony', 'rarity', 'trend']
+            },
+            tech: {
+                name: '科技风',
+                icon: '⚡',
+                color: 'var(--accent-cyan)',
+                desc: '科技感十足的冷酷造型，彰显未来感',
+                priority: ['alliance', 'rarity', 'trend'],
+                preferredAlliance: 'tech'
+            },
+            nature: {
+                name: '自然风',
+                icon: '🌿',
+                color: 'var(--accent-green)',
+                desc: '自然和谐的绿色风格，贴近生命本源',
+                priority: ['alliance', 'harmony', 'rarity'],
+                preferredAlliance: 'nature'
+            },
+            chaos: {
+                name: '混沌风',
+                icon: '🔥',
+                color: 'var(--accent-pink)',
+                desc: '打破常规的个性搭配，释放内心狂野',
+                priority: ['rarity', 'trend', 'harmony'],
+                preferredAlliance: 'chaos'
+            }
+        };
+        
+        /**
+         * AI推荐算法 - 基于用户偏好和主题生成最优搭配
+         * @param {string} theme - 推荐主题
+         * @returns {Array} 推荐结果
+         */
+        function generateAIRecommendation(theme = 'balanced') {
+            const config = AI_THEME_CONFIG[theme];
+            const slots = ['hair', 'top', 'bottom', 'shoes', 'accessory', 'expression'];
+            const recommendation = [];
+            let totalScore = 0;
+            
+            // 分析用户收藏偏好
+            const userFavAlliances = analyzeUserAlliancePreference();
+            
+            slots.forEach(slot => {
+                // 获取该部位可用的装备
+                let slotItems = outfitItems.filter(item => item.slot === slot);
+                
+                // 如果用户拥有该装备，优先推荐用户已有装备
+                let ownedItems = slotItems.filter(item => state.ownedOutfits.includes(item.id));
+                
+                // 评分函数
+                const scoreItem = (item, idx) => {
+                    let score = 0;
+                    const priority = config.priority;
+                    
+                    // 1. 稀有度评分（基础分）
+                    const rarityScores = { legendary: 40, epic: 30, rare: 20, common: 10 };
+                    score += rarityScores[item.rarity] || 0;
+                    
+                    // 2. 联盟匹配评分
+                    if (item.alliance === config.preferredAlliance) {
+                        score += 25;
+                    } else if (userFavAlliances.includes(item.alliance)) {
+                        score += 15; // 用户偏好联盟加分
+                    }
+                    
+                    // 3. 潮流度评分（基于trendPoints）
+                    const trendBonus = Math.min((item.trendPoints || 0) * 0.5, 20);
+                    score += trendBonus;
+                    
+                    // 4. 和谐度评分（与已选装备的协调性）
+                    if (recommendation.length > 0) {
+                        const harmonyBonus = calculateSlotHarmony(item, recommendation[recommendation.length - 1]);
+                        score += harmonyBonus;
+                    }
+                    
+                    // 5. 用户已有装备加分（鼓励用户使用已有装备）
+                    if (state.ownedOutfits.includes(item.id)) {
+                        score += 10;
+                        // 如果已穿戴则额外加分
+                        if (state.equipped[slot] === item.id) {
+                            score += 15;
+                        }
+                    }
+                    
+                    // 6. 收藏过的装备额外加分
+                    if (isFavorited('outfits', item.id)) {
+                        score += 8;
+                    }
+                    
+                    return score;
+                };
+                
+                // 根据优先级排序并选择最佳装备
+                let bestItem = null;
+                let bestScore = -1;
+                
+                // 优先考虑用户拥有的装备（如果没有则选择最合适的）
+                if (ownedItems.length > 0) {
+                    // 从已有装备中选择最佳
+                    ownedItems.forEach((item, idx) => {
+                        const score = scoreItem(item, idx);
+                        if (score > bestScore) {
+                            bestScore = score;
+                            bestItem = item;
+                        }
+                    });
+                } else {
+                    // 选择可购买的装备
+                    slotItems.forEach((item, idx) => {
+                        const score = scoreItem(item, idx);
+                        if (score > bestScore) {
+                            bestScore = score;
+                            bestItem = item;
+                        }
+                    });
+                }
+                
+                if (bestItem) {
+                    recommendation.push(bestItem);
+                    totalScore += bestScore;
+                }
+            });
+            
+            return {
+                items: recommendation,
+                score: Math.round(totalScore / slots.length),
+                theme: theme
+            };
+        }
+        
+        /**
+         * 分析用户联盟偏好
+         * @returns {Array} 用户偏好联盟列表
+         */
+        function analyzeUserAlliancePreference() {
+            const allianceCount = { tech: 0, nature: 0, chaos: 0 };
+            
+            // 统计收藏的联盟分布
+            state.favorites.items.forEach(favId => {
+                const item = products.find(p => p.id === favId) || 
+                             agents.find(a => a.id === favId);
+                if (item && item.alliance) {
+                    allianceCount[item.alliance] += 2;
+                }
+            });
+            
+            // 统计穿戴的联盟分布
+            Object.values(state.equipped).forEach(itemId => {
+                if (itemId) {
+                    const item = outfitItems.find(i => i.id === itemId);
+                    if (item && item.alliance) {
+                        allianceCount[item.alliance] += 3; // 穿戴权重更高
+                    }
+                }
+            });
+            
+            // 返回排序后的联盟列表
+            return Object.entries(allianceCount)
+                .sort((a, b) => b[1] - a[1])
+                .filter(([_, count]) => count > 0)
+                .map(([alliance]) => alliance);
+        }
+        
+        /**
+         * 计算两个装备之间的和谐度
+         * @param {Object} item1 - 装备1
+         * @param {Object} item2 - 装备2
+         * @returns {number} 和谐度评分
+         */
+        function calculateSlotHarmony(item1, item2) {
+            let score = 0;
+            
+            // 同联盟加分
+            if (item1.alliance && item2.alliance && item1.alliance === item2.alliance) {
+                score += 20;
+            }
+            
+            // 相邻部位和谐度（简化判断）
+            const harmonyPairs = {
+                hair: { top: 5, accessory: 8 },
+                top: { hair: 5, bottom: 10, accessory: 3 },
+                bottom: { top: 10, shoes: 8 },
+                shoes: { bottom: 8 },
+                accessory: { hair: 8, top: 3 },
+                expression: {}
+            };
+            
+            if (harmonyPairs[item1.slot] && harmonyPairs[item1.slot][item2.slot]) {
+                score += harmonyPairs[item1.slot][item2.slot];
+            }
+            
+            // 稀有度匹配度（不要太悬殊）
+            const rarityOrder = ['common', 'rare', 'epic', 'legendary'];
+            const r1 = rarityOrder.indexOf(item1.rarity);
+            const r2 = rarityOrder.indexOf(item2.rarity);
+            const rarityDiff = Math.abs(r1 - r2);
+            
+            if (rarityDiff <= 1) {
+                score += 10; // 稀有度相近加分
+            } else if (rarityDiff === 2) {
+                score += 5;
+            }
+            
+            return score;
+        }
+        
+        /**
+         * 切换AI推荐主题并生成推荐
+         * @param {string} theme - 主题标识
+         */
+        function switchAiTheme(theme) {
+            aiRecommendState.currentTheme = theme;
+            
+            // 更新标签样式
+            document.querySelectorAll('.ai-theme-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.theme === theme);
+            });
+            
+            // 生成推荐
+            const result = generateAIRecommendation(theme);
+            aiRecommendState.currentRecommendation = result.items;
+            aiRecommendState.recommendationScore = result.score;
+            aiRecommendState.lastGenerated = Date.now();
+            
+            // 渲染推荐结果
+            renderAIRecommendation();
+        }
+        
+        /**
+         * 渲染AI推荐结果
+         */
+        function renderAIRecommendation() {
+            const container = document.getElementById('aiRecommendItems');
+            const scoreEl = document.getElementById('aiRecommendScore');
+            const applyBtn = document.getElementById('aiApplyBtn');
+            
+            if (!aiRecommendState.currentRecommendation.length) {
+                container.innerHTML = `
+                    <div class="outfit-empty">
+                        <div class="empty-icon">🤖</div>
+                        <p>选择主题，AI为你生成专属搭配</p>
+                    </div>
+                `;
+                scoreEl.textContent = '0';
+                applyBtn.disabled = true;
+                return;
+            }
+            
+            // 渲染推荐装备卡片
+            container.innerHTML = aiRecommendState.currentRecommendation.map(item => {
+                const isOwned = state.ownedOutfits.includes(item.id);
+                const isEquipped = state.equipped[item.slot] === item.id;
+                
+                return `
+                    <div class="ai-recommend-item ${item.rarity} ${isOwned ? 'owned' : ''}" 
+                         data-item-id="${item.id}">
+                        <div class="ai-recommend-item-icon">${item.icon}</div>
+                        <div class="ai-recommend-item-info">
+                            <span class="ai-recommend-item-name">${item.name}</span>
+                            <span class="ai-recommend-item-slot">${getSlotName(item.slot)}</span>
+                        </div>
+                        <div class="ai-recommend-item-status">
+                            ${isEquipped ? '✓' : isOwned ? '已拥有' : '需购买'}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // 更新评分
+            scoreEl.textContent = aiRecommendState.recommendationScore;
+            
+            // 启用应用按钮
+            applyBtn.disabled = false;
+            
+            // 添加推荐动画
+            container.querySelectorAll('.ai-recommend-item').forEach((el, idx) => {
+                el.style.animationDelay = `${idx * 100}ms`;
+                el.classList.add('ai-item-enter');
+            });
+        }
+        
+        /**
+         * 获取部位名称
+         * @param {string} slot - 部位标识
+         * @returns {string} 中文名称
+         */
+        function getSlotName(slot) {
+            const names = {
+                hair: '发型',
+                top: '上装',
+                bottom: '下装',
+                shoes: '鞋子',
+                accessory: '配饰',
+                expression: '表情'
+            };
+            return names[slot] || slot;
+        }
+        
+        /**
+         * 应用AI推荐方案
+         */
+        function applyAiRecommendation() {
+            if (!aiRecommendState.currentRecommendation.length) return;
+            
+            const theme = aiRecommendState.currentTheme;
+            const config = AI_THEME_CONFIG[theme];
+            let totalCost = 0;
+            const toBuy = [];
+            const toEquip = [];
+            
+            // 计算需要购买和可以直接穿戴的装备
+            aiRecommendState.currentRecommendation.forEach(item => {
+                if (state.equipped[item.slot] === item.id) {
+                    // 已经穿戴，无需操作
+                } else if (state.ownedOutfits.includes(item.id)) {
+                    toEquip.push(item);
+                } else {
+                    totalCost += item.price;
+                    toBuy.push(item);
+                }
+            });
+            
+            // 检查积分是否足够
+            if (totalCost > state.userPoints) {
+                showEmotionToast('积分不足，无法应用推荐方案', 'proud');
+                return;
+            }
+            
+            // 执行购买
+            toBuy.forEach(item => {
+                state.userPoints -= item.price;
+                state.ownedOutfits.push(item.id);
+                showNotification(`购买 ${item.icon} ${item.name}`, 'success');
+            });
+            
+            // 执行穿戴
+            toEquip.forEach(item => {
+                state.equipped[item.slot] = item.id;
+                showNotification(`穿戴 ${item.icon} ${item.name}`, 'success');
+            });
+            
+            // 更新显示
+            updateUserPoints();
+            updateCharacterDisplay();
+            updateTrendDisplay();
+            renderClothingGrid();
+            saveState();
+            
+            // 显示成功反馈
+            const themeConfig = AI_THEME_CONFIG[theme];
+            showEmotionToast(
+                `🎉 ${themeConfig.icon} ${themeConfig.name}搭配已应用！`,
+                'celebrate'
+            );
+            
+            // 显示庆祝动画
+            createParticleCelebration('heavy');
+            
+            // 重新渲染推荐结果
+            renderAIRecommendation();
+        }
+        
+        /**
+         * 获取当前推荐方案的潮流度评分
+         * @returns {number} 潮流度评分
+         */
+        function getAIRecommendationScore() {
+            return aiRecommendState.recommendationScore;
+        }
+        
+        /**
+         * 初始化AI推荐系统
+         */
+        function initAIRecommendation() {
+            // 默认生成均衡推荐
+            const result = generateAIRecommendation('balanced');
+            aiRecommendState.currentRecommendation = result.items;
+            aiRecommendState.recommendationScore = result.score;
+            
+            // 渲染初始状态
+            renderAIRecommendation();
+        }
+        
+        // ==================== END AI智能推荐系统 ====================
         
         /**
          * 渲染服装网格
