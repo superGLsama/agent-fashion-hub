@@ -1335,18 +1335,7 @@
             cursor: pointer;
             position: relative;
             transition: color 0.3s;
-        }
-        
-        .tab-btn::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 2px;
-            background: var(--accent-cyan);
-            transition: width 0.3s;
+            z-index: 1;
         }
         
         .tab-btn:hover {
@@ -1357,8 +1346,83 @@
             color: var(--accent-cyan);
         }
         
-        .tab-btn.active::after {
-            width: 100%;
+        /* Tab下划线滑动指示器 - 游戏UI风格 */
+        .tabs {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding-bottom: 2px;
+            overflow: hidden;
+        }
+        
+        .tab-indicator {
+            position: absolute;
+            bottom: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-pink));
+            border-radius: 3px 3px 0 0;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 0 10px rgba(0, 212, 255, 0.5),
+                0 0 20px rgba(0, 212, 255, 0.3),
+                0 0 30px rgba(0, 212, 255, 0.1);
+        }
+        
+        .tab-indicator::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-cyan);
+        }
+        
+        /* 主题色彩变体 - 根据联盟/风格变化 */
+        .tabs[data-theme="tech"] .tab-indicator {
+            background: linear-gradient(90deg, #00d4ff, #0099cc);
+            box-shadow: 
+                0 0 10px rgba(0, 212, 255, 0.6),
+                0 0 20px rgba(0, 212, 255, 0.3);
+        }
+        
+        .tabs[data-theme="tech"] .tab-indicator::before {
+            background: #00d4ff;
+        }
+        
+        .tabs[data-theme="nature"] .tab-indicator {
+            background: linear-gradient(90deg, #00ff88, #00cc6a);
+            box-shadow: 
+                0 0 10px rgba(0, 255, 136, 0.6),
+                0 0 20px rgba(0, 255, 136, 0.3);
+        }
+        
+        .tabs[data-theme="nature"] .tab-indicator::before {
+            background: #00ff88;
+        }
+        
+        .tabs[data-theme="chaos"] .tab-indicator {
+            background: linear-gradient(90deg, #ff006e, #ff5500);
+            box-shadow: 
+                0 0 10px rgba(255, 0, 110, 0.6),
+                0 0 20px rgba(255, 0, 110, 0.3);
+        }
+        
+        .tabs[data-theme="chaos"] .tab-indicator::before {
+            background: #ff006e;
+        }
+        
+        /* 滑动时的发光效果 */
+        .tab-indicator.sliding {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .tab-indicator.settling {
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         
         /* 产品网格 */
@@ -12587,6 +12651,7 @@
         
         <!-- 标签页 -->
         <div class="tabs">
+            <div class="tab-indicator"></div>
             <button class="tab-btn active" data-tab="items">潮流装备</button>
             <button class="tab-btn" data-tab="agents">Agent 收藏</button>
             <button class="tab-btn" data-tab="outfit">穿搭效果</button>
@@ -19595,12 +19660,74 @@
             });
         });
         
+        // 标签页切换 - 带下划线滑动效果
+        function updateTabIndicator(btn, immediate = false) {
+            const tabsContainer = document.querySelector('.tabs');
+            const indicator = tabsContainer.querySelector('.tab-indicator');
+            if (!indicator) return;
+            
+            // 计算下划线的位置和宽度
+            const btnRect = btn.getBoundingClientRect();
+            const containerRect = tabsContainer.getBoundingClientRect();
+            const left = btnRect.left - containerRect.left;
+            const width = btnRect.width;
+            
+            if (immediate) {
+                // 立即设置位置（无动画）
+                indicator.style.transition = 'none';
+                indicator.style.left = left + 'px';
+                indicator.style.width = width + 'px';
+                // 强制重绘
+                indicator.offsetHeight;
+                indicator.style.transition = '';
+            } else {
+                // 带动画的滑动效果
+                indicator.classList.remove('settling');
+                indicator.classList.add('sliding');
+                indicator.style.left = left + 'px';
+                indicator.style.width = width + 'px';
+                
+                // 动画结束后恢复弹性效果
+                setTimeout(() => {
+                    indicator.classList.remove('sliding');
+                    indicator.classList.add('settling');
+                }, 250);
+            }
+        }
+        
+        // 初始化下划线位置
+        function initTabIndicator() {
+            const tabsContainer = document.querySelector('.tabs');
+            const activeBtn = tabsContainer.querySelector('.tab-btn.active');
+            if (activeBtn) {
+                updateTabIndicator(activeBtn, true);
+            }
+        }
+        
         // 标签页切换
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 state.currentTab = btn.dataset.tab;
+                
+                // 更新下划线位置
+                updateTabIndicator(btn);
+                
+                // 根据Tab更新主题色彩
+                const tabsContainer = document.querySelector('.tabs');
+                if (state.currentTab === 'customize') {
+                    // 装扮系统根据当前穿戴的联盟来调整颜色
+                    const equipped = state.equippedItems.filter(id => id);
+                    if (equipped.length > 0) {
+                        const item = products.find(p => p.id === equipped[0]) || agents.find(a => a.id === equipped[0]);
+                        if (item) {
+                            tabsContainer.dataset.theme = item.alliance || 'default';
+                        }
+                    }
+                } else {
+                    delete tabsContainer.dataset.theme;
+                }
                 
                 // 控制内容显示
                 const productsGrid = document.getElementById('productsGrid');
@@ -19736,7 +19863,20 @@
         loadSeasonState(); // 加载赛季系统状态
         initLeaderboardEnhancement(); // 初始化排行榜增强系统
         initHomepageV2(); // 初始化首页2.0功能
+        initTabIndicator(); // 初始化Tab下划线指示器
         setTimeout(showMissCheckinReminder, 3000); // 3秒后检查漏签提醒
+        
+        // 窗口大小变化时重新计算下划线位置
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                const activeBtn = document.querySelector('.tab-btn.active');
+                if (activeBtn) {
+                    updateTabIndicator(activeBtn, true);
+                }
+            }, 100);
+        });
         
         // 恢复搜索框状态
         if (state.currentSearch) {
