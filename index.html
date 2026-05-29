@@ -693,7 +693,7 @@
             to { transform: scaleX(1); }
         }
         
-        /* 首页数据看板 */
+        /* 首页数据看板2.0增强 */
         .hero-stats-board {
             display: flex;
             justify-content: center;
@@ -703,6 +703,30 @@
             background: rgba(255, 255, 255, 0.03);
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-stats-board::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+            opacity: 0.5;
+        }
+        
+        /* 数据看板更新动画 */
+        @keyframes statsPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes statsGlow {
+            0%, 100% { box-shadow: 0 0 5px rgba(0, 212, 255, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.6); }
         }
         
         .stat-item {
@@ -711,6 +735,21 @@
             transition: all 0.3s ease;
             padding: 0.5rem 1rem;
             border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 0, 110, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s;
+            border-radius: 12px;
         }
         
         .stat-item:hover {
@@ -718,26 +757,208 @@
             transform: translateY(-3px);
         }
         
+        .stat-item:hover::before {
+            opacity: 1;
+        }
+        
+        .stat-item.updating {
+            animation: statsPulse 0.5s ease, statsGlow 0.5s ease;
+        }
+        
         .stat-value {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--theme-primary, var(--accent-cyan));
+            position: relative;
+            display: inline-block;
+            min-width: 60px;
+        }
+        
+        /* 数字滚动容器 */
+        .stat-number-container {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+            height: 2rem;
+        }
+        
+        .stat-number-roll {
+            position: absolute;
+            left: 0;
+            right: 0;
+            text-align: center;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .stat-number-digit {
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--theme-primary, var(--accent-cyan));
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .stat-number-digit.changing {
+            animation: digitBounce 0.4s ease;
+        }
+        
+        @keyframes digitBounce {
+            0% { transform: translateY(0); }
+            25% { transform: translateY(-100%); }
+            50% { transform: translateY(100%); }
+            75% { transform: translateY(-50%); }
+            100% { transform: translateY(0); }
         }
         
         .stat-label {
             font-size: 0.8rem;
             color: var(--text-secondary);
             margin-top: 0.3rem;
+            position: relative;
         }
         
         .stat-trend {
             font-size: 0.7rem;
             margin-top: 0.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
         }
         
         .stat-trend.up { color: var(--accent-green); }
         .stat-trend.down { color: var(--accent-pink); }
+        .stat-trend.neutral { color: var(--text-secondary); }
+        
+        /* 趋势动画箭头 */
+        .stat-trend-arrow {
+            display: inline-block;
+            animation: trendPulse 1.5s ease infinite;
+        }
+        
+        @keyframes trendPulse {
+            0%, 100% { opacity: 1; transform: translateY(0); }
+            50% { opacity: 0.6; transform: translateY(-2px); }
+        }
+        
+        /* 悬浮详细信息 */
+        .stat-tooltip {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 0.8rem 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 100;
+            min-width: 180px;
+            pointer-events: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stat-item:hover .stat-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(15px);
+        }
+        
+        .stat-tooltip-title {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-tooltip-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+        
+        .stat-tooltip-change {
+            font-size: 0.7rem;
+            margin-top: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .stat-tooltip-change.positive { color: var(--accent-green); }
+        .stat-tooltip-change.negative { color: var(--accent-pink); }
+        
+        /* 实时更新指示器 */
+        .live-indicator {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.65rem;
+            color: var(--accent-green);
+        }
+        
+        .live-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: livePulse 1.5s ease infinite;
+        }
+        
+        @keyframes livePulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+        
+        /* 数据变化提示 */
+        .stat-change-badge {
+            position: absolute;
+            top: 0.3rem;
+            right: 0.3rem;
+            font-size: 0.6rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 8px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-change-badge.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .stat-change-badge.up {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--accent-green);
+        }
+        
+        .stat-change-badge.down {
+            background: rgba(255, 0, 110, 0.2);
+            color: var(--accent-pink);
+        }
+        
+        /* 第四个数据卡片 - 今日活跃 */
+        .stat-item.active-users::after {
+            content: '🔥';
+            position: absolute;
+            top: 0.3rem;
+            right: 0.3rem;
+            font-size: 0.7rem;
+            animation: fireGlow 2s ease infinite;
+        }
+        
+        @keyframes fireGlow {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.1); filter: brightness(1.2); }
+        }
         
         /* 首次访问引导 */
         .onboarding-overlay {
@@ -12492,20 +12713,97 @@
                     <div class="hero-tagline" data-index="4">探索三大阵营，找到你的归属</div>
                 </div>
                 
-                <!-- 首页数据看板 -->
+                <!-- 首页数据看板2.0增强 -->
                 <div class="hero-stats-board" id="heroStatsBoard">
+                    <!-- 实时更新指示器 -->
+                    <div class="live-indicator">
+                        <div class="live-dot"></div>
+                        <span>实时</span>
+                    </div>
+                    
                     <div class="stat-item" onclick="switchTab('equipment')">
-                        <div class="stat-value" id="totalEquipmentCount">156</div>
+                        <div class="stat-change-badge" id="statBadge0"></div>
+                        <div class="stat-number-container">
+                            <span class="stat-value" id="totalEquipmentCount">156</span>
+                        </div>
                         <div class="stat-label">装备总数</div>
+                        <div class="stat-trend up">
+                            <span class="stat-trend-arrow">↑</span>
+                            <span>本周+12</span>
+                        </div>
+                        <!-- 悬浮详细信息 -->
+                        <div class="stat-tooltip">
+                            <div class="stat-tooltip-title">装备数据详情</div>
+                            <div class="stat-tooltip-value" id="tooltipEquipValue">156</div>
+                            <div class="stat-tooltip-change positive" id="tooltipEquipChange">
+                                <span>↑</span>
+                                <span>较昨日 +3</span>
+                            </div>
+                        </div>
                     </div>
+                    
                     <div class="stat-item" onclick="showToast('🎉 今日新上架5件装备！', 'celebrate')">
-                        <div class="stat-value" id="newEquipmentCount">5</div>
+                        <div class="stat-change-badge" id="statBadge1"></div>
+                        <div class="stat-number-container">
+                            <span class="stat-value" id="newEquipmentCount">5</span>
+                        </div>
                         <div class="stat-label">今日上新</div>
-                        <div class="stat-trend up">↑ 热度飙升</div>
+                        <div class="stat-trend up">
+                            <span class="stat-trend-arrow">🔥</span>
+                            <span>热度飙升</span>
+                        </div>
+                        <!-- 悬浮详细信息 -->
+                        <div class="stat-tooltip">
+                            <div class="stat-tooltip-title">上新数据详情</div>
+                            <div class="stat-tooltip-value" id="tooltipNewValue">5</div>
+                            <div class="stat-tooltip-change positive" id="tooltipNewChange">
+                                <span>↑</span>
+                                <span>较昨日 +2</span>
+                            </div>
+                        </div>
                     </div>
+                    
                     <div class="stat-item" onclick="toggleLeaderboardPanel()">
-                        <div class="stat-value" id="onlineUserCount">888</div>
+                        <div class="stat-change-badge" id="statBadge2"></div>
+                        <div class="stat-number-container">
+                            <span class="stat-value" id="onlineUserCount">888</span>
+                        </div>
                         <div class="stat-label">在线探索者</div>
+                        <div class="stat-trend neutral">
+                            <span class="stat-trend-arrow">👥</span>
+                            <span>活跃中</span>
+                        </div>
+                        <!-- 悬浮详细信息 -->
+                        <div class="stat-tooltip">
+                            <div class="stat-tooltip-title">在线数据详情</div>
+                            <div class="stat-tooltip-value" id="tooltipOnlineValue">888</div>
+                            <div class="stat-tooltip-change positive" id="tooltipOnlineChange">
+                                <span>↑</span>
+                                <span>较昨日 +45</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 第四个数据卡片 - 今日活跃 -->
+                    <div class="stat-item active-users" onclick="openDailyActivity()">
+                        <div class="stat-change-badge" id="statBadge3"></div>
+                        <div class="stat-number-container">
+                            <span class="stat-value" id="dailyActivityCount">23</span>
+                        </div>
+                        <div class="stat-label">今日活跃</div>
+                        <div class="stat-trend up">
+                            <span class="stat-trend-arrow">⚡</span>
+                            <span>任务完成</span>
+                        </div>
+                        <!-- 悬浮详细信息 -->
+                        <div class="stat-tooltip">
+                            <div class="stat-tooltip-title">今日任务进度</div>
+                            <div class="stat-tooltip-value" id="tooltipActivityValue">23</div>
+                            <div class="stat-tooltip-change positive" id="tooltipActivityChange">
+                                <span>↑</span>
+                                <span>今日已做 23/30</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -13155,11 +13453,306 @@
             initHeroStats();
             initSearchFocus();
             initAIRecommendation();
+            initStatsBoardEnhancement(); // 初始化数据看板增强
             
             // 从localStorage恢复联盟选择
             const savedAlliance = localStorage.getItem('user_alliance');
             if (savedAlliance && savedAlliance !== 'all') {
                 switchAlliance(savedAlliance);
+            }
+        }
+        
+        // ==================== 首页数据看板2.0增强 ====================
+        
+        // 数据看板状态管理
+        let statsBoardState = {
+            currentValues: {
+                equipment: 156,
+                newEquipment: 5,
+                onlineUsers: 888,
+                dailyActivity: 23
+            },
+            previousValues: {
+                equipment: 156,
+                newEquipment: 5,
+                onlineUsers: 888,
+                dailyActivity: 23
+            },
+            baseValues: {
+                equipment: 156,
+                newEquipment: 5,
+                onlineUsers: 888,
+                dailyActivity: 23
+            },
+            trends: {
+                equipment: 12,
+                newEquipment: 2,
+                onlineUsers: 45,
+                dailyActivity: 5
+            }
+        };
+        
+        // 初始化数据看板增强功能
+        function initStatsBoardEnhancement() {
+            // 加载保存的数据
+            loadStatsState();
+            
+            // 初始化显示
+            updateStatsDisplay();
+            
+            // 启动实时数据模拟
+            startStatsSimulation();
+        }
+        
+        // 加载保存的数据状态
+        function loadStatsState() {
+            const saved = localStorage.getItem('statsBoardState');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    statsBoardState.currentValues = parsed.currentValues || statsBoardState.currentValues;
+                    statsBoardState.baseValues = parsed.baseValues || statsBoardState.baseValues;
+                } catch (e) {
+                    console.log('加载数据看板状态失败，使用默认值');
+                }
+            }
+            
+            // 从用户数据同步装备数量
+            const savedFavorites = localStorage.getItem('favorites');
+            if (savedFavorites) {
+                try {
+                    const favorites = JSON.parse(savedFavorites);
+                    statsBoardState.currentValues.equipment = 156 + (favorites.length || 0);
+                    statsBoardState.baseValues.equipment = statsBoardState.currentValues.equipment;
+                } catch (e) {}
+            }
+            
+            // 从签到数据同步活跃天数
+            const checkinState = localStorage.getItem('checkinState');
+            if (checkinState) {
+                try {
+                    const parsed = JSON.parse(checkinState);
+                    statsBoardState.currentValues.dailyActivity = parsed.totalCheckins || 0;
+                    statsBoardState.baseValues.dailyActivity = statsBoardState.currentValues.dailyActivity;
+                } catch (e) {}
+            }
+            
+            // 更新显示
+            updateStatsDisplay();
+        }
+        
+        // 保存数据状态
+        function saveStatsState() {
+            localStorage.setItem('statsBoardState', JSON.stringify({
+                currentValues: statsBoardState.currentValues,
+                baseValues: statsBoardState.baseValues
+            }));
+        }
+        
+        // 更新统计数据显示
+        function updateStatsDisplay() {
+            // 更新装备总数
+            const equipEl = document.getElementById('totalEquipmentCount');
+            if (equipEl) {
+                animateStatNumber(equipEl, statsBoardState.currentValues.equipment);
+            }
+            
+            // 更新今日上新
+            const newEquipEl = document.getElementById('newEquipmentCount');
+            if (newEquipEl) {
+                animateStatNumber(newEquipEl, statsBoardState.currentValues.newEquipment);
+            }
+            
+            // 更新在线用户
+            const onlineEl = document.getElementById('onlineUserCount');
+            if (onlineEl) {
+                animateStatNumber(onlineEl, statsBoardState.currentValues.onlineUsers);
+            }
+            
+            // 更新今日活跃
+            const activityEl = document.getElementById('dailyActivityCount');
+            if (activityEl) {
+                animateStatNumber(activityEl, statsBoardState.currentValues.dailyActivity);
+            }
+            
+            // 更新悬浮提示数据
+            updateStatsTooltips();
+        }
+        
+        // 数字动画效果
+        function animateStatNumber(element, targetValue) {
+            if (!element) return;
+            
+            const currentText = element.textContent;
+            const currentValue = parseInt(currentText.replace(/[^0-9]/g, '')) || 0;
+            
+            if (currentValue === targetValue) return;
+            
+            // 添加更新动画类
+            element.classList.add('changing');
+            setTimeout(() => element.classList.remove('changing'), 400);
+            
+            // 数字滚动动画
+            const duration = 400;
+            const startTime = performance.now();
+            
+            function updateNumber(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // 使用easeOutExpo缓动
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                const currentNumber = Math.round(currentValue + (targetValue - currentValue) * easeProgress);
+                
+                element.textContent = currentNumber;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateNumber);
+                } else {
+                    element.textContent = targetValue;
+                }
+            }
+            
+            requestAnimationFrame(updateNumber);
+        }
+        
+        // 更新悬浮提示数据
+        function updateStatsTooltips() {
+            // 装备数据
+            const equipTooltip = document.getElementById('tooltipEquipValue');
+            if (equipTooltip) {
+                equipTooltip.textContent = statsBoardState.currentValues.equipment;
+            }
+            
+            // 上新数据
+            const newTooltip = document.getElementById('tooltipNewValue');
+            if (newTooltip) {
+                newTooltip.textContent = statsBoardState.currentValues.newEquipment;
+            }
+            
+            // 在线数据
+            const onlineTooltip = document.getElementById('tooltipOnlineValue');
+            if (onlineTooltip) {
+                onlineTooltip.textContent = statsBoardState.currentValues.onlineUsers;
+            }
+            
+            // 活跃数据
+            const activityTooltip = document.getElementById('tooltipActivityValue');
+            if (activityTooltip) {
+                activityTooltip.textContent = statsBoardState.currentValues.dailyActivity;
+            }
+        }
+        
+        // 显示数据变化提示
+        function showStatChangeBadge(index, change, isPositive) {
+            const badge = document.getElementById(`statBadge${index}`);
+            if (!badge) return;
+            
+            badge.textContent = (isPositive ? '+' : '') + change;
+            badge.className = 'stat-change-badge show ' + (isPositive ? 'up' : 'down');
+            
+            // 3秒后隐藏
+            setTimeout(() => {
+                badge.classList.remove('show');
+            }, 3000);
+        }
+        
+        // 启动实时数据模拟
+        function startStatsSimulation() {
+            // 随机更新在线用户数
+            setInterval(() => {
+                const change = Math.floor(Math.random() * 20) - 5;
+                const newValue = Math.max(800, Math.min(1200, statsBoardState.currentValues.onlineUsers + change));
+                
+                if (newValue !== statsBoardState.currentValues.onlineUsers) {
+                    // 保存旧值
+                    statsBoardState.previousValues.onlineUsers = statsBoardState.currentValues.onlineUsers;
+                    statsBoardState.currentValues.onlineUsers = newValue;
+                    
+                    // 添加动画效果
+                    const onlineStat = document.querySelector('.stat-item:nth-child(3)');
+                    if (onlineStat) {
+                        onlineStat.classList.add('updating');
+                        setTimeout(() => onlineStat.classList.remove('updating'), 500);
+                    }
+                    
+                    // 更新显示
+                    const onlineEl = document.getElementById('onlineUserCount');
+                    animateStatNumber(onlineEl, newValue);
+                    
+                    // 更新悬浮提示
+                    const tooltipOnlineChange = document.getElementById('tooltipOnlineChange');
+                    if (tooltipOnlineChange) {
+                        const diff = newValue - statsBoardState.baseValues.onlineUsers;
+                        tooltipOnlineChange.className = 'stat-tooltip-change ' + (diff >= 0 ? 'positive' : 'negative');
+                        tooltipOnlineChange.innerHTML = `<span>${diff >= 0 ? '↑' : '↓'}</span><span>较昨日 ${diff >= 0 ? '+' : ''}${diff}</span>`;
+                    }
+                    
+                    // 显示变化提示
+                    showStatChangeBadge(2, Math.abs(change), change > 0);
+                }
+            }, 8000); // 每8秒更新一次
+            
+            // 偶尔更新今日上新
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    const newValue = statsBoardState.currentValues.newEquipment + 1;
+                    statsBoardState.currentValues.newEquipment = newValue;
+                    
+                    // 添加动画效果
+                    const newStat = document.querySelector('.stat-item:nth-child(2)');
+                    if (newStat) {
+                        newStat.classList.add('updating');
+                        setTimeout(() => newStat.classList.remove('updating'), 500);
+                    }
+                    
+                    // 更新显示
+                    const newEl = document.getElementById('newEquipmentCount');
+                    animateStatNumber(newEl, newValue);
+                    
+                    // 显示变化提示
+                    showStatChangeBadge(1, '+1', true);
+                    
+                    // 发送通知
+                    showEmotionToast('🎉 新装备上架啦！快去看看吧~', 'celebrate');
+                    
+                    // 保存状态
+                    saveStatsState();
+                }
+            }, 30000); // 每30秒有30%概率更新
+        }
+        
+        // 打开今日活跃面板
+        function openDailyActivity() {
+            showEmotionToast('🎯 今日任务：完成 23/30 | 继续加油！', 'encourage');
+        }
+        
+        // 更新活跃数据（供其他模块调用）
+        function updateDailyActivityCount(count) {
+            const activityEl = document.getElementById('dailyActivityCount');
+            if (activityEl) {
+                animateStatNumber(activityEl, count);
+                statsBoardState.currentValues.dailyActivity = count;
+                saveStatsState();
+            }
+        }
+        
+        // 更新装备数量（供其他模块调用）
+        function updateEquipmentCount(count) {
+            const equipEl = document.getElementById('totalEquipmentCount');
+            if (equipEl) {
+                const oldValue = statsBoardState.currentValues.equipment;
+                animateStatNumber(equipEl, count);
+                statsBoardState.currentValues.equipment = count;
+                statsBoardState.baseValues.equipment = count;
+                
+                // 显示变化提示
+                const change = count - oldValue;
+                if (change > 0) {
+                    showStatChangeBadge(0, '+' + change, true);
+                }
+                
+                saveStatsState();
             }
         }
         
