@@ -11357,6 +11357,309 @@
         width: 24px;
         border-radius: 4px;
     }
+
+        /* ==================== 首页快捷操作悬浮球系统 ==================== */
+        
+        /* 悬浮球容器 */
+        .quick-fab-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        
+        /* 悬浮球菜单 */
+        .quick-fab-menu {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(20px) scale(0.8);
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .quick-fab-menu.open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+        
+        /* 悬浮球菜单项 */
+        .quick-fab-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.6rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            white-space: nowrap;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .quick-fab-item:hover {
+            transform: translateX(-5px) scale(1.05);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .quick-fab-item:active {
+            transform: translateX(-5px) scale(0.98);
+        }
+        
+        .quick-fab-item-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        
+        .quick-fab-item-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .quick-fab-item-badge {
+            background: var(--accent-pink);
+            color: #fff;
+            font-size: 0.65rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 10px;
+            font-weight: 700;
+            margin-left: 0.5rem;
+        }
+        
+        /* 各类型菜单项配色 */
+        .quick-fab-item.checkin .quick-fab-item-icon {
+            background: linear-gradient(135deg, var(--accent-cyan), #0099cc);
+        }
+        .quick-fab-item.checkin:hover {
+            border-color: rgba(0, 212, 255, 0.5);
+            box-shadow: 0 8px 30px rgba(0, 212, 255, 0.2);
+        }
+        
+        .quick-fab-item.favorite .quick-fab-item-icon {
+            background: linear-gradient(135deg, var(--accent-pink), #cc0055);
+        }
+        .quick-fab-item.favorite:hover {
+            border-color: rgba(255, 0, 110, 0.5);
+            box-shadow: 0 8px 30px rgba(255, 0, 110, 0.2);
+        }
+        
+        .quick-fab-item.challenge .quick-fab-item-icon {
+            background: linear-gradient(135deg, var(--legendary), #cc8800);
+        }
+        .quick-fab-item.challenge:hover {
+            border-color: rgba(245, 158, 11, 0.5);
+            box-shadow: 0 8px 30px rgba(245, 158, 11, 0.2);
+        }
+        
+        .quick-fab-item.ai .quick-fab-item-icon {
+            background: linear-gradient(135deg, var(--epic), #8800cc);
+        }
+        .quick-fab-item.ai:hover {
+            border-color: rgba(168, 85, 247, 0.5);
+            box-shadow: 0 8px 30px rgba(168, 85, 247, 0.2);
+        }
+        
+        .quick-fab-item.pk .quick-fab-item-icon {
+            background: linear-gradient(135deg, var(--accent-green), #00cc66);
+        }
+        .quick-fab-item.pk:hover {
+            border-color: rgba(0, 255, 136, 0.5);
+            box-shadow: 0 8px 30px rgba(0, 255, 136, 0.2);
+        }
+        
+        .quick-fab-item.rank .quick-fab-item-icon {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+        }
+        .quick-fab-item.rank:hover {
+            border-color: rgba(255, 107, 107, 0.5);
+            box-shadow: 0 8px 30px rgba(255, 107, 107, 0.2);
+        }
+        
+        .quick-fab-item.event .quick-fab-item-icon {
+            background: linear-gradient(135deg, #ffd93d, #ff9500);
+        }
+        .quick-fab-item.event:hover {
+            border-color: rgba(255, 217, 61, 0.5);
+            box-shadow: 0 8px 30px rgba(255, 217, 61, 0.2);
+        }
+        
+        /* 悬浮球主按钮 */
+        .quick-fab-main {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--epic), var(--accent-cyan));
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 
+                0 4px 20px rgba(168, 85, 247, 0.4),
+                0 0 40px rgba(168, 85, 247, 0.2);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .quick-fab-main::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+            border-radius: 50%;
+        }
+        
+        .quick-fab-main:hover {
+            transform: scale(1.1);
+            box-shadow: 
+                0 8px 30px rgba(168, 85, 247, 0.5),
+                0 0 60px rgba(168, 85, 247, 0.3);
+        }
+        
+        .quick-fab-main:active {
+            transform: scale(0.95);
+        }
+        
+        .quick-fab-main.open {
+            transform: rotate(45deg);
+            background: linear-gradient(135deg, var(--accent-pink), var(--legendary));
+        }
+        
+        .quick-fab-main.open:hover {
+            transform: rotate(45deg) scale(1.1);
+        }
+        
+        /* 悬浮球脉冲动画 */
+        .quick-fab-main::after {
+            content: '';
+            position: absolute;
+            inset: -10px;
+            border-radius: 50%;
+            border: 2px solid var(--epic);
+            opacity: 0;
+            animation: fabPulse 2s ease-out infinite;
+        }
+        
+        .quick-fab-menu.open + .quick-fab-main::after {
+            opacity: 0;
+        }
+        
+        @keyframes fabPulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+        
+        /* 悬浮球遮罩 */
+        .quick-fab-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .quick-fab-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* 悬浮球提示气泡 */
+        .quick-fab-tooltip {
+            position: absolute;
+            right: 70px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .quick-fab-main:hover .quick-fab-tooltip {
+            opacity: 1;
+            right: 75px;
+        }
+        
+        /* 入场动画 */
+        .quick-fab-item {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        
+        .quick-fab-menu.open .quick-fab-item:nth-child(1) {
+            animation: fabItemEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.05s forwards;
+        }
+        .quick-fab-menu.open .quick-fab-item:nth-child(2) {
+            animation: fabItemEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards;
+        }
+        .quick-fab-menu.open .quick-fab-item:nth-child(3) {
+            animation: fabItemEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s forwards;
+        }
+        .quick-fab-menu.open .quick-fab-item:nth-child(4) {
+            animation: fabItemEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
+        }
+        .quick-fab-menu.open .quick-fab-item:nth-child(5) {
+            animation: fabItemEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.25s forwards;
+        }
+        .quick-fab-menu.open .quick-fab-item:nth-child(6) {
+            animation: fabItemEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s forwards;
+        }
+        .quick-fab-menu.open .quick-fab-item:nth-child(7) {
+            animation: fabItemEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.35s forwards;
+        }
+        
+        @keyframes fabItemEnter {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* 移动端隐藏 */
+        @media (max-width: 768px) {
+            .quick-fab-container {
+                display: none;
+            }
+        }
+
 </style>
 </head>
 <body>
@@ -20457,6 +20760,7 @@
         initLeaderboardEnhancement(); // 初始化排行榜增强系统
         initHomepageV2(); // 初始化首页2.0功能
         initTabIndicator(); // 初始化Tab下划线指示器
+        initQuickFab(); // 初始化快捷操作悬浮球
         setTimeout(showMissCheckinReminder, 3000); // 3秒后检查漏签提醒
         
         // 窗口大小变化时重新计算下划线位置
@@ -24611,7 +24915,157 @@
             };
         }
         
-    </script>
+    
+
+        // ==================== 首页快捷操作悬浮球系统 ====================
+        
+        let quickFabState = {
+            isOpen: false
+        };
+        
+        // 切换悬浮球菜单
+        function toggleQuickFab() {
+            quickFabState.isOpen = !quickFabState.isOpen;
+            const menu = document.getElementById('quickFabMenu');
+            const main = document.getElementById('quickFabMain');
+            const overlay = document.getElementById('quickFabOverlay');
+            
+            if (quickFabState.isOpen) {
+                menu.classList.add('open');
+                main.classList.add('open');
+                overlay.classList.add('show');
+            } else {
+                menu.classList.remove('open');
+                main.classList.remove('open');
+                overlay.classList.remove('show');
+            }
+        }
+        
+        // 关闭悬浮球菜单
+        function closeQuickFab() {
+            if (quickFabState.isOpen) {
+                quickFabState.isOpen = false;
+                const menu = document.getElementById('quickFabMenu');
+                const main = document.getElementById('quickFabMain');
+                const overlay = document.getElementById('quickFabOverlay');
+                
+                menu.classList.remove('open');
+                main.classList.remove('open');
+                overlay.classList.remove('show');
+            }
+        }
+        
+        // 更新悬浮球徽章数据
+        function updateQuickFabBadges() {
+            // 更新收藏数量徽章
+            const fabFavBadge = document.getElementById('fabFavBadge');
+            if (fabFavBadge) {
+                const totalFavorites = (userState.favoriteItems?.length || 0) + 
+                                       (userState.favoriteAgents?.length || 0) + 
+                                       (userState.favoriteCosmetics?.length || 0);
+                fabFavBadge.textContent = totalFavorites;
+                fabFavBadge.style.display = totalFavorites > 0 ? 'inline' : 'none';
+            }
+        }
+        
+        // 悬浮球快捷操作 - 签到
+        function quickActionCheckin() {
+            closeQuickFab();
+            // 检查今日是否已签到
+            const today = new Date().toDateString();
+            const lastCheckin = localStorage.getItem('lastCheckinDate');
+            
+            if (lastCheckin === today) {
+                showEmotionToast('📅 今日已签到，明天再来吧~', 'encourage');
+            } else {
+                toggleCheckinPanel();
+            }
+        }
+        
+        // 悬浮球快捷操作 - 收藏
+        function quickActionFavorite() {
+            closeQuickFab();
+            toggleFavoritesPanel();
+        }
+        
+        // 悬浮球快捷操作 - 挑战
+        function quickActionChallenge() {
+            closeQuickFab();
+            openChallengePanel();
+        }
+        
+        // 悬浮球快捷操作 - AI推荐
+        function quickActionAI() {
+            closeQuickFab();
+            // 切换到装扮系统Tab并打开AI推荐
+            switchTab('customize');
+            // 延迟打开AI推荐面板
+            setTimeout(() => {
+                const aiBtn = document.querySelector('[onclick*="switchAiTheme"]');
+                if (aiBtn) {
+                    aiBtn.click();
+                } else {
+                    // 如果在装扮Tab，尝试滚动到AI推荐区域
+                    const aiRecommendSection = document.querySelector('.ai-recommend-section');
+                    if (aiRecommendSection) {
+                        aiRecommendSection.scrollIntoView({ behavior: 'smooth' });
+                        showEmotionToast('✨ AI智能推荐已准备好，点击使用~', 'celebrate');
+                    } else {
+                        showEmotionToast('✨ 请在装扮系统中使用AI推荐功能', 'proud');
+                    }
+                }
+            }, 300);
+        }
+        
+        // 悬浮球快捷操作 - PK对战
+        function quickActionPK() {
+            closeQuickFab();
+            // 切换到装扮系统Tab
+            switchTab('customize');
+            setTimeout(() => {
+                // 尝试打开PK面板
+                if (typeof openOutfitPKPanel === 'function') {
+                    showEmotionToast('⚔️ 正在加载PK对战...', 'surprise');
+                    // 检查是否有保存的方案
+                    const schemes = JSON.parse(localStorage.getItem('outfitSchemes') || '[]');
+                    if (schemes.length > 0) {
+                        openOutfitPKPanel(schemes[0].id);
+                    } else {
+                        showEmotionToast('⚔️ 请先保存一套穿搭方案再来PK吧~', 'encourage');
+                    }
+                } else {
+                    showEmotionToast('⚔️ 请在装扮系统中使用PK对战功能', 'proud');
+                }
+            }, 300);
+        }
+        
+        // 悬浮球快捷操作 - 排行榜
+        function quickActionRank() {
+            closeQuickFab();
+            toggleLeaderboardPanel();
+        }
+        
+        // 悬浮球快捷操作 - 活动
+        function quickActionEvent() {
+            closeQuickFab();
+            toggleEventPanel();
+        }
+        
+        // 初始化悬浮球系统
+        function initQuickFab() {
+            updateQuickFabBadges();
+            
+            // 点击其他区域自动关闭
+            document.addEventListener('click', (e) => {
+                const container = document.getElementById('quickFabContainer');
+                const main = document.getElementById('quickFabMain');
+                if (container && main && !container.contains(e.target)) {
+                    closeQuickFab();
+                }
+            });
+        }
+
+</script>
     
     <!-- 赛季战报弹窗 -->
     <div class="season-report-modal" id="seasonReportModal">
@@ -24779,6 +25233,48 @@
         </div>
     </div>
     
+
+    
+    <!-- 首页快捷操作悬浮球 -->
+    <div class="quick-fab-overlay" id="quickFabOverlay" onclick="toggleQuickFab()"></div>
+    <div class="quick-fab-container" id="quickFabContainer">
+        <div class="quick-fab-menu" id="quickFabMenu">
+            <div class="quick-fab-item checkin" onclick="quickActionCheckin()">
+                <div class="quick-fab-item-icon">📅</div>
+                <span class="quick-fab-item-label">快速签到</span>
+            </div>
+            <div class="quick-fab-item favorite" onclick="quickActionFavorite()">
+                <div class="quick-fab-item-icon">❤️</div>
+                <span class="quick-fab-item-label">我的收藏</span>
+                <span class="quick-fab-item-badge" id="fabFavBadge">0</span>
+            </div>
+            <div class="quick-fab-item challenge" onclick="quickActionChallenge()">
+                <div class="quick-fab-item-icon">🎯</div>
+                <span class="quick-fab-item-label">每日挑战</span>
+            </div>
+            <div class="quick-fab-item ai" onclick="quickActionAI()">
+                <div class="quick-fab-item-icon">✨</div>
+                <span class="quick-fab-item-label">AI推荐</span>
+            </div>
+            <div class="quick-fab-item pk" onclick="quickActionPK()">
+                <div class="quick-fab-item-icon">⚔️</div>
+                <span class="quick-fab-item-label">穿搭PK</span>
+            </div>
+            <div class="quick-fab-item rank" onclick="quickActionRank()">
+                <div class="quick-fab-item-icon">🏆</div>
+                <span class="quick-fab-item-label">排行榜</span>
+            </div>
+            <div class="quick-fab-item event" onclick="quickActionEvent()">
+                <div class="quick-fab-item-icon">🎁</div>
+                <span class="quick-fab-item-label">限时活动</span>
+            </div>
+        </div>
+        <button class="quick-fab-main" id="quickFabMain" onclick="toggleQuickFab()">
+            <span>+</span>
+            <div class="quick-fab-tooltip">快捷操作</div>
+        </button>
+    </div>
+
 </body>
 </html>
     
