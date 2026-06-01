@@ -11279,7 +11279,256 @@
                 bottom: 80px;
             }
         }
-    </style>
+    
+    /* ==================== 儿童节主题彩蛋 ==================== */
+    .children-day-easter-egg {
+        position: relative;
+        margin: 2rem 0;
+        padding: 2rem;
+        background: linear-gradient(135deg, 
+            rgba(255, 182, 193, 0.15) 0%, 
+            rgba(255, 218, 185, 0.1) 50%,
+            rgba(173, 216, 230, 0.15) 100%);
+        border: 2px solid rgba(255, 182, 193, 0.4);
+        border-radius: 24px;
+        overflow: hidden;
+        animation: cdFadeIn 0.8s ease forwards;
+    }
+    
+    @keyframes cdFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px) scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+    
+    .cd-decorations {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        overflow: hidden;
+    }
+    
+    .cd-balloon {
+        position: absolute;
+        font-size: 2rem;
+        top: -2rem;
+        left: var(--x);
+        animation: cdBalloonFloat 4s ease-in-out infinite;
+        animation-delay: var(--delay);
+        opacity: 0.8;
+    }
+    
+    @keyframes cdBalloonFloat {
+        0%, 100% {
+            transform: translateY(0) rotate(-5deg);
+        }
+        50% {
+            transform: translateY(-15px) rotate(5deg);
+        }
+    }
+    
+    .cd-confetti {
+        position: absolute;
+        font-size: 1.5rem;
+        animation: cdConfettiFall 3s ease-in-out infinite;
+    }
+    
+    .cd-confetti-1 { top: 10%; left: 15%; animation-delay: 0s; }
+    .cd-confetti-2 { top: 15%; right: 15%; animation-delay: 0.8s; }
+    .cd-confetti-3 { top: 20%; left: 50%; animation-delay: 1.5s; }
+    .cd-confetti-4 { top: 25%; right: 25%; animation-delay: 2.2s; }
+    
+    @keyframes cdConfettiFall {
+        0%, 100% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 0.7;
+        }
+        50% {
+            transform: translateY(10px) rotate(180deg);
+            opacity: 1;
+        }
+    }
+    
+    .cd-banner {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .cd-title {
+        display: block;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        background: linear-gradient(90deg, #ff69b4, #ffd700, #87ceeb, #ff69b4);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: cdGradientMove 3s linear infinite;
+        margin-bottom: 0.5rem;
+    }
+    
+    @keyframes cdGradientMove {
+        0% { background-position: 0% center; }
+        100% { background-position: 200% center; }
+    }
+    
+    .cd-subtitle {
+        color: var(--text-secondary);
+        font-size: 1rem;
+        margin: 0;
+    }
+    
+    .cd-reward {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+    }
+    
+    .cd-claim-btn {
+        padding: 1rem 2.5rem;
+        background: linear-gradient(135deg, #ff69b4, #ffd700);
+        border: none;
+        border-radius: 50px;
+        color: #fff;
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 0 4px 20px rgba(255, 105, 180, 0.4);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .cd-claim-btn:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 8px 30px rgba(255, 105, 180, 0.6);
+    }
+    
+    .cd-claim-btn:active {
+        transform: translateY(0) scale(0.98);
+    }
+    
+    .cd-claim-btn.claimed {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+        box-shadow: none;
+        cursor: default;
+    }
+    
+    /* 个性化推荐增强样式 */
+    .personalized-section {
+        margin: 2.5rem 0;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(168, 85, 247, 0.05));
+        border: 1px solid rgba(0, 212, 255, 0.15);
+        border-radius: 20px;
+    }
+    
+    .personalized-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.2rem;
+    }
+    
+    .personalized-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .personalized-badge {
+        background: linear-gradient(135deg, var(--accent-cyan), var(--epic));
+        color: #fff;
+        padding: 0.2rem 0.6rem;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 700;
+    }
+    
+    .personalized-insight {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        max-width: 60%;
+        text-align: right;
+    }
+    
+    .personalized-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+    
+    .personalized-item {
+        background: var(--bg-card);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .personalized-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent-cyan), var(--epic));
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    
+    .personalized-item:hover {
+        transform: translateY(-5px) scale(1.02);
+        border-color: rgba(0, 212, 255, 0.3);
+        box-shadow: 0 8px 25px rgba(0, 212, 255, 0.2);
+    }
+    
+    .personalized-item:hover::before {
+        opacity: 1;
+    }
+    
+    .personalized-item-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .personalized-item-name {
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 0.3rem;
+    }
+    
+    .personalized-item-reason {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+    }
+    
+    .personalized-item-score {
+        margin-top: 0.5rem;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.8rem;
+        color: var(--accent-cyan);
+    }
+</style>
     
     /* ==================== 移动端沉浸式全屏浏览体验 ==================== */
     
@@ -13580,7 +13829,33 @@
                 </div>
             </div>
             
-            <!-- 用户专属元素区域 -->
+            
+        <!-- 儿童节主题彩蛋 -->
+        <div class="children-day-easter-egg" id="childrenDayEasterEgg" style="display: none;">
+            <div class="cd-decorations">
+                <span class="cd-balloon" style="--delay: 0s; --x: 10%;">🎈</span>
+                <span class="cd-balloon" style="--delay: 0.5s; --x: 25%;">🎈</span>
+                <span class="cd-balloon" style="--delay: 1s; --x: 40%;">🎈</span>
+                <span class="cd-balloon" style="--delay: 1.5s; --x: 55%;">🎈</span>
+                <span class="cd-balloon" style="--delay: 2s; --x: 70%;">🎈</span>
+                <span class="cd-balloon" style="--delay: 2.5s; --x: 85%;">🎈</span>
+                <span class="cd-confetti cd-confetti-1">🎉</span>
+                <span class="cd-confetti cd-confetti-2">🎊</span>
+                <span class="cd-confetti cd-confetti-3">⭐</span>
+                <span class="cd-confetti cd-confetti-4">🌟</span>
+            </div>
+            <div class="cd-banner">
+                <span class="cd-title">🎈 儿童节快乐 🎈</span>
+                <p class="cd-subtitle">保持童心，探索潮流无限可能</p>
+            </div>
+            <div class="cd-reward">
+                <button class="cd-claim-btn" onclick="claimChildrenDayReward()">
+                    <span>🎁 领取儿童节礼物</span>
+                </button>
+            </div>
+        </div>
+
+<!-- 用户专属元素区域 -->
             <div class="user-exclusive-zone" id="userExclusiveZone">
                 <div class="exclusive-badge tech">
                     <span class="exclusive-icon">⚡</span>
@@ -13636,6 +13911,21 @@
                 <button class="rarity-btn" data-rarity="rare">稀有</button>
                 <button class="rarity-btn" data-rarity="common">普通</button>
             </div>
+        
+        <!-- 个性化推荐增强 -->
+        <div class="personalized-section" id="personalizedSection">
+            <div class="personalized-header">
+                <div class="personalized-title">
+                    <span>✨</span>
+                    <span>为你精选</span>
+                    <span class="personalized-badge">个性化</span>
+                </div>
+                <div class="personalized-insight" id="personalizedInsight"></div>
+            </div>
+            <div class="personalized-grid">
+                <!-- 动态生成 -->
+            </div>
+        </div>
         </section>
         
         <!-- 风格推荐系统 -->
@@ -14324,6 +14614,8 @@
             initSearchFocus();
             initAIRecommendation();
             initStatsBoardEnhancement(); // 初始化数据看板增强
+            initChildrenDayEasterEgg(); // 儿童节彩蛋
+            initPersonalizedRecommendations(); // 个性化推荐
             
             // 从localStorage恢复联盟选择
             const savedAlliance = localStorage.getItem('user_alliance');
@@ -25860,6 +26152,289 @@
             });
         }
 
+
+    // ==================== 儿童节主题彩蛋 ====================
+    
+    // 儿童节日期检查（6月1日）
+    function isChildrenDay() {
+        const today = new Date();
+        return today.getMonth() === 5 && today.getDate() === 1; // 6月 = 5
+    }
+    
+    // 儿童节礼物状态
+    let childrenDayRewardClaimed = localStorage.getItem('childrenDayRewardClaimed') === 'true';
+    
+    // 初始化儿童节彩蛋
+    function initChildrenDayEasterEgg() {
+        if (isChildrenDay()) {
+            const easterEgg = document.getElementById('childrenDayEasterEgg');
+            if (easterEgg) {
+                easterEgg.style.display = 'block';
+                
+                // 如果已领取，显示已领取状态
+                if (childrenDayRewardClaimed) {
+                    const btn = easterEgg.querySelector('.cd-claim-btn');
+                    if (btn) {
+                        btn.classList.add('claimed');
+                        btn.innerHTML = '<span>✅ 礼物已领取</span>';
+                        btn.disabled = true;
+                    }
+                }
+                
+                // 显示欢迎通知
+                setTimeout(() => {
+                    showEmotionToast('🎈 儿童节快乐！愿你保持童心，探索无限~', 'celebrate');
+                }, 1000);
+            }
+        }
+    }
+    
+    // 领取儿童节礼物
+    function claimChildrenDayReward() {
+        if (childrenDayRewardClaimed) {
+            showEmotionToast('🎁 礼物已经领取过啦~', 'shy');
+            return;
+        }
+        
+        // 标记已领取
+        childrenDayRewardClaimed = true;
+        localStorage.setItem('childrenDayRewardClaimed', 'true');
+        
+        // 更新按钮状态
+        const btn = document.querySelector('.cd-claim-btn');
+        if (btn) {
+            btn.classList.add('claimed');
+            btn.innerHTML = '<span>✅ 礼物已领取</span>';
+            btn.disabled = true;
+        }
+        
+        // 增加积分和XP
+        userPoints += 100;
+        userXp += 50;
+        
+        // 保存数据
+        saveUserData();
+        
+        // 显示奖励通知
+        showEmotionToast('🎁 恭喜获得：100积分 + 50XP！', 'celebrate');
+        
+        // 触发庆祝粒子效果
+        triggerCelebrationEffect();
+        
+        // 触发成就检查
+        setTimeout(() => {
+            checkAchievements();
+        }, 500);
+    }
+    
+    // 庆祝粒子效果
+    function triggerCelebrationEffect() {
+        const colors = ['#ff69b4', '#ffd700', '#87ceeb', '#ff85c2', '#fffacd'];
+        const container = document.body;
+        
+        for (let i = 0; i < 30; i++) {
+            setTimeout(() => {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: fixed;
+                    pointer-events: none;
+                    font-size: 1.5rem;
+                    left: ${Math.random() * window.innerWidth}px;
+                    top: ${window.innerHeight}px;
+                    z-index: 9999;
+                    animation: celebrationRise ${1.5 + Math.random()}s ease-out forwards;
+                `;
+                particle.textContent = ['🎉', '🎊', '⭐', '🌟', '💖'][Math.floor(Math.random() * 5)];
+                container.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 2500);
+            }, i * 50);
+        }
+    }
+    
+    // 添加庆祝粒子动画样式
+    const celebrationStyle = document.createElement('style');
+    celebrationStyle.textContent = `
+        @keyframes celebrationRise {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-${window.innerHeight + 100}px) rotate(${Math.random() * 360}deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(celebrationStyle);
+    
+    // ==================== 个性化推荐增强 ====================
+    
+    // 个性化推荐状态
+    let personalizedRecommendations = [];
+    
+    // 生成个性化推荐
+    function generatePersonalizedRecommendations() {
+        const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+        const wearing = JSON.parse(localStorage.getItem('wearing') || '{}');
+        
+        // 分析用户偏好
+        const allianceCounts = { tech: 0, nature: 0, chaos: 0 };
+        const rarityCounts = { legendary: 0, epic: 0, rare: 0, common: 0 };
+        
+        // 从收藏中分析偏好
+        favorites.forEach(fav => {
+            if (fav.alliance) allianceCounts[fav.alliance]++;
+            if (fav.rarity) rarityCounts[fav.rarity]++;
+        });
+        
+        // 从穿戴中分析偏好
+        Object.values(wearing).forEach(item => {
+            if (item && item.alliance) allianceCounts[item.alliance]++;
+            if (item && item.rarity) rarityCounts[item.rarity]++;
+        });
+        
+        // 找出最偏好
+        const topAlliance = Object.entries(allianceCounts).sort((a, b) => b[1] - a[1])[0][0];
+        const topRarity = Object.entries(rarityCounts).sort((a, b) => b[1] - a[1])[0][0];
+        
+        // 推荐算法：根据偏好推荐互补装备
+        const recommendations = [];
+        const usedIds = new Set();
+        
+        // 1. 推荐同联盟但用户没有的装备
+        const sameAllianceItems = products.filter(p => 
+            p.alliance === topAlliance && 
+            !favorites.find(f => f.id === p.id) &&
+            !usedIds.has(p.id)
+        );
+        
+        if (sameAllianceItems.length > 0) {
+            const item = sameAllianceItems[Math.floor(Math.random() * sameAllianceItems.length)];
+            recommendations.push({
+                ...item,
+                reason: '与你收藏的' + getAllianceName(topAlliance) + '装备完美搭配',
+                score: 92
+            });
+            usedIds.add(item.id);
+        }
+        
+        // 2. 推荐用户喜欢的稀有度的新装备
+        const sameRarityItems = products.filter(p => 
+            p.rarity === topRarity && 
+            !favorites.find(f => f.id === p.id) &&
+            !usedIds.has(p.id)
+        );
+        
+        if (sameRarityItems.length > 0) {
+            const item = sameRarityItems[Math.floor(Math.random() * sameRarityItems.length)];
+            recommendations.push({
+                ...item,
+                reason: '同稀有度品质，值得收藏',
+                score: 88
+            });
+            usedIds.add(item.id);
+        }
+        
+        // 3. 推荐传奇装备（如果是活跃用户）
+        if (userXp > 200 || favorites.length > 5) {
+            const legendaryItems = products.filter(p => 
+                p.rarity === 'legendary' && 
+                !favorites.find(f => f.id === p.id) &&
+                !usedIds.has(p.id)
+            );
+            
+            if (legendaryItems.length > 0) {
+                const item = legendaryItems[Math.floor(Math.random() * legendaryItems.length)];
+                recommendations.push({
+                    ...item,
+                    reason: '传奇装备，提升整体潮流度',
+                    score: 95
+                });
+                usedIds.add(item.id);
+            }
+        }
+        
+        // 4. 推荐互补联盟装备（增加多样性）
+        const otherAlliances = ['tech', 'nature', 'chaos'].filter(a => a !== topAlliance);
+        otherAlliances.forEach(altAlliance => {
+            if (recommendations.length >= 6) return;
+            
+            const altItems = products.filter(p => 
+                p.alliance === altAlliance && 
+                !favorites.find(f => f.id === p.id) &&
+                !usedIds.has(p.id)
+            );
+            
+            if (altItems.length > 0) {
+                const item = altItems[Math.floor(Math.random() * altItems.length)];
+                recommendations.push({
+                    ...item,
+                    reason: '尝试' + getAllianceName(altAlliance) + '风格，拓宽穿搭可能',
+                    score: 85
+                });
+                usedIds.add(item.id);
+            }
+        });
+        
+        return recommendations.slice(0, 6);
+    }
+    
+    // 获取联盟名称
+    function getAllianceName(alliance) {
+        const names = {
+            tech: '科技',
+            nature: '自然',
+            chaos: '混沌'
+        };
+        return names[alliance] || alliance;
+    }
+    
+    // 渲染个性化推荐
+    function renderPersonalizedRecommendations() {
+        const section = document.getElementById('personalizedSection');
+        if (!section) return;
+        
+        personalizedRecommendations = generatePersonalizedRecommendations();
+        const grid = section.querySelector('.personalized-grid');
+        if (!grid) return;
+        
+        grid.innerHTML = personalizedRecommendations.map(item => `
+            <div class="personalized-item" onclick="handleCardClick(event, 'product', ${item.id}, '${item.rarity}')">
+                <div class="personalized-item-icon">${item.icon}</div>
+                <div class="personalized-item-name">${item.name}</div>
+                <div class="personalized-item-reason">${item.reason}</div>
+                <div class="personalized-item-score">潮流度 ${item.score}</div>
+            </div>
+        `).join('');
+    }
+    
+    // 初始化个性化推荐
+    function initPersonalizedRecommendations() {
+        // 初始化洞察
+        const insight = document.getElementById('personalizedInsight');
+        if (insight) {
+            insight.textContent = getPersonalizedInsight();
+        }
+        // 渲染推荐
+        renderPersonalizedRecommendations();
+    }
+    
+    // 获取个性化推荐洞察
+    function getPersonalizedInsight() {
+        const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+        
+        if (favorites.length === 0) {
+            return '开始探索，发现你的潮流风格';
+        } else if (favorites.length < 5) {
+            return '收藏渐丰，继续探索更多可能';
+        } else if (favorites.length < 10) {
+            return '品味独特，期待更多搭配灵感';
+        } else {
+            return '资深收藏家，你的风格已成型';
+        }
+    }
+    
 </script>
     
     <!-- 赛季战报弹窗 -->
