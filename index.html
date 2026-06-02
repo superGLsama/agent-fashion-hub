@@ -198,6 +198,445 @@
             opacity: 0.7;
         }
         
+        /* ==================== 首页故事线引导系统 ==================== */
+        
+        /* 故事线容器 */
+        .storyline-section {
+            margin: 2rem 0 2.5rem 0;
+            position: relative;
+        }
+        
+        /* 故事线头部 */
+        .storyline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+        
+        .storyline-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        
+        .storyline-title-icon {
+            font-size: 1.4rem;
+            animation: storylineIconPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes storylineIconPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+        
+        .storyline-nav-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .storyline-nav-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .storyline-nav-btn:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            transform: scale(1.1);
+        }
+        
+        .storyline-nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* 故事线轮播容器 */
+        .storyline-carousel {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+        
+        .storyline-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        /* 故事卡片 */
+        .story-card {
+            min-width: 100%;
+            display: flex;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+            min-height: 200px;
+        }
+        
+        .story-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            border-radius: 20px 20px 0 0;
+        }
+        
+        .story-card.inspiration::before {
+            background: linear-gradient(90deg, var(--accent-cyan), var(--epic));
+        }
+        
+        .story-card.alliance::before {
+            background: linear-gradient(90deg, var(--legendary), var(--accent-pink));
+        }
+        
+        .story-card.trend::before {
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
+        }
+        
+        .story-card.challenge::before {
+            background: linear-gradient(90deg, var(--accent-pink), var(--legendary));
+        }
+        
+        /* 故事卡片图标区域 */
+        .story-card-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            flex-shrink: 0;
+            position: relative;
+        }
+        
+        .story-card.inspiration .story-card-icon {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(168, 85, 247, 0.2));
+        }
+        
+        .story-card.alliance .story-card-icon {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(255, 0, 110, 0.2));
+        }
+        
+        .story-card.trend .story-card-icon {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 212, 255, 0.2));
+        }
+        
+        .story-card.challenge .story-card-icon {
+            background: linear-gradient(135deg, rgba(255, 0, 110, 0.2), rgba(245, 158, 11, 0.2));
+        }
+        
+        .story-card-icon::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 故事卡片内容 */
+        .story-card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .story-card-type {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 20px;
+            margin-bottom: 0.6rem;
+            width: fit-content;
+        }
+        
+        .story-card.inspiration .story-card-type {
+            background: rgba(0, 212, 255, 0.15);
+            color: var(--accent-cyan);
+        }
+        
+        .story-card.alliance .story-card-type {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--legendary);
+        }
+        
+        .story-card.trend .story-card-type {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+        }
+        
+        .story-card.challenge .story-card-type {
+            background: rgba(255, 0, 110, 0.15);
+            color: var(--accent-pink);
+        }
+        
+        .story-card-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+        
+        .story-card-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+        }
+        
+        .story-card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+        }
+        
+        .story-tag {
+            padding: 0.2rem 0.6rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        /* 故事卡片行动区 */
+        .story-card-actions {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+        
+        .story-action-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            border: none;
+        }
+        
+        .story-action-btn.primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--epic));
+            color: #fff;
+        }
+        
+        .story-action-btn.primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+        }
+        
+        .story-action-btn.secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-primary);
+        }
+        
+        .story-action-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        /* 故事卡片图片展示 */
+        .story-card-images {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-left: 1rem;
+        }
+        
+        .story-image-row {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .story-image-item {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: var(--bg-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+        }
+        
+        .story-image-item:hover {
+            transform: scale(1.1) translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .story-image-item.rarity-legendary {
+            border-color: rgba(245, 158, 11, 0.5);
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
+        }
+        
+        .story-image-item.rarity-epic {
+            border-color: rgba(168, 85, 247, 0.5);
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+        }
+        
+        /* 故事线指示器 */
+        .storyline-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .storyline-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .storyline-dot:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.2);
+        }
+        
+        .storyline-dot.active {
+            width: 24px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--epic));
+        }
+        
+        /* 故事卡片入场动画 */
+        @keyframes storyCardEnter {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .story-card.entering {
+            animation: storyCardEnter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        
+        /* 故事卡片悬停效果 */
+        .story-card:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        /* 故事特效 - 粒子 */
+        .story-particle {
+            position: absolute;
+            pointer-events: none;
+            font-size: 1rem;
+            animation: storyParticleFloat 2s ease-out forwards;
+            opacity: 0;
+        }
+        
+        @keyframes storyParticleFloat {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scale(0.5);
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(-20px) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-60px) scale(0.3);
+            }
+        }
+        
+        /* 故事时间标记 */
+        .story-time-badge {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.8rem;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .story-time-badge-icon {
+            animation: timeIconPulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes timeIconPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        /* 故事联盟徽章 */
+        .story-alliance-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .story-alliance-badge.tech {
+            background: rgba(0, 212, 255, 0.15);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+        
+        .story-alliance-badge.nature {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+        
+        .story-alliance-badge.chaos {
+            background: rgba(255, 0, 110, 0.15);
+            color: var(--accent-pink);
+            border: 1px solid rgba(255, 0, 110, 0.3);
+        }
+        
         /* 风格推荐系统 */
         .style-recommendations {
             margin: 2.5rem 0;
@@ -13928,6 +14367,32 @@
         </div>
         </section>
         
+        <!-- 首页故事线引导系统 -->
+        <div class="storyline-section" id="storylineSection">
+            <div class="storyline-header">
+                <h2 class="storyline-title">
+                    <span class="storyline-title-icon">📖</span>
+                    今日故事
+                </h2>
+                <div class="storyline-nav-btns">
+                    <button class="storyline-nav-btn" id="storylinePrev" onclick="navigateStory(-1)" disabled>
+                        ◀
+                    </button>
+                    <button class="storyline-nav-btn" id="storylineNext" onclick="navigateStory(1)">
+                        ▶
+                    </button>
+                </div>
+            </div>
+            <div class="storyline-carousel">
+                <div class="storyline-track" id="storylineTrack">
+                    <!-- 动态生成故事卡片 -->
+                </div>
+            </div>
+            <div class="storyline-indicators" id="storylineIndicators">
+                <!-- 动态生成指示器 -->
+            </div>
+        </div>
+        
         <!-- 风格推荐系统 -->
         <div class="style-recommendations">
             <div class="section-header">
@@ -14615,6 +15080,7 @@
             initAIRecommendation();
             initStatsBoardEnhancement(); // 初始化数据看板增强
             initChildrenDayEasterEgg(); // 儿童节彩蛋
+            initStoryline(); // 初始化故事线引导系统
             initPersonalizedRecommendations(); // 个性化推荐
             
             // 从localStorage恢复联盟选择
@@ -26407,6 +26873,348 @@
                 <div class="personalized-item-score">潮流度 ${item.score}</div>
             </div>
         `).join('');
+    }
+    
+    // ==================== 首页故事线引导系统 ====================
+    
+    // 故事线状态管理
+    let storylineState = {
+        currentIndex: 0,
+        stories: [],
+        autoPlayInterval: null
+    };
+    
+    // 故事线数据配置
+    const STORYLINE_DATA = [
+        {
+            type: 'inspiration',
+            typeLabel: '💡 穿搭灵感',
+            title: '今日穿搭灵感',
+            desc: '根据你的风格偏好，为你推荐一套完美的穿搭方案。科技与自然的碰撞，打造独特的潮流风格。',
+            tags: ['科技风', '自然风', '混搭'],
+            icon: '✨',
+            timeLabel: '限时 24h',
+            action: { text: '查看灵感', primary: true, func: 'switchTab("customize"); scrollToAI()' },
+            secondaryAction: { text: '跳过', func: 'navigateStory(1)' },
+            images: [
+                [{ icon: '🤖', rarity: 'epic' }, { icon: '🌿', rarity: 'rare' }],
+                [{ icon: '⚡', rarity: 'legendary' }, { icon: '🎭', rarity: 'rare' }]
+            ]
+        },
+        {
+            type: 'alliance',
+            typeLabel: '🏰 联盟动态',
+            title: '科技联盟新装备上线',
+            desc: '科技联盟发布了三款全新传奇装备，融合了未来科技与时尚美学。立即体验前沿的潮流科技！',
+            tags: ['科技联盟', '传奇装备', '新品上线'],
+            icon: '🤖',
+            alliance: 'tech',
+            timeLabel: '新品',
+            action: { text: '探索装备', primary: true, func: 'switchStyle("tech")' },
+            secondaryAction: { text: '了解更多', func: 'showAllianceInfo("tech")' },
+            images: [
+                [{ icon: '💎', rarity: 'legendary' }, { icon: '🔮', rarity: 'epic' }],
+                [{ icon: '⚡', rarity: 'legendary' }, { icon: '🌟', rarity: 'epic' }]
+            ]
+        },
+        {
+            type: 'trend',
+            typeLabel: '🔥 潮流趋势',
+            title: '本周热门风格 TOP1',
+            desc: '复古未来主义正在席卷潮流圈！将复古元素与现代科技完美融合，成为本周最受欢迎的穿搭风格。',
+            tags: ['复古未来', '热门趋势', '周榜'],
+            icon: '📊',
+            timeLabel: '本周流行',
+            action: { text: '跟随趋势', primary: true, func: 'switchStyle("vintage")' },
+            secondaryAction: { text: '查看榜单', func: 'openOutfitLeaderboard()' },
+            images: [
+                [{ icon: '🎭', rarity: 'epic' }, { icon: '💫', rarity: 'rare' }],
+                [{ icon: '✨', rarity: 'legendary' }, { icon: '🌈', rarity: 'epic' }]
+            ]
+        },
+        {
+            type: 'challenge',
+            typeLabel: '🎯 每日挑战',
+            title: '完成挑战赢取徽章',
+            desc: '今日挑战：收集任意3件史诗装备，即可获得"收藏家"专属徽章和100XP奖励！',
+            tags: ['史诗装备', '收藏挑战', '徽章奖励'],
+            icon: '🏆',
+            timeLabel: '今日挑战',
+            action: { text: '接受挑战', primary: true, func: 'openDailyChallenge()' },
+            secondaryAction: { text: '查看规则', func: 'showChallengeRules()' },
+            images: [
+                [{ icon: '🎖️', rarity: 'epic' }, { icon: '🛡️', rarity: 'rare' }],
+                [{ icon: '💠', rarity: 'legendary' }, { icon: '🔱', rarity: 'epic' }]
+            ]
+        }
+    ];
+    
+    // 初始化故事线系统
+    function initStoryline() {
+        const track = document.getElementById('storylineTrack');
+        const indicators = document.getElementById('storylineIndicators');
+        
+        if (!track || !indicators) return;
+        
+        // 随机打乱故事顺序（每日不同）
+        const today = new Date().getDate();
+        storylineState.stories = [...STORYLINE_DATA].sort((a, b) => (today + a.type.charCodeAt(0)) % 3 - (today + b.type.charCodeAt(0)) % 3);
+        
+        // 渲染故事卡片
+        renderStoryCards();
+        
+        // 渲染指示器
+        renderStoryIndicators();
+        
+        // 更新导航按钮状态
+        updateStoryNavButtons();
+        
+        // 启动自动播放
+        startStoryAutoPlay();
+        
+        // 绑定触摸滑动事件
+        initStoryTouchEvents();
+    }
+    
+    // 渲染故事卡片
+    function renderStoryCards() {
+        const track = document.getElementById('storylineTrack');
+        if (!track) return;
+        
+        track.innerHTML = storylineState.stories.map((story, index) => {
+            const allianceClass = story.alliance ? `story-alliance-badge ${story.alliance}` : '';
+            const allianceIcon = story.alliance === 'tech' ? '⚡' : story.alliance === 'nature' ? '🌿' : '🔥';
+            const allianceText = story.alliance === 'tech' ? '科技联盟' : story.alliance === 'nature' ? '自然联盟' : '混沌联盟';
+            
+            return `
+                <div class="story-card ${story.type}" data-index="${index}">
+                    <div class="story-time-badge">
+                        <span class="story-time-badge-icon">⏰</span>
+                        ${story.timeLabel}
+                    </div>
+                    
+                    <div class="story-card-icon">
+                        ${story.icon}
+                    </div>
+                    
+                    <div class="story-card-content">
+                        <span class="story-card-type">
+                            ${story.typeLabel}
+                            ${story.alliance ? `<span class="${allianceClass}">${allianceIcon} ${allianceText}</span>` : ''}
+                        </span>
+                        
+                        <h3 class="story-card-title">${story.title}</h3>
+                        <p class="story-card-desc">${story.desc}</p>
+                        
+                        <div class="story-card-tags">
+                            ${story.tags.map(tag => `<span class="story-tag">#${tag}</span>`).join('')}
+                        </div>
+                        
+                        <div class="story-card-actions">
+                            <button class="story-action-btn primary" onclick="${story.action.func}">
+                                ${story.action.text}
+                            </button>
+                            ${story.secondaryAction ? `
+                                <button class="story-action-btn secondary" onclick="${story.secondaryAction.func}">
+                                    ${story.secondaryAction.text}
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                    
+                    ${story.images ? `
+                        <div class="story-card-images">
+                            ${story.images.map(row => `
+                                <div class="story-image-row">
+                                    ${row.map(img => `
+                                        <div class="story-image-item rarity-${img.rarity}" title="${img.rarity === 'legendary' ? '传奇' : img.rarity === 'epic' ? '史诗' : '稀有'}装备">
+                                            ${img.icon}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }).join('');
+        
+        // 添加入场动画
+        setTimeout(() => {
+            const cards = track.querySelectorAll('.story-card');
+            cards.forEach((card, i) => {
+                if (i === storylineState.currentIndex) {
+                    card.classList.add('entering');
+                }
+            });
+        }, 100);
+    }
+    
+    // 渲染故事线指示器
+    function renderStoryIndicators() {
+        const indicators = document.getElementById('storylineIndicators');
+        if (!indicators) return;
+        
+        indicators.innerHTML = storylineState.stories.map((_, index) => `
+            <div class="storyline-dot ${index === storylineState.currentIndex ? 'active' : ''}" 
+                 onclick="goToStory(${index})"></div>
+        `).join('');
+    }
+    
+    // 导航到指定故事
+    function goToStory(index) {
+        if (index < 0 || index >= storylineState.stories.length) return;
+        
+        storylineState.currentIndex = index;
+        
+        // 更新轮播位置
+        const track = document.getElementById('storylineTrack');
+        if (track) {
+            track.style.transform = `translateX(-${index * 100}%)`;
+        }
+        
+        // 更新指示器
+        renderStoryIndicators();
+        
+        // 更新导航按钮
+        updateStoryNavButtons();
+        
+        // 重新启动自动播放
+        startStoryAutoPlay();
+        
+        // 触发粒子特效
+        triggerStoryParticles(index);
+    }
+    
+    // 导航故事（前进/后退）
+    function navigateStory(direction) {
+        let newIndex = storylineState.currentIndex + direction;
+        
+        // 循环导航
+        if (newIndex < 0) newIndex = storylineState.stories.length - 1;
+        if (newIndex >= storylineState.stories.length) newIndex = 0;
+        
+        goToStory(newIndex);
+    }
+    
+    // 更新导航按钮状态
+    function updateStoryNavButtons() {
+        const prevBtn = document.getElementById('storylinePrev');
+        const nextBtn = document.getElementById('storylineNext');
+        
+        if (prevBtn) {
+            prevBtn.disabled = storylineState.stories.length <= 1;
+        }
+        if (nextBtn) {
+            nextBtn.disabled = storylineState.stories.length <= 1;
+        }
+    }
+    
+    // 启动故事自动播放
+    function startStoryAutoPlay() {
+        // 清除之前的自动播放
+        if (storylineState.autoPlayInterval) {
+            clearInterval(storylineState.autoPlayInterval);
+        }
+        
+        // 每5秒自动切换
+        storylineState.autoPlayInterval = setInterval(() => {
+            navigateStory(1);
+        }, 5000);
+    }
+    
+    // 停止自动播放
+    function stopStoryAutoPlay() {
+        if (storylineState.autoPlayInterval) {
+            clearInterval(storylineState.autoPlayInterval);
+            storylineState.autoPlayInterval = null;
+        }
+    }
+    
+    // 初始化触摸滑动事件
+    function initStoryTouchEvents() {
+        const carousel = document.querySelector('.storyline-carousel');
+        if (!carousel) return;
+        
+        let startX = 0;
+        let endX = 0;
+        
+        carousel.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            stopStoryAutoPlay();
+        }, { passive: true });
+        
+        carousel.addEventListener('touchmove', (e) => {
+            endX = e.touches[0].clientX;
+        }, { passive: true });
+        
+        carousel.addEventListener('touchend', () => {
+            const diff = startX - endX;
+            
+            // 滑动超过50px触发切换
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    navigateStory(1); // 左滑 - 下一个
+                } else {
+                    navigateStory(-1); // 右滑 - 上一个
+                }
+            }
+            
+            // 重启自动播放
+            startStoryAutoPlay();
+        }, { passive: true });
+    }
+    
+    // 触发故事卡片粒子特效
+    function triggerStoryParticles(index) {
+        const card = document.querySelectorAll('.story-card')[index];
+        if (!card) return;
+        
+        const particles = ['✨', '💫', '⭐', '🌟'];
+        const colors = ['#00d4ff', '#a855f7', '#f59e0b', '#ff006e'];
+        
+        for (let i = 0; i < 8; i++) {
+            setTimeout(() => {
+                const particle = document.createElement('div');
+                particle.className = 'story-particle';
+                particle.textContent = particles[Math.floor(Math.random() * particles.length)];
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.color = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.animationDelay = `${Math.random() * 0.5}s`;
+                
+                card.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 2000);
+            }, i * 100);
+        }
+    }
+    
+    // 显示联盟信息（示例函数）
+    function showAllianceInfo(alliance) {
+        const info = {
+            tech: { name: '科技联盟', desc: '探索未来科技的无限可能', color: '#00d4ff' },
+            nature: { name: '自然联盟', desc: '拥抱自然之美的和谐', color: '#00ff88' },
+            chaos: { name: '混沌联盟', desc: '释放你的不羁灵魂', color: '#ff006e' }
+        };
+        
+        const data = info[alliance] || info.tech;
+        showEmotionToast(`${data.name} - ${data.desc}`, 'info', data.color);
+    }
+    
+    // 显示挑战规则（示例函数）
+    function showChallengeRules() {
+        showEmotionToast('每日挑战：收集指定稀有度装备，赢取徽章和XP奖励！', 'info', '#f59e0b');
+    }
+    
+    // 滚动到AI推荐区域
+    function scrollToAI() {
+        setTimeout(() => {
+            const aiSection = document.querySelector('.ai-recommendation-section');
+            if (aiSection) {
+                aiSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }, 300);
     }
     
     // 初始化个性化推荐
