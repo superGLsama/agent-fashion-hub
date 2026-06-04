@@ -13113,6 +13113,11 @@
                     🎯
                     <span class="event-badge pulse" id="eventBadge">NEW</span>
                 </button>
+                <!-- 每日运势按钮 -->
+                <button class="fortune-btn" id="fortuneBtn" onclick="toggleFortunePanel()">
+                    🔮
+                    <span class="fortune-indicator" id="fortuneIndicator"></span>
+                </button>
                 <!-- 动态/说说按钮 -->
                 <button class="post-btn" id="postBtn" onclick="togglePostPanel()">
                     ✨
@@ -13631,6 +13636,61 @@
                 </div>
             </div>
             <button class="checkin-success-btn" onclick="closeCheckinSuccess()">太棒了!</button>
+        </div>
+    </div>
+    
+    <!-- 每日运势面板遮罩 -->
+    <div class="fortune-overlay" id="fortuneOverlay" onclick="closeFortunePanel()"></div>
+    
+    <!-- 每日运势召唤面板 -->
+    <div class="fortune-panel" id="fortunePanel">
+        <div class="fortune-panel-bg"></div>
+        
+        <div class="fortune-panel-header">
+            <div class="fortune-panel-title">
+                <span>🔮</span>
+                <span>每日运势</span>
+            </div>
+            <button class="fortune-panel-close" onclick="closeFortunePanel()">✕</button>
+        </div>
+        
+        <div class="fortune-panel-content">
+            <div class="fortune-today-title">
+                <h2>✨ 今日运势召唤 ✨</h2>
+                <p>每天一次机会，看看今天的运气如何</p>
+            </div>
+            
+            <div class="fortune-wheel-container">
+                <div class="fortune-pointer"></div>
+                <div class="fortune-wheel" id="fortuneWheel"></div>
+            </div>
+            
+            <button class="fortune-summon-btn" id="fortuneSummonBtn" onclick="doFortuneSummon()">
+                <span>🌟</span>
+                <span id="fortuneSummonText">开始召唤</span>
+            </button>
+            
+            <div class="fortune-result" id="fortuneResult">
+                <div class="fortune-result-icon" id="fortuneResultIcon">🌟</div>
+                <div class="fortune-result-rank" id="fortuneResultRank">传奇</div>
+                <div class="fortune-result-title" id="fortuneResultTitle">今日运势</div>
+                <div class="fortune-result-desc" id="fortuneResultDesc">描述文字</div>
+                <div class="fortune-result-reward" id="fortuneResultReward">
+                    <div class="fortune-reward-item">
+                        <span class="fortune-reward-icon">⭐</span>
+                        <span class="fortune-reward-value" id="fortuneXpReward">+50 XP</span>
+                    </div>
+                    <div class="fortune-reward-item">
+                        <span class="fortune-reward-icon">💎</span>
+                        <span class="fortune-reward-value" id="fortunePointsReward">+100</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="fortune-history" id="fortuneHistory">
+                <div class="fortune-history-title">📅 近期运势</div>
+                <div class="fortune-history-list" id="fortuneHistoryList"></div>
+            </div>
         </div>
     </div>
     
@@ -24376,6 +24436,388 @@
             }
         }
         
+        // ==================== 每日运势召唤系统 ====================
+        
+        // 运势配置
+        const FORTUNE_TYPES = [
+            { rarity: 'legendary', name: '天选之人', icon: '👑', probability: 0.05,
+              desc: '今日运势极佳！你是被命运眷顾的天选之人！',
+              rewards: { xp: 100, points: 500 } },
+            { rarity: 'epic', name: '紫气东来', icon: '🌟', probability: 0.15,
+              desc: '今日运势超棒！会有意想不到的好事发生！',
+              rewards: { xp: 60, points: 300 } },
+            { rarity: 'rare', name: '稳中有升', icon: '☘️', probability: 0.30,
+              desc: '今日运势平稳，适合稳步推进计划！',
+              rewards: { xp: 30, points: 150 } },
+            { rarity: 'common', name: '韬光养晦', icon: '🌙', probability: 0.50,
+              desc: '今日需要低调行事，但也是积累能量的好时机！',
+              rewards: { xp: 10, points: 50 } }
+        ];
+        
+        // 运势状态管理
+        let fortuneState = {
+            usedToday: false,
+            lastUsedDate: null,
+            todayFortune: null,
+            history: [] // { date, fortune }
+        };
+        
+        // 初始化运势系统
+        function initFortuneSystem() {
+            loadFortuneState();
+            checkDailyFortuneReset();
+            updateFortuneButton();
+            renderFortuneHistory();
+        }
+        
+        // 加载运势状态
+        function loadFortuneState() {
+            const saved = localStorage.getItem('fortuneState');
+            if (saved) {
+                fortuneState = JSON.parse(saved);
+            }
+        }
+        
+        // 保存运势状态
+        function saveFortuneState() {
+            localStorage.setItem('fortuneState', JSON.stringify(fortuneState));
+        }
+        
+        // 检查是否需要重置每日运势
+        function checkDailyFortuneReset() {
+            const today = new Date().toDateString();
+            if (fortuneState.lastUsedDate !== today) {
+                fortuneState.usedToday = false;
+                fortuneState.todayFortune = null;
+                updateFortuneButton();
+            }
+        }
+        
+        // 更新运势按钮状态
+        function updateFortuneButton() {
+            const btn = document.getElementById('fortuneBtn');
+            const indicator = document.getElementById('fortuneIndicator');
+            if (btn) {
+                if (fortuneState.usedToday) {
+                    btn.classList.add('used');
+                    btn.title = '今日运势已抽取';
+                } else {
+                    btn.classList.remove('used');
+                    btn.title = '抽取今日运势';
+                }
+            }
+        }
+        
+        // 渲染运势历史
+        function renderFortuneHistory() {
+            const container = document.getElementById('fortuneHistoryList');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            // 显示最近7天的记录
+            const recentHistory = fortuneState.history.slice(-7).reverse();
+            if (recentHistory.length === 0) {
+                container.innerHTML = '<div style="color: var(--text-secondary); font-size: 0.85rem;">暂无记录</div>';
+                return;
+            }
+            
+            recentHistory.forEach(item => {
+                const div = document.createElement('div');
+                div.className = `fortune-history-item ${item.fortune.rarity}`;
+                div.textContent = item.fortune.icon;
+                div.setAttribute('data-date', item.date);
+                div.onclick = () => showFortuneDetail(item);
+                container.appendChild(div);
+            });
+        }
+        
+        // 显示运势详情
+        function showFortuneDetail(item) {
+            // 复用结果展示逻辑
+            showFortuneResult(item.fortune, true);
+        }
+        
+        // 打开运势面板
+        function toggleFortunePanel() {
+            const panel = document.getElementById('fortunePanel');
+            const overlay = document.getElementById('fortuneOverlay');
+            
+            if (panel.classList.contains('show')) {
+                closeFortunePanel();
+            } else {
+                checkDailyFortuneReset();
+                updateFortunePanel();
+                panel.classList.add('show');
+                overlay.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        // 关闭运势面板
+        function closeFortunePanel() {
+            const panel = document.getElementById('fortunePanel');
+            const overlay = document.getElementById('fortuneOverlay');
+            
+            panel.classList.remove('show');
+            overlay.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+        
+        // 更新运势面板状态
+        function updateFortunePanel() {
+            const btn = document.getElementById('fortuneSummonBtn');
+            const btnText = document.getElementById('fortuneSummonText');
+            const result = document.getElementById('fortuneResult');
+            const wheel = document.getElementById('fortuneWheel');
+            
+            if (fortuneState.usedToday && fortuneState.todayFortune) {
+                btn.disabled = true;
+                btnText.textContent = '明日再来';
+                result.classList.remove('show');
+                wheel.classList.remove('spinning');
+                showFortuneResult(fortuneState.todayFortune, false);
+            } else {
+                btn.disabled = false;
+                btnText.textContent = '开始召唤';
+                result.classList.remove('show');
+                wheel.classList.remove('spinning');
+            }
+        }
+        
+        // 执行运势召唤
+        function doFortuneSummon() {
+            if (fortuneState.usedToday) {
+                showEmotionToast('💡 今日运势已抽取，明日再来吧！', 'encourage');
+                return;
+            }
+            
+            const btn = document.getElementById('fortuneSummonBtn');
+            const btnText = document.getElementById('fortuneSummonText');
+            const wheel = document.getElementById('fortuneWheel');
+            
+            btn.disabled = true;
+            btnText.textContent = '召唤中...';
+            
+            // 播放轮盘旋转动画
+            wheel.classList.add('spinning');
+            
+            // 随机选择运势
+            const fortune = selectRandomFortune();
+            
+            // 4秒后显示结果
+            setTimeout(() => {
+                wheel.classList.remove('spinning');
+                
+                // 根据结果调整轮盘停止位置
+                const rotations = 6; // 旋转6圈
+                const segmentAngles = { legendary: 0, epic: 90, rare: 180, common: 270 };
+                const finalAngle = rotations * 360 + segmentAngles[fortune.rarity];
+                wheel.style.transform = `rotate(${finalAngle}deg)`;
+                
+                // 显示结果
+                fortuneState.usedToday = true;
+                fortuneState.lastUsedDate = new Date().toDateString();
+                fortuneState.todayFortune = fortune;
+                
+                // 添加到历史
+                const today = new Date().getDate();
+                fortuneState.history.push({
+                    date: today.toString(),
+                    fortune: fortune
+                });
+                
+                // 保持最多14天历史
+                if (fortuneState.history.length > 14) {
+                    fortuneState.history = fortuneState.history.slice(-14);
+                }
+                
+                saveFortuneState();
+                updateFortuneButton();
+                
+                showFortuneResult(fortune, false);
+                renderFortuneHistory();
+                
+                btnText.textContent = '明日再来';
+                
+                // 发放奖励
+                setTimeout(() => {
+                    giveFortuneRewards(fortune);
+                }, 500);
+                
+            }, 4000);
+        }
+        
+        // 随机选择运势
+        function selectRandomFortune() {
+            const rand = Math.random();
+            let cumulative = 0;
+            
+            for (const fortune of FORTUNE_TYPES) {
+                cumulative += fortune.probability;
+                if (rand < cumulative) {
+                    return fortune;
+                }
+            }
+            
+            return FORTUNE_TYPES[FORTUNE_TYPES.length - 1]; // 默认普通
+        }
+        
+        // 显示运势结果
+        function showFortuneResult(fortune, isHistory) {
+            const result = document.getElementById('fortuneResult');
+            const icon = document.getElementById('fortuneResultIcon');
+            const rank = document.getElementById('fortuneResultRank');
+            const title = document.getElementById('fortuneResultTitle');
+            const desc = document.getElementById('fortuneResultDesc');
+            const xpReward = document.getElementById('fortuneXpReward');
+            const pointsReward = document.getElementById('fortunePointsReward');
+            
+            // 设置稀有度样式
+            result.className = 'fortune-result show ' + fortune.rarity;
+            rank.className = 'fortune-result-rank ' + fortune.rarity;
+            
+            icon.textContent = fortune.icon;
+            rank.textContent = fortune.rarity === 'legendary' ? '传奇' :
+                              fortune.rarity === 'epic' ? '史诗' :
+                              fortune.rarity === 'rare' ? '稀有' : '普通';
+            title.textContent = fortune.name;
+            desc.textContent = fortune.desc;
+            xpReward.textContent = '+' + fortune.rewards.xp + ' XP';
+            pointsReward.textContent = '+' + fortune.rewards.points;
+            
+            // 触发特效
+            if (!isHistory) {
+                triggerFortuneEffect(fortune.rarity);
+            }
+        }
+        
+        // 触发运势特效
+        function triggerFortuneEffect(rarity) {
+            if (rarity === 'legendary') {
+                // 全屏金光
+                showMilestoneEffect('🎉', '传奇运势降临！', '#f59e0b');
+                setTimeout(() => triggerCelebration(), 300);
+            } else if (rarity === 'epic') {
+                // 紫色光效
+                createParticlesAtCenter('🌟', 15);
+            } else if (rarity === 'rare') {
+                // 绿色光效
+                createParticlesAtCenter('✨', 8);
+            } else {
+                // 普通光效
+                showEmotionToast('🌙 今日运势已揭晓！', 'encourage');
+            }
+        }
+        
+        // 发放运势奖励
+        function giveFortuneRewards(fortune) {
+            // 添加XP
+            addXP(fortune.rewards.xp);
+            
+            // 添加积分
+            userState.points += fortune.rewards.points;
+            saveUserState();
+            updatePointsDisplay();
+            
+            // 显示奖励通知
+            if (fortune.rarity === 'legendary') {
+                showEmotionToast(`🎉 恭喜获得传奇运势！+${fortune.rewards.xp} XP, +${fortune.rewards.points} 积分`, 'celebrate');
+            } else if (fortune.rarity === 'epic') {
+                showEmotionToast(`🌟 史诗运势！+${fortune.rewards.xp} XP, +${fortune.rewards.points} 积分`, 'celebrate');
+            }
+        }
+        
+        // 在中心创建粒子
+        function createParticlesAtCenter(emoji, count) {
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'floating-emoji';
+                    particle.textContent = emoji;
+                    particle.style.left = centerX + 'px';
+                    particle.style.top = centerY + 'px';
+                    particle.style.fontSize = (1.5 + Math.random()) + 'rem';
+                    document.body.appendChild(particle);
+                    
+                    // 随机方向飘散
+                    const angle = (Math.PI * 2 / count) * i;
+                    const distance = 100 + Math.random() * 100;
+                    const endX = centerX + Math.cos(angle) * distance;
+                    const endY = centerY + Math.sin(angle) * distance;
+                    
+                    particle.animate([
+                        { transform: 'translate(0, 0) scale(0)', opacity: 0 },
+                        { transform: `translate(${endX - centerX}px, ${endY - centerY}px) scale(1)`, opacity: 1, offset: 0.3 },
+                        { transform: `translate(${endX - centerX + (Math.random() - 0.5) * 50}px, ${endY - centerY - 100}px) scale(0.5)`, opacity: 0 }
+                    ], {
+                        duration: 1500,
+                        easing: 'ease-out'
+                    }).onfinish = () => particle.remove();
+                }, i * 100);
+            }
+        }
+        
+        // 显示里程碑效果
+        function showMilestoneEffect(icon, title, color) {
+            const overlay = document.createElement('div');
+            overlay.className = 'milestone-overlay';
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+                animation: fadeIn 0.3s ease;
+            `;
+            
+            overlay.innerHTML = `
+                <style>
+                    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+                    @keyframes milestoneEnter {
+                        0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+                        50% { transform: scale(1.2) rotate(5deg); opacity: 1; }
+                        100% { transform: scale(1) rotate(0deg); opacity: 1; }
+                    }
+                    @keyframes milestoneGlow {
+                        0%, 100% { box-shadow: 0 0 30px ${color}; }
+                        50% { box-shadow: 0 0 60px ${color}, 0 0 100px ${color}; }
+                    }
+                </style>
+                <div style="
+                    font-size: 6rem;
+                    animation: milestoneEnter 0.6s cubic-bezier(0.34,1.56,0.64,1);
+                ">${icon}</div>
+                <div style="
+                    font-family: 'Orbitron', sans-serif;
+                    font-size: 1.5rem;
+                    color: ${color};
+                    margin-top: 1rem;
+                    text-shadow: 0 0 20px ${color};
+                    animation: milestoneEnter 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;
+                ">${title}</div>
+            `;
+            
+            document.body.appendChild(overlay);
+            
+            setTimeout(() => {
+                overlay.style.animation = 'fadeIn 0.3s ease reverse';
+                setTimeout(() => overlay.remove(), 300);
+            }, 2000);
+        }
+        
+        // 页面加载时初始化运势系统
+        document.addEventListener('DOMContentLoaded', initFortuneSystem);
+        
         // ==================== 限时活动系统 ====================
         
         // 活动配置
@@ -26604,6 +27046,12 @@
             toggleEventPanel();
         }
         
+        // 悬浮球快捷操作 - 运势
+        function quickActionFortune() {
+            closeQuickFab();
+            toggleFortunePanel();
+        }
+        
         // 初始化悬浮球系统
         function initQuickFab() {
             updateQuickFabBadges();
@@ -27446,6 +27894,10 @@
                 <div class="quick-fab-item-icon">🎁</div>
                 <span class="quick-fab-item-label">限时活动</span>
             </div>
+            <div class="quick-fab-item fortune" onclick="quickActionFortune()">
+                <div class="quick-fab-item-icon">🔮</div>
+                <span class="quick-fab-item-label">每日运势</span>
+            </div>
         </div>
         <button class="quick-fab-main" id="quickFabMain" onclick="toggleQuickFab()">
             <span>+</span>
@@ -28089,6 +28541,514 @@
     
     .event-badge.pulse {
         animation: eventBadgePulse 1.5s ease-in-out infinite;
+    }
+    
+    /* ==================== 每日运势召唤系统 ==================== */
+    
+    /* 运势按钮 */
+    .fortune-btn {
+        position: relative;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #9333ea, #ec4899);
+        border: none;
+        color: #fff;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 10px rgba(147, 51, 234, 0.3);
+    }
+    
+    .fortune-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 20px rgba(147, 51, 234, 0.5);
+    }
+    
+    .fortune-indicator {
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--accent-green);
+        border: 2px solid var(--bg-dark);
+        display: none;
+    }
+    
+    .fortune-btn:not(.used) .fortune-indicator {
+        display: block;
+        animation: fortunePulse 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes fortunePulse {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.2); opacity: 0.8; }
+    }
+    
+    /* 运势面板 */
+    .fortune-panel {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.9);
+        width: 90%;
+        max-width: 420px;
+        background: var(--bg-card);
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 300;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        overflow: hidden;
+    }
+    
+    .fortune-panel.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    
+    .fortune-panel-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 200px;
+        background: linear-gradient(135deg, rgba(147, 51, 234, 0.3), rgba(236, 72, 153, 0.3));
+        z-index: -1;
+    }
+    
+    .fortune-panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .fortune-panel-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .fortune-panel-close {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: var(--text-secondary);
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .fortune-panel-close:hover {
+        background: rgba(255, 0, 110, 0.2);
+        color: var(--accent-pink);
+        transform: rotate(90deg);
+    }
+    
+    .fortune-panel-content {
+        padding: 1.5rem;
+    }
+    
+    /* 今日运势标题 */
+    .fortune-today-title {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .fortune-today-title h2 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.4rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .fortune-today-title p {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+    
+    /* 运势轮盘 */
+    .fortune-wheel-container {
+        position: relative;
+        width: 220px;
+        height: 220px;
+        margin: 0 auto 1.5rem;
+    }
+    
+    .fortune-wheel {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: conic-gradient(
+            from 0deg,
+            #f59e0b 0deg 45deg,
+            #3b82f6 45deg 90deg,
+            #10b981 90deg 135deg,
+            #ec4899 135deg 180deg,
+            #8b5cf6 180deg 225deg,
+            #06b6d4 225deg 270deg,
+            #f97316 270deg 315deg,
+            #84cc16 315deg 360deg
+        );
+        position: relative;
+        box-shadow: 0 0 30px rgba(147, 51, 234, 0.4);
+        transition: transform 4s cubic-bezier(0.2, 0.8, 0.3, 1);
+    }
+    
+    .fortune-wheel::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60px;
+        height: 60px;
+        background: var(--bg-dark);
+        border-radius: 50%;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        z-index: 10;
+    }
+    
+    .fortune-wheel::after {
+        content: '🔮';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 1.8rem;
+        z-index: 11;
+    }
+    
+    .fortune-wheel.spinning {
+        animation: fortuneWheelSpin 4s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+    }
+    
+    @keyframes fortuneWheelSpin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(2160deg); }
+    }
+    
+    /* 轮盘指针 */
+    .fortune-pointer {
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 30px;
+        height: 40px;
+        z-index: 20;
+    }
+    
+    .fortune-pointer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-top: 40px solid var(--legendary);
+        filter: drop-shadow(0 4px 8px rgba(245, 158, 11, 0.5));
+    }
+    
+    /* 召唤按钮 */
+    .fortune-summon-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+        width: 100%;
+        padding: 1rem 2rem;
+        background: linear-gradient(135deg, #9333ea, #ec4899);
+        border: none;
+        border-radius: 50px;
+        color: #fff;
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 0 4px 20px rgba(147, 51, 234, 0.4);
+        margin-bottom: 1rem;
+    }
+    
+    .fortune-summon-btn:hover:not(:disabled) {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 8px 30px rgba(147, 51, 234, 0.5);
+    }
+    
+    .fortune-summon-btn:active:not(:disabled) {
+        transform: translateY(-1px) scale(0.98);
+    }
+    
+    .fortune-summon-btn:disabled {
+        background: rgba(255, 255, 255, 0.1);
+        cursor: not-allowed;
+        box-shadow: none;
+        color: var(--text-secondary);
+    }
+    
+    /* 运势结果 */
+    .fortune-result {
+        display: none;
+        text-align: center;
+        padding: 1.5rem;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 16px;
+        margin-top: 1rem;
+    }
+    
+    .fortune-result.show {
+        display: block;
+        animation: fortuneResultEnter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    
+    @keyframes fortuneResultEnter {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .fortune-result-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        animation: fortuneIconBounce 1s ease-in-out infinite;
+    }
+    
+    @keyframes fortuneIconBounce {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+    
+    .fortune-result-rank {
+        display: inline-block;
+        padding: 0.3rem 1rem;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        margin-bottom: 0.8rem;
+    }
+    
+    .fortune-result-rank.legendary {
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(255, 107, 107, 0.3));
+        color: var(--legendary);
+        border: 1px solid rgba(245, 158, 11, 0.5);
+    }
+    
+    .fortune-result-rank.epic {
+        background: linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(147, 51, 234, 0.3));
+        color: var(--epic);
+        border: 1px solid rgba(168, 85, 247, 0.5);
+    }
+    
+    .fortune-result-rank.rare {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.3));
+        color: var(--rare);
+        border: 1px solid rgba(59, 130, 246, 0.5);
+    }
+    
+    .fortune-result-rank.common {
+        background: linear-gradient(135deg, rgba(156, 163, 175, 0.3), rgba(156, 163, 175, 0.3));
+        color: var(--common);
+        border: 1px solid rgba(156, 163, 175, 0.5);
+    }
+    
+    .fortune-result-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .fortune-result-desc {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+    
+    .fortune-result-reward {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+    }
+    
+    .fortune-reward-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .fortune-reward-icon {
+        font-size: 1.5rem;
+    }
+    
+    .fortune-reward-value {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+        color: var(--accent-cyan);
+    }
+    
+    /* 运势历史 */
+    .fortune-history {
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .fortune-history-title {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+    }
+    
+    .fortune-history-list {
+        display: flex;
+        gap: 0.5rem;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+    }
+    
+    .fortune-history-item {
+        flex-shrink: 0;
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        position: relative;
+    }
+    
+    .fortune-history-item:hover {
+        transform: scale(1.1);
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .fortune-history-item::after {
+        content: attr(data-date);
+        position: absolute;
+        bottom: -18px;
+        font-size: 0.65rem;
+        color: var(--text-secondary);
+    }
+    
+    .fortune-history-item.legendary { background: rgba(245, 158, 11, 0.2); }
+    .fortune-history-item.epic { background: rgba(168, 85, 247, 0.2); }
+    .fortune-history-item.rare { background: rgba(59, 130, 246, 0.2); }
+    .fortune-history-item.common { background: rgba(156, 163, 175, 0.2); }
+    
+    /* 运势遮罩 */
+    .fortune-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(10px);
+        z-index: 299;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s;
+    }
+    
+    .fortune-overlay.show {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    /* 稀有度特效 */
+    .fortune-result.legendary {
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(255, 107, 107, 0.2));
+        border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    
+    .fortune-result.epic {
+        background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(147, 51, 234, 0.2));
+        border: 1px solid rgba(168, 85, 247, 0.3);
+    }
+    
+    .fortune-result.rare {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.2));
+        border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+    
+    .fortune-result.common {
+        background: linear-gradient(135deg, rgba(156, 163, 175, 0.2), rgba(156, 163, 175, 0.2));
+        border: 1px solid rgba(156, 163, 175, 0.3);
+    }
+    
+    /* 每日运势Banner */
+    .fortune-daily-banner {
+        display: none;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.5rem;
+        background: linear-gradient(135deg, rgba(147, 51, 234, 0.2), rgba(236, 72, 153, 0.2));
+        border: 1px solid rgba(147, 51, 234, 0.3);
+        border-radius: 16px;
+        margin-bottom: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .fortune-daily-banner.show {
+        display: flex;
+    }
+    
+    .fortune-daily-banner:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(147, 51, 234, 0.3);
+    }
+    
+    .fortune-daily-icon {
+        font-size: 2.5rem;
+    }
+    
+    .fortune-daily-content {
+        flex: 1;
+    }
+    
+    .fortune-daily-title {
+        font-weight: 700;
+        margin-bottom: 0.3rem;
+    }
+    
+    .fortune-daily-desc {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+    }
+    
+    .fortune-daily-arrow {
+        font-size: 1.5rem;
+        color: var(--text-secondary);
     }
     
     @keyframes eventBadgePulse {
